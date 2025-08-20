@@ -72,7 +72,7 @@ export default function Welcome() {
                             </ul>
                         </div>
 
-                        <div className="relative -mb-px aspect-[335/376] w-full shrink-0 overflow-hidden rounded-t-lg lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg">
+                        <div className="relative -mb-px w-full shrink-0 overflow-hidden rounded-t-lg lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg">
                         
                                 <svg version="1.1" viewBox="0 0 2048 1635" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
                                     <path transform="translate(0)" d="m0 0h2048v1635h-2048z"/>
