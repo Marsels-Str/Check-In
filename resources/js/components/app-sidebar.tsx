@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { LayoutGrid, UsersRound, PersonStanding, Phone, Book, Notebook, MapPin } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -14,9 +14,24 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Group',
-        href: '/job-group',
-        icon: LayoutGrid,
+        title: 'Groups',
+        href: '/job-groups',
+        icon: PersonStanding,
+    },
+    {
+        title: 'Users',
+        href: '/users',
+        icon: UsersRound,
+    },
+    {
+        title: 'Roles',
+        href: '/roles',
+        icon: Notebook,
+    },
+    {
+        title: 'Map',
+        href: '/maps',
+        icon: MapPin,
     },
 ];
 
@@ -24,12 +39,12 @@ const footerNavItems: NavItem[] = [
     {
         title: 'About Us',
         href: '/about-us',
-        icon: Folder,
+        icon: Book,
     },
     {
         title: 'Contacts',
         href: '/contacts',
-        icon: BookOpen,
+        icon: Phone,
     },
 ];
 

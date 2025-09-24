@@ -1,23 +1,44 @@
 import { Head } from '@inertiajs/react';
-
 import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import Accordion from '@/components/ui/accordion';
 
 export default function AboutUs() {
-    return (
-        <AppLayout>
-            <Head title="About us" />
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'About us',
+            href: '/about-us',
+        },
+    ];
 
-            <div className="space-y-6 md:space-y-12">
-                <h1 className="text-3xl font-bold leading-tight md:text-5xl">
-                    About us
-                </h1>
-                <p className="max-w-3xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    Under construction. This is a sample about us page. You can edit this page by going to the
-                    <code className="text-sm font-mono rounded bg-zinc-100 px-1.5 py-0.5 dark:bg-zinc-700">
-                        resources/js/pages/about-us.tsx
-                    </code>{' '}
-                    file.
-                </p>
+    // Your accordion data
+    const sections = [
+        {
+            title: 'Why Choose Us?',
+            content:
+                'Because we are trying to be the best at what we do and we keeps progressing towards the future.',
+        },
+        {
+            title: 'What is our mission?',
+            content:
+                'Our mission is to provide small and even large bussineses with the best worker management application you can find on the internet that is totally for free.',
+        },
+        {
+            title: 'What do we value?',
+            content:
+                'We value the time user spends using our application and we always look forward to improve the user experience, thats why we need your precious feedbcacks!',
+        },
+    ];
+
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="About us" />
+            <h1 className="flex justify-center text-3xl font-bold leading-tight md:text-5xl">
+                About Us
+            </h1>
+
+            <div className='mx-auto'>
+                <Accordion items={sections} defaultOpenIndex={null} />
             </div>
         </AppLayout>
     );

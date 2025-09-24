@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Seed permissions
+        $this->call(PermissionSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Then seed roles
+        $this->call(RoleSeeder::class);
+
+        // Example fixed profile
+        $user = User::factory()->create([
+            'name' => 'App Owner',
+            'email' => 'owner@example.com',
+            'password' => Hash::make('password'), // set a known password
         ]);
+
+        // Assign the AppOwner role (from Spatie)
+        $user->assignRole('AppOwner');
     }
 }

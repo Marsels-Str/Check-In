@@ -31,11 +31,23 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
+export interface UserProfile {
+    age?: number;
+    height?: number;
+    weight?: number;
+    phone?: string;
+    country?: string;
+    city?: string;
+    personal_code?: string;
+    portrait?: string | null;
+    unique_id?: string;
+}
+
 export interface User {
     id: number;
     name: string;
     email: string;
-    avatar?: string;
+    profile?: UserProfile | null;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
