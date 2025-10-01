@@ -36,6 +36,8 @@ export default function AboutUs() {
             <div className="mx-auto">
                 <Accordion items={sections} defaultOpenIndex={null} />
             </div>
+
+            <p>Sigma test 123</p>
         </AppLayout>
     );
 }
