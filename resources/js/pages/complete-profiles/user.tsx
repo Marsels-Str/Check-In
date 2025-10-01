@@ -14,7 +14,10 @@ export default function CompletProfile() {
 
     function submit(e: React.SyntheticEvent) {
         e.preventDefault();
-        post(route('profile.complete.store'));
+        post(route('profile.complete.store'), {
+            forceFormData: true,
+            onError: (errs) => console.error(errs),
+        });
     }
 
     return (

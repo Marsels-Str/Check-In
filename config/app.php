@@ -1,6 +1,15 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Application Owner Unique ID
+    |--------------------------------------------------------------------------
+    | This value is used to identify the application owner uniquely.
+    | It should be set in the .env file and remain constant.
+    */
+
+    'app_owner_unique_id' => env('APP_OWNER_UNIQUE_ID'),
 
     /*
     |--------------------------------------------------------------------------

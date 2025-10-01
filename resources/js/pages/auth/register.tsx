@@ -1,11 +1,11 @@
-import { Form, Head } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { Form, Head } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
 
 export default function Register() {
     return (
@@ -76,26 +76,6 @@ export default function Register() {
                                     placeholder="Confirm password"
                                 />
                                 <InputError message={errors.password_confirmation} />
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <input type='checkbox'
-                                    id="remember_me"
-                                    name="remember_me"
-                                />
-                                <Label htmlFor="remember_me" className="text-sm">
-                                    Regular worker
-                                </Label>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <input type='checkbox'
-                                    id="remember_me"
-                                    name="remember_me"
-                                />
-                                <Label htmlFor="remember_me" className="text-sm">
-                                    Bussines owner
-                                </Label>
                             </div>
 
                             <Button type="submit" className="mt-2 w-full" tabIndex={5}>

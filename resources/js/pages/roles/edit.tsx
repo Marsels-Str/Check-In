@@ -1,5 +1,5 @@
-import { type BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -8,13 +8,12 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/roles',
     },
     {
-      title: 'Edit Role',
-      href: '/roles',
+        title: 'Edit Role',
+        href: '/roles',
     },
 ];
 
-export default function Edit({ role, rolePermissions, permissions }: { role: any, rolePermissions: string[], permissions: string[] }) {
-
+export default function Edit({ role, rolePermissions, permissions }: { role: any; rolePermissions: string[]; permissions: string[] }) {
     const { data, setData, put, errors } = useForm({
         name: role.name || '',
         permissions: rolePermissions || [],
@@ -24,51 +23,55 @@ export default function Edit({ role, rolePermissions, permissions }: { role: any
         if (isChecked) {
             setData('permissions', [...data.permissions, permissionName]);
         } else {
-            setData('permissions', data.permissions.filter(name => name !== permissionName));
+            setData(
+                'permissions',
+                data.permissions.filter((name) => name !== permissionName),
+            );
         }
     }
 
     function submit(e: React.SyntheticEvent) {
         e.preventDefault();
-        put(route('roles.update', role.id)); 
+        put(route('roles.update', role.id));
     }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Role Create"/>
-                <div>
-                    <Link
-                        href={route('roles.index')}
-                        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Back
-                    </Link>
+            <Head title="Role Create" />
+            <div>
+                <Link
+                    href={route('roles.index')}
+                    className="inline-flex items-center rounded border border-transparent bg-blue-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                >
+                    Back
+                </Link>
 
-                    <form onSubmit={submit} className="space-y-4 mx-auto max-w-md text-center">
-                        <div className="border border-gray-400 px-6 py-4 rounded-lg">
-                            <label htmlFor="name" className="text-gray-400">
-                                Name
-                            </label>
-                            <input
-                                id="name"
-                                name="name"
-                                value={data.name}
-                                onChange={e => setData('name', e.target.value)}
-                                placeholder='Name'
-                                className="border border-gray-400 w-full rounded-lg"
-                            />
-                            {errors.name && <div className="text-red-500">{errors.name}</div>}
-                        </div>
+                <form onSubmit={submit} className="mx-auto max-w-md space-y-4 text-center">
+                    <div className="rounded-lg border border-gray-400 px-6 py-4">
+                        <label htmlFor="name" className="text-gray-400">
+                            Name
+                        </label>
+                        <input
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
+                            placeholder="Name"
+                            className="w-full rounded-lg border border-gray-400"
+                        />
+                        {errors.name && <div className="text-red-500">{errors.name}</div>}
+                    </div>
 
-                        <div className="border border-gray-400 px-6 py-4 rounded-lg">
-                            <label htmlFor="permissions" className="text-gray-400">
-                                Permissions:
-                            </label>
+                    <div className="rounded-lg border border-gray-400 px-6 py-4">
+                        <label htmlFor="permissions" className="text-gray-400">
+                            Permissions:
+                        </label>
 
-                            <ul>
-                                {permissions.map((permission) => 
+                        <ul>
+                            {permissions.map((permission) => (
                                 <label key={permission} className="flex">
                                     <input
-                                        id='permissions'
+                                        id="permissions"
                                         type="checkbox"
                                         value={permission}
                                         checked={data.permissions.includes(permission)}
@@ -76,21 +79,20 @@ export default function Edit({ role, rolePermissions, permissions }: { role: any
                                     />
                                     <span className="ml-2">{permission}</span>
                                 </label>
-                                )}
-                            </ul>
+                            ))}
+                        </ul>
+                    </div>
 
-                        </div>
-
-                        <div className="text-center">
-                            <button
-                                type="submit"
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                                Save
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div className="text-center">
+                        <button
+                            type="submit"
+                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </AppLayout>
     );
 }

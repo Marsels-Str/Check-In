@@ -13,17 +13,28 @@ class JobGroup extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'business_id',
         'name',
         'description',
     ];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'job_group_user');
+        return $this->belongsToMany(User::class, 'job_group_users');
     }
 
     public function images()
     {
         return $this->hasMany(GroupImage::class);
+    }
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
+
+    public function map()
+    {
+        return $this->hasOne(Map::class, 'job_group_id');
     }
 }

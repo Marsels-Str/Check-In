@@ -5,9 +5,9 @@ namespace App\Models;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable
 {
@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'business_id',
     ];
 
     /**
@@ -50,11 +51,21 @@ class User extends Authenticatable
 
     public function jobGroups()
     {
-        return $this->belongsToMany(JobGroup::class, 'job_group_user');
+        return $this->belongsToMany(JobGroup::class, 'job_group_users');
     }
 
     public function profile()
     {
         return $this->hasOne(UserProfile::class);
+    }
+
+    public function ownedBusiness()
+    {
+        return $this->hasOne(Business::class, 'user_id');
+    }
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class, 'business_id');
     }
 }

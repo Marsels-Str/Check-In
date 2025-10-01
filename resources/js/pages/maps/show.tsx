@@ -10,8 +10,8 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/maps',
     },
     {
-      title: 'Show Map',
-      href: '/maps',
+        title: 'Show Map',
+        href: '/maps',
     },
 ];
 
@@ -121,53 +121,52 @@ export default function Show({ map }: { map: MapEntry }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Map Entry #${map.id}`} />
 
-          <div className='container px-4'>
-            <div className="border boder-gray-400 w-full max-w-[600px] mx-auto rounded-lg space-y-2 p-4 mt-8">
-                <h1 className="text-2xl text-gray-400">Map Entry #{map.id}</h1>
+            <div className="container px-4">
+                <div className="boder-gray-400 mx-auto mt-8 w-full max-w-[600px] space-y-2 rounded-lg border p-4">
+                    <h1 className="text-2xl text-gray-400">Map Entry #{map.id}</h1>
 
-                <p className="text-gray-400">
-                    <strong>Name:</strong> {map.name || 'if no name go to edit and add a name'}
-                </p>
-                <p className="text-gray-400">
-                    <strong>Type:</strong> {map.type}
-                </p>
+                    <p className="text-gray-400">
+                        <strong>Name:</strong> {map.name || 'if no name go to edit and add a name'}
+                    </p>
+                    <p className="text-gray-400">
+                        <strong>Type:</strong> {map.type}
+                    </p>
 
-                <div className="relative z-50 h-96">
-                    <MapContainer center={initialCenter} zoom={10} style={{ height: '100%', width: '100%' }}>
-                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors"/>
+                    <div className="relative z-50 h-96">
+                        <MapContainer center={initialCenter} zoom={10} style={{ height: '100%', width: '100%' }}>
+                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
 
-                        {markerPos && (
-                            <Marker position={markerPos}>
-                                <Popup>{map.name || `Marker #${map.id}`}</Popup>
-                            </Marker>
-                        )}
+                            {markerPos && (
+                                <Marker position={markerPos}>
+                                    <Popup>{map.name || `Marker #${map.id}`}</Popup>
+                                </Marker>
+                            )}
 
-                        {circleCenter && circleRadius !== null && circleRadius > 0 && (
-                            <Circle center={circleCenter} radius={circleRadius}>
-                                <Popup>{map.name || `Circle #${map.id}`}</Popup>
-                            </Circle>
-                        )}
+                            {circleCenter && circleRadius !== null && circleRadius > 0 && (
+                                <Circle center={circleCenter} radius={circleRadius}>
+                                    <Popup>{map.name || `Circle #${map.id}`}</Popup>
+                                </Circle>
+                            )}
 
-                        {polygonCoords.length > 0 && (
-                            <Polygon positions={polygonCoords}>
-                                <Popup>{map.name || `Polygon #${map.id}`}</Popup>
-                            </Polygon>
-                        )}
+                            {polygonCoords.length > 0 && (
+                                <Polygon positions={polygonCoords}>
+                                    <Popup>{map.name || `Polygon #${map.id}`}</Popup>
+                                </Polygon>
+                            )}
 
-                        <FitToBounds points={boundsPoints} />
-                    </MapContainer>
+                            <FitToBounds points={boundsPoints} />
+                        </MapContainer>
+                    </div>
+
+                    <p className="text-gray-400">
+                        <strong>Created At:</strong> {new Date(map.created_at).toLocaleString()}
+                    </p>
+
+                    <Link href="/maps" className="text-blue-600 hover:underline dark:text-blue-400">
+                        ← Back to list
+                    </Link>
                 </div>
-                
-                <p className="text-gray-400">
-                    <strong>Created At:</strong> {new Date(map.created_at).toLocaleString()}
-                </p>
-
-                <Link href="/maps" className="text-blue-600 hover:underline dark:text-blue-400">
-                    ← Back to list
-                </Link>
             </div>
-          </div>
-
         </AppLayout>
     );
 }

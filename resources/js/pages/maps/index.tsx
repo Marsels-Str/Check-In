@@ -1,4 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
+import { useCan } from '@/lib/can';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import axios from 'axios';
@@ -6,7 +7,7 @@ import L, { LatLng } from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -16,10 +17,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type Profile ={
+type Profile = {
     country: string;
     city: string;
-}
+};
 
 type Coordinate = { lat: number; lng: number };
 
@@ -49,38 +50,33 @@ function handleDelete(mapId: number) {
     }
 }
 
-
 function NameCell({
-  id,
-  name,
-  activeId,
-  setActiveId,
+    id,
+    name,
+    activeId,
+    setActiveId,
 }: {
-  id: number;
-  name?: string;
-  activeId: number | null;
-  setActiveId: (id: number | null) => void;
+    id: number;
+    name?: string;
+    activeId: number | null;
+    setActiveId: (id: number | null) => void;
 }) {
-  const isOpen = activeId === id;
-  const ref = useRef<HTMLDivElement | null>(null);
+    const isOpen = activeId === id;
+    const ref = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <div ref={ref} className="relative inline-block">
-      <button
-        type="button"
-        onClick={() => setActiveId(isOpen ? null : id)}
-        className="text-blue-600 hover:underline dark:text-blue-400"
-      >
-        Name
-      </button>
+    return (
+        <div ref={ref} className="relative inline-block">
+            <button type="button" onClick={() => setActiveId(isOpen ? null : id)} className="text-blue-600 hover:underline dark:text-blue-400">
+                Name
+            </button>
 
-      {isOpen && (
-        <div className="absolute left-full top-1/2 ml-2 -translate-y-1/2 z-10 w-48 rounded-lg bg-white p-2 text-sm text-gray-900 shadow-lg dark:bg-gray-700 dark:text-gray-100">
-          {name || "No name provided"}
+            {isOpen && (
+                <div className="absolute top-1/2 left-full z-10 ml-2 w-48 -translate-y-1/2 rounded-lg bg-white p-2 text-sm text-gray-900 shadow-lg dark:bg-gray-700 dark:text-gray-100">
+                    {name || 'No name provided'}
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
 function DrawControls({ onShapeCreated }: { onShapeCreated: (data: any) => void }) {
@@ -116,15 +112,12 @@ function DrawControls({ onShapeCreated }: { onShapeCreated: (data: any) => void 
             if (layerType === 'marker') {
                 const { lat, lng } = layer.getLatLng();
                 try {
-                    const res = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=18&addressdetails=1`
-                    );
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=18&addressdetails=1`);
                     const place = await res.json();
                     const addr = place.address || {};
                     const displayName = place.display_name || '';
 
-                    const knownPlace =
-                        displayName && !(displayName === addr.city || displayName === addr.town || displayName === addr.village);
+                    const knownPlace = displayName && !(displayName === addr.city || displayName === addr.town || displayName === addr.village);
 
                     let popupContent: string;
                     if (knownPlace) {
@@ -157,82 +150,85 @@ function DrawControls({ onShapeCreated }: { onShapeCreated: (data: any) => void 
     return null;
 }
 
-export default function Index({ maps, profile }: { maps: MapEntry[], profile: Profile | null }) {
+
+
+export default function Index({ maps, profile, auth, businesses, selectedBusinessId }: { maps: MapEntry[]; profile: Profile | null; auth: any, businesses: {id: number, name: string}[]; selectedBusinessId: number | null }) {
     const [activeId, setActiveId] = useState<number | null>(null);
     const [center, setCenter] = useState<[number, number] | null>(null);
 
+    const canDraw = useCan('maps.create');
+
     useEffect(() => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                setCenter([pos.coords.latitude, pos.coords.longitude]);
-            },
-            async () => {
-                // Fallback: geocode profile data
-                try {
-                    if (profile?.country || profile?.city) {
-                        const query = encodeURIComponent(
-                            `${profile.city ?? ''}, ${profile.country ?? ''}`
-                        );
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    setCenter([pos.coords.latitude, pos.coords.longitude]);
+                },
+                async () => {
+                    try {
+                        if (profile?.country || profile?.city) {
+                            const query = encodeURIComponent(`${profile.city ?? ''}, ${profile.country ?? ''}`);
+                            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+                            const results = await res.json();
 
-                        const res = await fetch(
-                            `https://nominatim.openstreetmap.org/search?format=json&q=${query}`
-                        );
-                        const results = await res.json();
-
-                        if (results.length > 0) {
-                            setCenter([
-                                parseFloat(results[0].lat),
-                                parseFloat(results[0].lon),
-                            ]);
-                            return;
+                            if (results.length > 0) {
+                                setCenter([parseFloat(results[0].lat), parseFloat(results[0].lon)]);
+                                return;
+                            }
                         }
+                        setCenter([56.9496, 24.1052]);
+                    } catch {
+                        setCenter([56.9496, 24.1052]);
                     }
+                },
+            );
+        } else {
+            setCenter([56.9496, 24.1052]);
+        }
+    }, [profile]);
 
-                    // Default fallback if nothing else works
-                    setCenter([56.9496, 24.1052]);
-                } catch {
-                    setCenter([56.9496, 24.1052]);
-                }
-            }
-        );
-    } else {
-        setCenter([56.9496, 24.1052]);
-    }
-}, [profile]);
+    const isOwner = Array.isArray(auth?.user?.roles)
+  ? auth.user.roles.some((r: any) => r?.name === 'Owner' || r === 'Owner')
+  : false;
 
     const handleShapeCreated = async (data: Data) => {
-        const payload: any = {};
+  const payload: any = {};
 
-        if (data.name) {
-            payload.name = data.name;
-        }
+  if (data.name) payload.name = data.name;
 
-        switch (data.type) {
-            case 'marker':
-                payload.type = 'marker';
-                payload.lat = data.lat;
-                payload.lng = data.lng;
-                break;
+  switch (data.type) {
+    case 'marker':
+      payload.type = 'marker';
+      payload.lat = data.lat;
+      payload.lng = data.lng;
+      break;
+    case 'circle':
+      payload.type = 'circle';
+      payload.lat = data.lat;
+      payload.lng = data.lng;
+      payload.radius = data.radius;
+      break;
+    case 'polygon':
+      payload.type = 'polygon';
+      payload.polygon = data.coordinates;
+      break;
+  }
 
-            case 'circle':
-                payload.type = 'circle';
-                payload.lat = data.lat;
-                payload.lng = data.lng;
-                payload.radius = data.radius;
-                break;
+  if (isOwner) {
+    if (!selectedBusinessId) {
+      alert('Please select a business first.');
+      return;
+    }
+    payload.business_id = selectedBusinessId;
+  }
 
-            case 'polygon':
-                payload.type = 'polygon';
-                payload.polygon = data.coordinates;
-                break;
-        }
-        try {
-            await axios.post('/maps', payload);
-        } catch (error) {
-            console.error('Error saving shape:', error);
-        }
-    };
+  try {
+    await axios.post('/maps', payload);
+    router.reload();
+  } catch (error) {
+    console.error('Error saving shape:', error);
+  }
+};
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -241,19 +237,35 @@ export default function Index({ maps, profile }: { maps: MapEntry[], profile: Pr
             </Head>
             <h1 className="text-center text-3xl leading-tight font-bold md:text-5xl">Map</h1>
 
+            {auth.user.roles.includes('Owner') && (
+                <select
+                    value={selectedBusinessId || ''}
+                    onChange={(e) => {
+                        router.get(route('maps.index'), { business_id: e.target.value })
+                    }}
+                    className="rounded border p-2 mb-4"
+                >
+                    {businesses.map((b: any) => (
+                        <option key={b.id} value={b.id}>
+                            {b.name}
+                        </option>
+                    ))}
+                </select>
+            )}
+
             <div className="relative z-50">
                 {center ? (
-                <MapContainer center={center} zoom={20} className="h-[500px] w-full rounded-xl sm:h-[500px]">
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
-                    <DrawControls onShapeCreated={handleShapeCreated} />
-                </MapContainer>
-                 ) : (
-                     <p>Loading map...</p>
-                 )}
+                    <MapContainer center={center} zoom={20} className="h-[500px] w-full rounded-xl sm:h-[500px]">
+                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
+                        {canDraw && <DrawControls onShapeCreated={handleShapeCreated} />}
+                    </MapContainer>
+                ) : (
+                    <p>Loading map...</p>
+                )}
             </div>
 
             <div className="max-h-64 overflow-y-auto">
-                <table className="mt-4 min-h-full w-full table-auto">
+                <table className="min-h-full w-full table-auto">
                     <thead>
                         <tr>
                             <th className="border-b border-gray-400 py-2 text-xs text-gray-500 uppercase dark:text-gray-400">ID</th>
@@ -268,27 +280,22 @@ export default function Index({ maps, profile }: { maps: MapEntry[], profile: Pr
                         {maps.map((map: MapEntry) => (
                             <tr key={map.id} className="text-center">
                                 <td className="border-b border-gray-400 py-2 text-gray-900 dark:text-white">{map.id}</td>
-
                                 <td className="border-b border-gray-400 text-gray-900 dark:text-white">
                                     <NameCell id={map.id} name={map.name} activeId={activeId} setActiveId={setActiveId} />
                                 </td>
-
                                 <td className="border-b border-gray-400 text-gray-900 dark:text-white">
                                     <Link href={route('maps.show', map.id)} className="text-yellow-500 hover:underline dark:text-yellow-400">
                                         Show
                                     </Link>
                                 </td>
-
                                 <td className="border-b border-gray-400">
                                     <Link href={route('maps.edit', map.id)} className="text-blue-500 hover:text-blue-700">
                                         Edit
                                     </Link>
-
                                     <button onClick={() => handleDelete(map.id)} className="ml-4 text-red-500 hover:text-red-700 focus:outline-none">
                                         Delete
                                     </button>
                                 </td>
-
                                 <td className="border-b border-gray-400 text-gray-900 dark:text-white">
                                     {new Date(map.created_at).toLocaleString()}
                                 </td>

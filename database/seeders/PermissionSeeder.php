@@ -27,8 +27,11 @@ class PermissionSeeder extends Seeder
             'roles.assign',
             'groups.create',
             'groups.view',
+            'groups.show',
             'groups.edit',
             'groups.delete',
+            'maps.create',
+            'maps.add',
         ];
 
         foreach ($permissions as $permission) {

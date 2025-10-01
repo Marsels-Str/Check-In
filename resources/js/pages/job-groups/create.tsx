@@ -1,84 +1,106 @@
-import { type BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Groups',
-        href: '/job-groups',
-    },
-    {
-        title: 'Create Group',
-        href: '/job-groups',
-    },
+    { title: 'Groups', href: '/job-groups' },
+    { title: 'Create Group', href: '/job-groups/create' },
 ];
 
-export default function Create() {
+export default function Create({ businesses, auth }: { businesses: any[]; auth: any }) {
+    const isOwner = auth.user.roles.some((r: any) => r.name === 'Owner');
 
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',
+        business_id: isOwner ? '' : auth.user.ownedBusiness?.id ?? null,
     });
 
     function submit(e: React.SyntheticEvent) {
         e.preventDefault();
-        post(route('job-groups.store')); 
+        post(route('job-groups.store'));
     }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Role Create"/>
-                <div>
-                    <Link
-                        href={route('job-groups.index')}
-                        className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Back
-                    </Link>
+            <Head title="Group Create" />
 
-                    <form onSubmit={submit} className="space-y-6 mx-auto w-full max-w-md">
-                        <div className="space-y-3 border border-gray-200 dark:border-gray-700 px-4 py-5 sm:p-6 rounded-md shadow-sm">
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 text-center">
-                                Name
+            <div>
+                <Link
+                    href={route('job-groups.index')}
+                    className="inline-flex items-center rounded border border-transparent bg-blue-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-blue-700"
+                >
+                    Back
+                </Link>
+
+                <form onSubmit={submit} className="mx-auto w-full max-w-md space-y-6">
+                    <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
+                        <label htmlFor="name" className="block text-center text-sm font-medium">
+                            Name
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
+                            className="block w-full rounded-md border"
+                        />
+                        {errors.name && (
+                            <div className="text-center text-sm text-red-600">{errors.name}</div>
+                        )}
+                    </div>
+
+                    <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
+                        <label htmlFor="description" className="block text-center text-sm font-medium">
+                            Description
+                        </label>
+                        <input
+                            type="text"
+                            id="description"
+                            value={data.description}
+                            onChange={(e) => setData('description', e.target.value)}
+                            className="block w-full rounded-md border"
+                        />
+                        {errors.description && (
+                            <div className="text-center text-sm text-red-600">{errors.description}</div>
+                        )}
+                    </div>
+
+                    {isOwner && (
+                        <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
+                            <label htmlFor="business_id" className="block text-center text-sm font-medium">
+                                Business
                             </label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={data.name}
-                                onChange={e => setData('name', e.target.value)}
-                                placeholder='Name'
-                                className="border focus:ring-blue-500 focus:border-blue-500 block w-full rounded-md sm:text-sm"
-                            />
-                            {errors.name && <div className="text-sm text-red-600 text-center">{errors.name}</div>}
-                        </div>
-
-                        <div className="space-y-3 border border-gray-200 dark:border-gray-700 px-4 py-5 sm:p-6 rounded-md shadow-sm">
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 text-center">
-                                Description
-                            </label>
-                            <input
-                                type="text"
-                                id="description"
-                                name="description"
-                                value={data.description}
-                                onChange={e => setData('description', e.target.value)}
-                                placeholder='Description'
-                                className="border focus:ring-blue-500 focus:border-blue-500 block w-full rounded-md sm:text-sm"
-                            />
-                            {errors.description && <div className="text-sm text-red-600 text-center">{errors.description}</div>}
-                        </div>
-
-                        <div className="text-center">
-                            <button
-                                type="submit"
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            <select
+                                id="business_id"
+                                value={data.business_id || ''}
+                                onChange={(e) => setData('business_id', e.target.value)}
+                                className="block w-full rounded-md border"
                             >
-                                Save
-                            </button>
+                                <option value="">Select business</option>
+                                {businesses.map((b: any) => (
+                                    <option key={b.id} value={b.id}>
+                                        {b.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.business_id && (
+                                <div className="text-center text-sm text-red-600">{errors.business_id}</div>
+                            )}
                         </div>
-                    </form>
-                </div>
-            
+                    )}
+
+                    <div className="text-center">
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="inline-flex justify-center rounded-md border bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                        >
+                            {processing ? 'Saving...' : 'Save'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </AppLayout>
     );
 }

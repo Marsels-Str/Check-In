@@ -1,7 +1,7 @@
-import { Head } from '@inertiajs/react';
+import Accordion from '@/components/ui/accordion';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import Accordion from '@/components/ui/accordion';
+import { Head } from '@inertiajs/react';
 
 export default function AboutUs() {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -11,12 +11,10 @@ export default function AboutUs() {
         },
     ];
 
-    // Your accordion data
     const sections = [
         {
             title: 'Why Choose Us?',
-            content:
-                'Because we are trying to be the best at what we do and we keeps progressing towards the future.',
+            content: 'Because we are trying to be the best at what we do and we keeps progressing towards the future.',
         },
         {
             title: 'What is our mission?',
@@ -33,11 +31,9 @@ export default function AboutUs() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="About us" />
-            <h1 className="flex justify-center text-3xl font-bold leading-tight md:text-5xl">
-                About Us
-            </h1>
+            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">About Us</h1>
 
-            <div className='mx-auto'>
+            <div className="mx-auto">
                 <Accordion items={sections} defaultOpenIndex={null} />
             </div>
         </AppLayout>

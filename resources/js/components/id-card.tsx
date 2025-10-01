@@ -5,13 +5,14 @@ import { useInitials } from '@/hooks/use-initials'
 import { useForm } from '@inertiajs/react'
 import { Button } from '@/components/ui/button'
 import { type User } from '@/types'
+import { router } from '@inertiajs/react'
 
 export default function IDCard({ user }: { user: User }) {
   const getInitials = useInitials()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
 
-  const { patch, setData, processing } = useForm({
+  const { setData, processing } = useForm({
     portrait: null as File | null,
   })
 
@@ -24,30 +25,21 @@ export default function IDCard({ user }: { user: User }) {
       const file = e.target.files[0]
       setData("portrait", file)
 
-      // For live preview before saving
       const reader = new FileReader()
       reader.onload = () => setPreview(reader.result as string)
       reader.readAsDataURL(file)
     }
   }
 
-  const handleSave = () => {
-    patch(route('profile.portrait.update'), {
-      forceFormData: true,
-      preserveScroll: true,
-      onSuccess: () => setPreview(null), // reset preview after successful save
-    })
-  }
-
   return (
     <Card className="w-full max-w-sm mx-auto shadow-lg rounded-xl">
       <CardContent className="flex flex-col items-center p-6 space-y-4">
-        {/* Portrait */}
+
         <div className="cursor-pointer" onClick={handleAvatarClick}>
             <Avatar className="h-24 w-24 rounded-full border">
             <AvatarImage
-                src={user.profile?.portrait || undefined}
-                alt={user.name}
+              src={preview || user.profile?.portrait || undefined}
+              alt={user.name}
             />
             <AvatarFallback className="text-xl">
                 {getInitials(user.name)}
@@ -55,21 +47,59 @@ export default function IDCard({ user }: { user: User }) {
             </Avatar>
         </div>
 
-        <input
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            const formData = new FormData(e.currentTarget)
+            router.post(route("profile.portrait.update"), formData, {
+              forceFormData: true,
+              onSuccess: () => setPreview(null),
+              onError: (errors) => console.error(errors),
+            })
+          }}
+        >
+          <input
             type="file"
+            name="portrait"
             accept="image/*"
             ref={fileInputRef}
             onChange={handleFileChange}
             className="hidden"
-        />
+          />
 
-        {preview && (
-          <Button onClick={handleSave} disabled={processing} className="mt-2">
-            Save Portrait
-          </Button>
-        )}
+          {preview && (
+            <div className="flex gap-2 mt-2">
+              <Button type="submit" disabled={processing}>
+                Save
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setPreview(null)}
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
 
-        {/* Info */}
+          {(user.profile?.portrait || preview) && (
+            <Button
+              type="button"
+              variant="destructive"
+              className="mt-2"
+              onClick={() => {
+                if (confirm("Are you sure you want to remove your portrait?")) {
+                  router.delete(route("profile.portrait.remove"), {
+                    preserveScroll: true,
+                  })
+                }
+              }}
+            >
+              Remove Portrait
+            </Button>
+          )}
+        </form>
+
         <div className="space-y-1 text-center">
           <h2 className="text-lg font-semibold">{user.name}</h2>
           <p className="text-sm text-muted-foreground">ID: {user.profile?.unique_id}</p>

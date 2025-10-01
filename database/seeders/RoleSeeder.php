@@ -13,10 +13,27 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create the AppOwner role
-        $role = Role::create(['name' => 'AppOwner']);
+        $owner = Role::firstOrCreate(['name' => 'Owner']);
+        $business = Role::firstOrCreate(['name' => 'Business']);
+        $worker   = Role::firstOrCreate(['name' => 'Worker']);
 
-        // Optional: give AppOwner all permissions
-        $role->givePermissionTo(Permission::all());
+        $allPermissions = Permission::all();
+
+        $owner->givePermissionTo(Permission::all());
+
+        $business->givePermissionTo([
+            'groups.create',
+            'groups.view',
+            'groups.edit',
+            'groups.delete',
+            'users.add',
+            'users.remove',
+            'maps.create',
+            'maps.add',
+        ]);
+        
+        $worker->givePermissionTo([
+            'groups.view',
+        ]);
     }
 }
