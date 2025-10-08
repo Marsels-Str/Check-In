@@ -33,8 +33,8 @@ export default function Show({ role, permissions }: { role: any; permissions: st
                     <p>
                         <strong>Permissions: </strong>
                     </p>
-                    {permissions.map((permission) => (
-                        <span className="mr-2 rounded bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-200 dark:text-blue-800">
+                    {permissions.map((permission, id) => (
+                        <span key={id} className="mr-2 rounded bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-200 dark:text-blue-800">
                             {permission}
                         </span>
                     ))}

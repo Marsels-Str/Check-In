@@ -37,6 +37,8 @@ class Business extends Model
 
     public function employees()
     {
-        return $this->hasMany(User::class, 'business_id');
+        return $this->belongsToMany(User::class, 'business_users')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 }

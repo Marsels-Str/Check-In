@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $users = User::with('roles')->get();
@@ -48,9 +45,6 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('users/create', [
@@ -58,9 +52,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -78,9 +69,6 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         return Inertia::render('users/show', [
@@ -89,9 +77,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $user = User::FindOrFail($id);
@@ -101,9 +86,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $request->validate([
@@ -126,9 +108,6 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         User::destroy($id);

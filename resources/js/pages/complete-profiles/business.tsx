@@ -53,7 +53,6 @@ export default function CompleteBusiness() {
 
                         <label htmlFor="email">Business Email</label>
                         <input
-                            type="email"
                             id="email"
                             name="email"
                             value={data.email}

@@ -49,7 +49,7 @@ export default function Index({ roles }: { roles: any[] }) {
 
                 <tbody>
                     {roles.map(({ id, name }) => (
-                        <tr className="text-center">
+                        <tr key={id} className="text-center">
                             <td className="border-b border-gray-400 py-2 text-gray-900 dark:text-white">{id}</td>
 
                             <td className="border-b border-gray-400 text-gray-900 dark:text-white">{name}</td>

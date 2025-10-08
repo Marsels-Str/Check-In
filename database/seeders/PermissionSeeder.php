@@ -32,6 +32,7 @@ class PermissionSeeder extends Seeder
             'groups.delete',
             'maps.create',
             'maps.add',
+            'maps.edit',
         ];
 
         foreach ($permissions as $permission) {

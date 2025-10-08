@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -13,14 +13,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Edit({ user }: { user: any }) {
-    type UserFormData = {
-        name: string;
-        email: string;
-        password: string;
-    };
+export default function Edit({ user }: { user: User }) {
 
-    const { data, setData, put, errors } = useForm<UserFormData>({
+    const { data, setData, put, errors } = useForm({
         name: user.name || '',
         email: user.email || '',
         password: user.password || '',

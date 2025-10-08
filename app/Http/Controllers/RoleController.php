@@ -9,9 +9,6 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Inertia::render('roles/index', [
@@ -19,9 +16,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('roles/create', [
@@ -29,9 +23,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -45,9 +36,6 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $role = Role::find($id);
@@ -58,9 +46,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $role = Role::find($id);
@@ -72,9 +57,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
        $request->validate([
@@ -92,9 +74,6 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         Role::destroy($id);

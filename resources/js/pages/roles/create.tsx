@@ -65,8 +65,8 @@ export default function Create({ permissions }: { permissions: string[] }) {
                         </label>
 
                         <ul className="list-inside list-disc">
-                            {permissions.map((permission) => (
-                                <li key={permission} className="flex items-center">
+                            {permissions.map((permission, id) => (
+                                <li key={id} className="flex items-center">
                                     <input
                                         id="permissions"
                                         type="checkbox"

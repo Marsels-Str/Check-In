@@ -33,6 +33,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->session()->has('auto_clock_action')) {
+            return redirect()->route('auto-clock.after-login');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

@@ -53,7 +53,7 @@ export default function Index({ users, currentUser }: { users: User[]; currentUs
                     {users
                         .filter((user: User) => user.id !== currentUser.id)
                         .map((user: User) => (
-                            <tr className="text-center">
+                            <tr key={user.id} className="text-center">
                                 <td className="border-b border-gray-400 py-2 text-gray-900 dark:text-white">{user.id}</td>
                                 <td className="border-b border-gray-400 text-gray-900 dark:text-white">{user.name}</td>
                                 <td className="border-b border-gray-400 text-gray-900 dark:text-white">{user.email}</td>

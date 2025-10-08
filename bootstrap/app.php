@@ -29,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
     })
+    ->withSchedule(function ($schedule) {
+        $schedule->command('auto-clock:run')->everyMinute();
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();
