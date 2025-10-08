@@ -1,6 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Input } from '@/components/ui/input';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -40,7 +41,7 @@ export default function Create() {
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                             Name
                         </label>
-                        <input
+                        <Input
                             type="text"
                             id="name"
                             name="name"
@@ -54,7 +55,7 @@ export default function Create() {
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                             E-mail
                         </label>
-                        <input
+                        <Input
                             type="email"
                             id="email"
                             name="email"
@@ -68,7 +69,7 @@ export default function Create() {
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                             Password
                         </label>
-                        <input
+                        <Input
                             type="password"
                             id="password"
                             name="password"

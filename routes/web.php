@@ -1,11 +1,12 @@
 <?php
 
-use Inertia\Inertia;
+use Inertia\Inertia;   
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobGroupController;
+use App\Http\Controllers\AutoClockController;
 use App\Http\Controllers\GroupImageController;
 use App\Http\Controllers\BusinessEmployeeController;
 use App\Http\Controllers\Settings\ProfileController;
@@ -53,15 +54,18 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::get('/complete-profile', [ProfileController::class, 'completeForm'])->name('profile.complete');
     Route::post('/complete-profile', [ProfileController::class, 'storeCompleteForm'])->name('profile.complete.store');
 
-    Route::get('/complete-business', [BusinessProfileController::class, 'edit'])->name('business.complete');
+    // Business profile (initial completion after user profile)
+    Route::get('/complete-business', [BusinessProfileController::class, 'editBefore'])->name('business.complete');
     Route::post('/complete-business', [BusinessProfileController::class, 'store'])->name('business.complete.store');
 
+    // After complete profile choice screen
     Route::get('/profile/after-complete', fn () => Inertia::render('complete-profiles/after-complete'))->name('profile.afterComplete');
     
-    Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Settings → edit/update existing business profile
     Route::get('settings/profile', [BusinessProfileController::class, 'edit'])->name('profile.edit');
     Route::post('settings/business', [BusinessProfileController::class, 'update'])->name('business.update');
 
+    // Profile picture
     Route::post('settings/profile-portrait', [ProfileController::class, 'updatePortrait'])->name('profile.portrait.update');
     Route::delete('settings/profile-portrait', [ProfileController::class, 'removePortrait'])->name('profile.portrait.remove');
 
@@ -70,6 +74,16 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::post('/employees', [BusinessEmployeeController::class, 'store'])->name('users.employees.store');
     Route::delete('/employees/{user}', [BusinessEmployeeController::class, 'remove'])->name('users.employees.remove');
     Route::get('/employees/search', [BusinessEmployeeController::class, 'search'])->name('employees.search');
+    Route::post('/employees/{user}/clock-in', [BusinessEmployeeController::class, 'clockIn'])->name('employees.clockin');
+    Route::post('/employees/{user}/clock-out', [BusinessEmployeeController::class, 'clockOut'])->name('employees.clockout');
+
+    // Clocking    
+    Route::get('/settings/auto-clock', [AutoClockController::class, 'index'])->name('settings.auto-clock');
+    Route::post('/settings/auto-clock', [AutoClockController::class, 'store'])->name('settings.auto-clock.store');
+    Route::post('/settings/auto-clock/extend', [AutoClockController::class, 'extendWork'])->name('settings.auto-clock.extend');
+    Route::get('/auto-clock/login-clockin/{token}', [AutoClockController::class, 'loginClockIn'])->name('auto-clock.login-clockin');
+    Route::get('/auto-clock/extend-work/{token}', [AutoClockController::class, 'extendWorkEmail'])->name('auto-clock.extend-work-email');
+    Route::get('/auto-clock/after-login', [AutoClockController::class, 'handleAfterLogin'])->name('auto-clock.after-login');
 });
 
 require __DIR__.'/settings.php';

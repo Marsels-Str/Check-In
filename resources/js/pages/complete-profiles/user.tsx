@@ -16,7 +16,6 @@ export default function CompletProfile() {
         e.preventDefault();
         post(route('profile.complete.store'), {
             forceFormData: true,
-            onError: (errs) => console.error(errs),
         });
     }
 
@@ -31,20 +30,18 @@ export default function CompletProfile() {
                             type="number"
                             id="age"
                             name="age"
-                            min="1"
                             value={data.age}
                             onChange={(e) => setData('age', e.target.value)}
-                            placeholder="Age"
+                            placeholder="You must be atleast 14 years old"
                             className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         />
                         {errors.age && <div className="text-sm text-red-500">{errors.age}</div>}
 
                         <label htmlFor="height">Height</label>
                         <input
-                            type="text"
+                            type="number"
                             id="height"
                             name="height"
-                            min="1"
                             value={data.height}
                             onChange={(e) => setData('height', e.target.value)}
                             placeholder="Height in CM"
@@ -56,10 +53,9 @@ export default function CompletProfile() {
                             Weight
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             id="weight"
                             name="weight"
-                            min="1"
                             value={data.weight}
                             onChange={(e) => setData('weight', e.target.value)}
                             placeholder="Weight in KG"
@@ -116,7 +112,7 @@ export default function CompletProfile() {
                         />
                         {errors.city && <div className="text-sm text-red-500">{errors.city}</div>}
 
-                        <label htmlFor="portrait">Portrait is optional for now</label>
+                        <label htmlFor="portrait">Portrait is optional</label>
                         <input
                             type="file"
                             id="portrait"

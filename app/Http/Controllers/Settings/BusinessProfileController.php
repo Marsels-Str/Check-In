@@ -11,7 +11,14 @@ use Illuminate\Http\RedirectResponse;
 
 class BusinessProfileController extends Controller
 {
-    public function edit(Request $request)
+    public function editBefore(Request $request): Response
+    {
+        return Inertia::render('complete-profiles/business', [
+            'status' => $request->session()->get('status'),
+        ]);
+    }
+
+    public function edit(Request $request): Response
     {
         $user = $request->user();
 
@@ -45,7 +52,7 @@ class BusinessProfileController extends Controller
         return Inertia::render('settings/profile', [
             'mustVerifyEmail'    => false,
             'status'             => $request->session()->get('status'),
-            'auth'               => ['user' => $user->load('profile', 'business')],
+            'auth'               => ['user' => $user->load('profile', 'businesses')],
             'business'           => $business,
             'businesses'         => $businesses,
             'selectedBusinessId' => $selectedBusinessId,
@@ -55,13 +62,19 @@ class BusinessProfileController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name'           => 'required|string|max:255',
-            'industry'       => 'nullable|string|max:100',
-            'email'          => 'required|email|max:255',
-            'phone'          => 'nullable|string|max:20',
+            'name'           => 'required|string|max:50',
+            'industry'       => 'required|string|max:100',
+            'email'          => 'required|email|max:150',
+            'phone'          => [
+                'required',
+                'string',
+                'min:8',
+                'max:15',
+                'unique:businesses,phone',
+            ],
             'country'        => 'required|string|max:50',
             'city'           => 'required|string|max:50',
-            'street_address' => 'nullable|string|max:255',
+            'street_address' => 'required|string|max:100',
             'logo'           => 'nullable|image|max:2048',
             'description'    => 'nullable|string|max:1000',
             'employees'      => 'nullable|integer|min:0',

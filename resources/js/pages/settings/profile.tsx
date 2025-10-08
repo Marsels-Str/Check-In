@@ -30,7 +30,7 @@ export default function Profile({ mustVerifyEmail, status, business, businesses,
                             onChange={(e) => {
                                 router.get(route('business.complete'), { business_id: e.target.value })
                             }}
-                            className="rounded border p-2 mb-4"
+                            className="rounded border p-2 mb-4 bg-gray-400"
                         >
                             {businesses.map((b: any) => (
                                 <option key={b.id} value={b.id}>{b.name}</option>

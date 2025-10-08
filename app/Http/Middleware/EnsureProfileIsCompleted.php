@@ -11,12 +11,10 @@ class EnsureProfileIsCompleted
     {
         $user = $request->user();
 
-        // Allow guests or if we're already on the onboarding routes
         if (!$user || $request->routeIs('profile.complete', 'profile.complete.store', 'logout')) {
             return $next($request);
         }
 
-        // Consider "complete" = profile exists AND has the random numeric unique_id
         $profile = $user->profile;
         $isComplete = $profile && !empty($profile->unique_id);
 

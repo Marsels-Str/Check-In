@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobGroup;
-use App\Models\User;
 use App\Models\Map;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Inertia\Inertia;
+use App\Models\JobGroup;
+use App\Models\Business;
+use Illuminate\Http\Request;
 
 class JobGroupController extends Controller
 {
@@ -20,10 +21,10 @@ class JobGroupController extends Controller
             $jobGroups = JobGroup::with('business')
                 ->where('business_id', $user->ownedBusiness->id)
                 ->get();
-        } elseif ($user->hasRole('Worker') && $user->business_id) {
-            $jobGroups = JobGroup::whereHas('users', function ($q) use ($user) {
-                    $q->where('users.id', $user->id);
-                })
+        } elseif ($user->hasRole('Worker')) {
+            $businessIds = $user->businesses()->pluck('business_id');
+            $jobGroups = JobGroup::whereIn('business_id', $businessIds)
+                ->whereHas('users', fn($q) => $q->where('users.id', $user->id))
                 ->with('business')
                 ->get();
         } else {
@@ -37,7 +38,23 @@ class JobGroupController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('job-groups/create');
+        $user = $request->user();
+        $businesses = collect();
+
+        if ($user->hasRole('Owner')) {
+            $businesses = Business::select('id', 'name')->orderBy('name')->get();
+        } elseif ($user->hasRole('Business') && $user->ownedBusiness) {
+            $businesses = collect([$user->ownedBusiness]);
+        } elseif ($user->hasRole('Worker')) {
+            $businesses = $user->businesses()->select('businesses.id', 'businesses.name')->get();
+        }
+
+        return Inertia::render('job-groups/create', [
+            'businesses' => $businesses,
+            'auth' => [
+                'user' => $user->load('roles', 'ownedBusiness', 'businesses'),
+            ],
+        ]);
     }
 
     public function attachMap(Request $request, $jobGroupId)
@@ -70,14 +87,17 @@ class JobGroupController extends Controller
         $request->validate([
             'name'        => 'required|string|max:50',
             'description' => 'nullable|string',
+            'business_id' => $user->hasRole('Owner') ? 'required|exists:businesses,id' : 'nullable',
         ]);
 
         if ($user->hasRole('Owner')) {
             $businessId = $request->input('business_id');
+        } elseif ($user->hasRole('Business') && $user->ownedBusiness) {
+            $businessId = $user->ownedBusiness->id;
+        } elseif ($user->hasRole('Worker')) {
+            $businessId = $user->businesses()->pluck('businesses.id')->first();
         } else {
-            $businessId = $user->hasRole('Business')
-                ? optional($user->ownedBusiness)->id
-                : $user->business_id;
+            $businessId = null;
         }
 
         if (! $businessId) {
@@ -97,28 +117,29 @@ class JobGroupController extends Controller
 
     public function show(Request $request, string $id)
     {
-        $user  = $request->user();
+        $user = $request->user();
+
         $group = JobGroup::with(['users', 'images:id,job_group_id,image_blob', 'map', 'business'])
             ->findOrFail($id);
 
         if ($user->hasRole('Owner')) {
+            // ok
         } elseif ($user->hasRole('Business')) {
             if (! $user->ownedBusiness || $group->business_id !== $user->ownedBusiness->id) {
-                return redirect()->route('job-groups.index')
-                    ->with('error', 'This group is not in your business.');
+                return redirect()->route('job-groups.index')->with('error', 'This group is not in your business.');
             }
         } elseif ($user->hasRole('Worker')) {
             $isMember = $group->users->contains('id', $user->id);
             if (! $isMember) {
-                return redirect()->route('job-groups.index')
-                    ->with('error', 'You are not a member of this group.');
+                return redirect()->route('job-groups.index')->with('error', 'You are not a member of this group.');
             }
         } else {
-            return redirect()->route('job-groups.index')
-                ->with('error', 'You do not have access.');
+            return redirect()->route('job-groups.index')->with('error', 'You do not have access.');
         }
 
-        $availableUsers = User::where('business_id', $group->business_id)
+        $availableUsers = User::whereHas('businesses', function ($q) use ($group) {
+            $q->where('businesses.id', $group->business_id);
+        })
             ->whereNotIn('id', $group->users->pluck('id'))
             ->get();
 
@@ -134,11 +155,20 @@ class JobGroupController extends Controller
     public function edit(Request $request, string $id)
     {
         $group = JobGroup::findOrFail($id);
-
         $user = $request->user();
+
         if (! $user->hasRole('Owner')) {
-            $bizId = $user->hasRole('Business') ? optional($user->ownedBusiness)->id : $user->business_id;
-            if (! $bizId || $group->business_id !== $bizId) {
+            $allowedBusinessIds = collect();
+
+            if ($user->hasRole('Business') && $user->ownedBusiness) {
+                $allowedBusinessIds->push($user->ownedBusiness->id);
+            }
+
+            if ($user->hasRole('Worker')) {
+                $allowedBusinessIds = $user->businesses()->pluck('businesses.id');
+            }
+
+            if (! $allowedBusinessIds->contains($group->business_id)) {
                 return redirect()->route('job-groups.index')
                     ->with('error', 'This group is not in your business.');
             }
@@ -155,11 +185,14 @@ class JobGroupController extends Controller
         ]);
 
         $group = JobGroup::findOrFail($id);
-
         $user = $request->user();
+
         if (! $user->hasRole('Owner')) {
-            $bizId = $user->hasRole('Business') ? optional($user->ownedBusiness)->id : $user->business_id;
-            if (! $bizId || $group->business_id !== $bizId) {
+            $allowedBusinessIds = $user->hasRole('Business') && $user->ownedBusiness
+                ? collect([$user->ownedBusiness->id])
+                : $user->businesses()->pluck('businesses.id');
+
+            if (! $allowedBusinessIds->contains($group->business_id)) {
                 return redirect()->route('job-groups.index')
                     ->with('error', 'This group is not in your business.');
             }
@@ -189,7 +222,9 @@ class JobGroupController extends Controller
             'user_ids.*' => 'exists:users,id',
         ]);
 
-        $allowedUserIds = User::where('business_id', $group->business_id)
+        $allowedUserIds = User::whereHas('businesses', function ($q) use ($group) {
+            $q->where('businesses.id', $group->business_id);
+        })
             ->whereIn('id', $validated['user_ids'] ?? [])
             ->pluck('id')
             ->toArray();
@@ -221,11 +256,14 @@ class JobGroupController extends Controller
     public function destroy(Request $request, string $id)
     {
         $group = JobGroup::findOrFail($id);
-
         $user = $request->user();
+
         if (! $user->hasRole('Owner')) {
-            $bizId = $user->hasRole('Business') ? optional($user->ownedBusiness)->id : $user->business_id;
-            if (! $bizId || $group->business_id !== $bizId) {
+            $allowedBusinessIds = $user->hasRole('Business') && $user->ownedBusiness
+                ? collect([$user->ownedBusiness->id])
+                : $user->businesses()->pluck('businesses.id');
+
+            if (! $allowedBusinessIds->contains($group->business_id)) {
                 return redirect()->route('job-groups.index')
                     ->with('error', 'This group is not in your business.');
             }

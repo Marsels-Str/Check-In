@@ -7,13 +7,19 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Create Group', href: '/job-groups/create' },
 ];
 
+type FormData = {
+    name: string;
+    description: string;
+    business_id: string | number | null;
+};
+
 export default function Create({ businesses, auth }: { businesses: any[]; auth: any }) {
     const isOwner = auth.user.roles.some((r: any) => r.name === 'Owner');
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<FormData>({
         name: '',
         description: '',
-        business_id: isOwner ? '' : auth.user.ownedBusiness?.id ?? null,
+        business_id: isOwner ? '' : (auth.user.ownedBusiness?.id ?? auth.user.business_id ?? null),
     });
 
     function submit(e: React.SyntheticEvent) {
@@ -23,7 +29,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Group Create" />
+            <Head title="Create Job Group" />
 
             <div>
                 <Link
@@ -33,7 +39,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                     Back
                 </Link>
 
-                <form onSubmit={submit} className="mx-auto w-full max-w-md space-y-6">
+                <form onSubmit={submit} className="mx-auto mt-6 w-full max-w-md space-y-6">
                     <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
                         <label htmlFor="name" className="block text-center text-sm font-medium">
                             Name
@@ -45,9 +51,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                             onChange={(e) => setData('name', e.target.value)}
                             className="block w-full rounded-md border"
                         />
-                        {errors.name && (
-                            <div className="text-center text-sm text-red-600">{errors.name}</div>
-                        )}
+                        {errors.name && <div className="text-center text-sm text-red-600">{errors.name}</div>}
                     </div>
 
                     <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
@@ -61,9 +65,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                             onChange={(e) => setData('description', e.target.value)}
                             className="block w-full rounded-md border"
                         />
-                        {errors.description && (
-                            <div className="text-center text-sm text-red-600">{errors.description}</div>
-                        )}
+                        {errors.description && <div className="text-center text-sm text-red-600">{errors.description}</div>}
                     </div>
 
                     {isOwner && (
@@ -75,7 +77,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                                 id="business_id"
                                 value={data.business_id || ''}
                                 onChange={(e) => setData('business_id', e.target.value)}
-                                className="block w-full rounded-md border"
+                                className="block w-full rounded-md border bg-gray-400"
                             >
                                 <option value="">Select business</option>
                                 {businesses.map((b: any) => (
@@ -84,9 +86,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                                     </option>
                                 ))}
                             </select>
-                            {errors.business_id && (
-                                <div className="text-center text-sm text-red-600">{errors.business_id}</div>
-                            )}
+                            {errors.business_id && <div className="text-center text-sm text-red-600">{errors.business_id}</div>}
                         </div>
                     )}
 

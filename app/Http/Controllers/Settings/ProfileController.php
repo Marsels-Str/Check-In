@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use App\Models\Business;
+use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class ProfileController extends Controller
 {
@@ -26,10 +26,16 @@ class ProfileController extends Controller
         ]);
 
         $validated = $request->validate([
-            'age'           => 'required|integer|min:1|max:120',
-            'height'        => 'required|numeric|min:1',
-            'weight'        => 'required|numeric|min:1',
-            'phone'         => 'required|string|max:15',
+            'age'           => 'required|integer|min:14|max:120',
+            'height'        => 'required|integer|min:1',
+            'weight'        => 'required|integer|min:1',
+            'phone'         => [
+                'required',
+                'string',
+                'min:8',
+                'max:15',
+                'unique:user_profiles,phone',
+            ],
             'personal_code' => [
                 'required',
                 'string',
