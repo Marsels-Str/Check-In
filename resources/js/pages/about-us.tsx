@@ -37,6 +37,8 @@ export default function AboutUs() {
                 <Accordion items={sections} defaultOpenIndex={null} />
             </div>
 
+            <p>sigma</p>
+
         </AppLayout>
     );
 }
