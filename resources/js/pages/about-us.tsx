@@ -37,7 +37,7 @@ export default function AboutUs() {
                 <Accordion items={sections} defaultOpenIndex={null} />
             </div>
 
-            <p>sigma</p>
+            <p>Sigma Test 123!</p>
 
         </AppLayout>
     );
