@@ -21,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'ensure.profile.complete' => \App\Http\Middleware\EnsureProfileIsCompleted::class,
+            'after.profile.complete.access' => \App\Http\Middleware\EnsureCantAccessAfterComplete::class,
+            'after.business.complete.access' => \App\Http\Middleware\EnsureCantAccessBusinessComplete::class,
         ]);
 
         $middleware->web(append: [

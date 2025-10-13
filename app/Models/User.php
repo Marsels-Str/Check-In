@@ -28,6 +28,13 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var list<string>
+     */
+    protected $with = ['profile'];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>

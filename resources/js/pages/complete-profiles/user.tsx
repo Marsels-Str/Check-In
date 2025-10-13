@@ -1,7 +1,10 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function CompletProfile() {
-    const { data, setData, post, errors } = useForm({
+export default function CompleteProfile() {
+    const { data, setData, post, errors, processing } = useForm({
         age: '',
         height: '',
         weight: '',
@@ -14,125 +17,135 @@ export default function CompletProfile() {
 
     function submit(e: React.SyntheticEvent) {
         e.preventDefault();
-        post(route('profile.complete.store'), {
-            forceFormData: true,
-        });
+        post(route('profile.complete.store'), { forceFormData: true });
     }
 
     return (
         <>
-            <Head title="User Create" />
-            <div>
-                <form onSubmit={submit} className="mx-auto w-full max-w-md space-y-6 rounded-md border border-gray-300 px-4 py-5 shadow-sm sm:p-6">
-                    <div className="space-y-3 text-gray-400">
-                        <label htmlFor="age">Age</label>
-                        <input
-                            type="number"
-                            id="age"
-                            name="age"
-                            value={data.age}
-                            onChange={(e) => setData('age', e.target.value)}
-                            placeholder="You must be atleast 14 years old"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.age && <div className="text-sm text-red-500">{errors.age}</div>}
+            <Head title="Complete Profile" />
 
-                        <label htmlFor="height">Height</label>
-                        <input
-                            type="number"
-                            id="height"
-                            name="height"
-                            value={data.height}
-                            onChange={(e) => setData('height', e.target.value)}
-                            placeholder="Height in CM"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.height && <div className="text-sm text-red-500">{errors.height}</div>}
+            <div className="mx-auto w-full max-w-lg px-4 py-10">
+                <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm transition-all duration-300 dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
+                    <h1 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">Complete your profile</h1>
+                    <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">Please fill out your personal information to continue.</p>
 
-                        <label htmlFor="weight" className="block text-sm font-medium">
-                            Weight
-                        </label>
-                        <input
-                            type="number"
-                            id="weight"
-                            name="weight"
-                            value={data.weight}
-                            onChange={(e) => setData('weight', e.target.value)}
-                            placeholder="Weight in KG"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.weight && <div className="text-sm text-red-500">{errors.weight}</div>}
+                    <form onSubmit={submit} className="space-y-5">
+                        <div>
+                            <Label htmlFor="age" className="text-gray-700 dark:text-gray-300">
+                                Age
+                            </Label>
+                            <Input
+                                type="number"
+                                id="age"
+                                value={data.age}
+                                onChange={(e) => setData('age', e.target.value)}
+                                placeholder="You must be at least 14 years old"
+                            />
+                            {errors.age && <p className="mt-1 text-sm text-red-500">{errors.age}</p>}
+                        </div>
 
-                        <label htmlFor="phone">Phone number</label>
-                        <input
-                            type="number"
-                            id="phone"
-                            name="phone"
-                            value={data.phone}
-                            onChange={(e) => setData('phone', e.target.value)}
-                            placeholder="Phone Number"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.phone && <div className="text-sm text-red-500">{errors.phone}</div>}
+                        <div>
+                            <Label htmlFor="height" className="text-gray-700 dark:text-gray-300">
+                                Height
+                            </Label>
+                            <Input
+                                type="number"
+                                id="height"
+                                value={data.height}
+                                onChange={(e) => setData('height', e.target.value)}
+                                placeholder="Height in CM"
+                            />
+                            {errors.height && <p className="mt-1 text-sm text-red-500">{errors.height}</p>}
+                        </div>
 
-                        <label htmlFor="personal_code">Personal Code</label>
-                        <input
-                            type="text"
-                            id="personal_code"
-                            name="personal_code"
-                            min="1"
-                            value={data.personal_code}
-                            onChange={(e) => setData('personal_code', e.target.value)}
-                            placeholder="Personal Code (000000-00000)"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.personal_code && <div className="text-sm text-red-500">{errors.personal_code}</div>}
+                        <div>
+                            <Label htmlFor="weight" className="text-gray-700 dark:text-gray-300">
+                                Weight
+                            </Label>
+                            <Input
+                                type="number"
+                                id="weight"
+                                value={data.weight}
+                                onChange={(e) => setData('weight', e.target.value)}
+                                placeholder="Weight in KG"
+                            />
+                            {errors.weight && <p className="mt-1 text-sm text-red-500">{errors.weight}</p>}
+                        </div>
 
-                        <label htmlFor="country">Country</label>
-                        <input
-                            type="text"
-                            id="country"
-                            name="country"
-                            value={data.country}
-                            onChange={(e) => setData('country', e.target.value)}
-                            placeholder="Country"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.country && <div className="text-sm text-red-500">{errors.country}</div>}
+                        <div>
+                            <Label htmlFor="phone" className="text-gray-700 dark:text-gray-300">
+                                Phone number
+                            </Label>
+                            <Input
+                                type="number"
+                                id="phone"
+                                value={data.phone}
+                                onChange={(e) => setData('phone', e.target.value)}
+                                placeholder="Phone Number"
+                            />
+                            {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+                        </div>
 
-                        <label htmlFor="city">City</label>
-                        <input
-                            type="text"
-                            id="city"
-                            name="city"
-                            value={data.city}
-                            onChange={(e) => setData('city', e.target.value)}
-                            placeholder="City"
-                            className="block w-full rounded-md border focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        />
-                        {errors.city && <div className="text-sm text-red-500">{errors.city}</div>}
+                        <div>
+                            <Label htmlFor="personal_code" className="text-gray-700 dark:text-gray-300">
+                                Personal code
+                            </Label>
+                            <Input
+                                type="text"
+                                id="personal_code"
+                                value={data.personal_code}
+                                onChange={(e) => setData('personal_code', e.target.value)}
+                                placeholder="000000-00000"
+                            />
+                            {errors.personal_code && <p className="mt-1 text-sm text-red-500">{errors.personal_code}</p>}
+                        </div>
 
-                        <label htmlFor="portrait">Portrait is optional</label>
-                        <input
-                            type="file"
-                            id="portrait"
-                            name="portrait"
-                            accept="image/*"
-                            onChange={(e) => setData('portrait', e.target.files ? e.target.files[0] : null)}
-                            className="block w-full cursor-pointer rounded-md border text-sm focus:border-blue-500 focus:ring-blue-500"
-                        />
-                        {errors.portrait && <div className="text-sm text-red-500">{errors.portrait}</div>}
-                    </div>
+                        <div>
+                            <Label htmlFor="country" className="text-gray-700 dark:text-gray-300">
+                                Country
+                            </Label>
+                            <Input
+                                type="text"
+                                id="country"
+                                value={data.country}
+                                onChange={(e) => setData('country', e.target.value)}
+                                placeholder="Country"
+                            />
+                            {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
+                        </div>
 
-                    <div className="text-center">
-                        <button
-                            type="submit"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
-                        >
-                            Save
-                        </button>
-                    </div>
-                </form>
+                        <div>
+                            <Label htmlFor="city" className="text-gray-700 dark:text-gray-300">
+                                City
+                            </Label>
+                            <Input type="text" id="city" value={data.city} onChange={(e) => setData('city', e.target.value)} placeholder="City" />
+                            {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="portrait" className="text-gray-700 dark:text-gray-300">
+                                Portrait (optional)
+                            </Label>
+                            <Input
+                                type="file"
+                                id="portrait"
+                                accept="image/*"
+                                onChange={(e) => setData('portrait', e.target.files ? e.target.files[0] : null)}
+                            />
+                            {errors.portrait && <p className="mt-1 text-sm text-red-500">{errors.portrait}</p>}
+                        </div>
+
+                        <div className="pt-2 text-center">
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                                className="rounded-lg bg-pink-200/20 px-4 py-2 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                            >
+                                {processing ? 'Saving...' : 'Save'}
+                            </Button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </>
     );

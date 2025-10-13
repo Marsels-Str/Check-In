@@ -1,65 +1,78 @@
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type User } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Users',
-        href: '/users',
-    },
-    {
-        title: 'Assign Role',
-        href: '/users',
-    },
+    { title: 'Users', href: '/users' },
+    { title: 'Assign Role', href: '/users' },
 ];
 
 export default function Assign({ user, roles = [] as any[], userRoles = [] as number[] }: { user: User; roles: any[]; userRoles: number[] }) {
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         role_ids: userRoles,
     });
+
     function submit(e: React.SyntheticEvent) {
         e.preventDefault();
         post(route('users.roles.assign', user.id));
     }
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Assign Role" />
-            <div>
-                <Link
-                    href={route('users.index')}
-                    className="inline-flex items-center rounded border border-transparent bg-blue-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+            <div className="px-4">
+                <div className="mb-6 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold">Assign a Role</h1>
+                        <p className="text-sm text-gray-500">Assigning a role will allow the user to perform certain actions.</p>
+                    </div>
+                    <Link
+                        href={route('users.index')}
+                        className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                    >
+                        Back
+                    </Link>
+                </div>
+
+                <form
+                    onSubmit={submit}
+                    className="mx-auto w-full max-w-md space-y-6 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm"
                 >
-                    Back
-                </Link>
-                <form onSubmit={submit} className="mx-auto w-full max-w-md space-y-6">
-                    <div className="space-y-3 rounded-md border border-gray-400 px-4 py-5 shadow-sm sm:p-6">
-                        <label className="block text-center text-sm font-medium text-gray-400">Select Roles</label>
-                        <div className="space-y-2">
+                    <div className="space-y-4">
+                        <h2 className="text-center text-lg font-medium">Select a Role for {user.name}</h2>
+
+                        <div className="space-y-3">
                             {roles.map((role) => (
-                                <div key={role.id} className="flex items-center">
+                                <label
+                                    key={role.id}
+                                    htmlFor={`role-${role.id}`}
+                                    className="flex cursor-pointer items-center justify-between rounded-md border border-white/10 px-3 py-2 transition hover:bg-yellow-500/30"
+                                >
+                                    <span className="text-sm font-medium">{role.name}</span>
                                     <input
                                         type="radio"
                                         id={`role-${role.id}`}
                                         value={role.id}
                                         checked={data.role_ids.includes(role.id)}
                                         onChange={() => setData('role_ids', [role.id])}
-                                        className="h-4 w-4"
+                                        className="h-4 w-4 accent-pink-500"
                                     />
-                                    <label htmlFor={`role-${role.id}`} className="ml-2 text-sm text-gray-700">
-                                        {role.name}
-                                    </label>
-                                </div>
+                                </label>
                             ))}
                         </div>
-                        {errors.role_ids && <div className="text-center text-sm text-red-600">{errors.role_ids}</div>}
+
+                        {errors.role_ids && <p className="text-center text-sm text-red-400">{errors.role_ids}</p>}
                     </div>
-                    <div className="text-center">
-                        <button
+
+                    <div className="pt-4 text-center">
+                        <Button
                             type="submit"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                            disabled={processing}
+                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
-                            Assign
-                        </button>
+                            {processing ? 'Assigning...' : 'Assign'}
+                        </Button>
                     </div>
                 </form>
             </div>

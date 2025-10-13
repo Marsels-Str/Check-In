@@ -20,43 +20,55 @@ export default function Show({ group, users, errors, availableMaps }: any) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Group: ${group.name}`} />
 
-            <div className="mx-auto max-w-5xl p-6">
+            <div className="px-4">
+                {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold">{group.name}</h1>
+                        <p className="text-sm text-gray-500">Manage members, images, and map entries for this job group.</p>
+                    </div>
+
                     <Link
                         href={route('job-groups.index')}
-                        className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400"
+                        className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                     >
-                        ← Back to Groups
+                        Back
                     </Link>
                 </div>
 
-                <div className="mb-8 rounded-xl border border-gray-400 p-6">
-                    <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">{group.name}</h1>
-                    <p className="mt-2 text-gray-600 dark:text-gray-300">{group.description || 'No description provided.'}</p>
+                {/* Overview */}
+                <section className="mb-8 rounded-xl border borde p-6 shadow-sm backdrop-blur-sm">
+                    <h2 className="text-lg font-semibold">Overview</h2>
+                    <p className="mt-2">{group.description || 'No description provided.'}</p>
 
-                    <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                        <p>
-                            <span className="font-medium text-gray-700 dark:text-gray-300">Business:</span> {group.business?.name || 'N/A'}
-                        </p>
-                        <p>
-                            <span className="font-medium text-gray-700 dark:text-gray-300">Users:</span> {group.users?.length || 0}
-                        </p>
+                    <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div className="rounded-lg border border p-3 text-sm shadow-sm">
+                            <div>Business</div>
+                            <div className="font-medium text-gray-500">{group.business?.name || 'N/A'}</div>
+                        </div>
+                        <div className="rounded-lg border border p-3 text-sm shadow-sm">
+                            <div>Users</div>
+                            <div className="font-medium text-gray-500">{group.users?.length ?? 0}</div>
+                        </div>
                     </div>
-                </div>
+                </section>
 
-                <div className="mb-8 rounded-xl border border-gray-400 p-6">
+                {/* Users */}
+                <section className="mb-8 rounded-xl border border p-6 shadow-sm backdrop-blur-sm">
                     <GroupUsers group={group} users={users} canAdd={canAdd} canRemove={canRemove} />
-                </div>
+                </section>
 
-                <div className="mb-8 rounded-xl border border-gray-400 p-6">
-                    <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">Group Images</h2>
+                {/* Images */}
+                <section className="mb-8 rounded-xl border border p-6">
+                    <h2 className="mb-4 text-lg font-semibold">Images</h2>
                     <GroupImages group={group} errors={errors} />
-                </div>
+                </section>
 
-                <div className="rounded-xl border border-gray-400 p-6">
-                    <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">Group Map</h2>
+                {/* Map */}
+                <section className="rounded-xl border border p-6 shadow-sm backdrop-blur-sm dark:shadow-sm">
+                    <h2 className="mb-4 text-lg font-semibold">Map entry</h2>
                     <GroupMap group={group} availableMaps={availableMaps} canAddMap={canAddMap} />
-                </div>
+                </section>
             </div>
         </AppLayout>
     );

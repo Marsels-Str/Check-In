@@ -1,3 +1,4 @@
+import { Button } from '@headlessui/react';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import AddUserModal from './add-user-modal';
@@ -7,7 +8,7 @@ export default function GroupUsers({ group, users, canAdd, canRemove }: any) {
 
     return (
         <div className="mt-6">
-            <h2 className="text-lg font-semibold">Users in the group:</h2>
+            <h2 className="text-lg font-semibold">Users:</h2>
 
             <ul className="my-2">
                 {group.users?.map((user: any) => (
@@ -28,9 +29,12 @@ export default function GroupUsers({ group, users, canAdd, canRemove }: any) {
             </ul>
 
             {canAdd && (
-                <button onClick={() => setIsModalOpen(true)} className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
+                <Button
+                    onClick={() => setIsModalOpen(true)}
+                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                >
                     Add
-                </button>
+                </Button>
             )}
 
             <AddUserModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} groupId={group.id} users={users} />

@@ -25,23 +25,26 @@ class AutoClockController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function update(Request $request)
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'work_start'   => 'required|date_format:H:i',
-            'work_end'     => 'required|date_format:H:i|after:work_start',
-            'lunch_start'  => 'nullable|date_format:H:i|after:work_start|before:work_end',
-            'lunch_end'    => 'nullable|date_format:H:i|after:lunch_start|before:work_end',
-        ]);
+    $validated = $request->validate([
+        'work_start'   => ['required', 'regex:/^\d{2}:\d{2}(:\d{2})?$/'],
+        'work_end'     => ['required', 'regex:/^\d{2}:\d{2}(:\d{2})?$/', 'after:work_start'],
+        'lunch_start'  => ['nullable', 'regex:/^\d{2}:\d{2}(:\d{2})?$/', 'after:work_start', 'before:work_end'],
+        'lunch_end'    => ['nullable', 'regex:/^\d{2}:\d{2}(:\d{2})?$/', 'after:lunch_start', 'before:work_end'],
+    ]);
 
         AutoClockSetting::updateOrCreate(
             ['user_id' => $user->id],
             $validated
         );
 
-        return back()->with('success', 'Auto clock settings updated successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Auto Clock settings updated successfully!',
+        ]);
     }
 
     public function extendWork(Request $request)
@@ -55,7 +58,7 @@ class AutoClockController extends Controller
         $settings = AutoClockSetting::firstOrCreate(['user_id' => $user->id]);
         $settings->update($validated);
 
-        return back()->with('success', 'Extended work time set successfully!');
+        return back();
     }
 
     public function loginClockIn($token)
@@ -111,15 +114,13 @@ class AutoClockController extends Controller
             ->first();
 
         if ($existing) {
-            return redirect()->route('users.employees.index')
-                ->with('status', 'Already clocked in.');
+            return redirect()->route('users.employees.index');
         }
 
         $business = $user->businesses()->first();
 
         if (! $business) {
-            return redirect()->route('users.employees.index')
-                ->with('status', 'You are not assigned to any business.');
+            return redirect()->route('users.employees.index');
         }
 
         TimeLog::create([
@@ -128,7 +129,6 @@ class AutoClockController extends Controller
             'clock_in' => Carbon::now('Europe/Riga'),
         ]);
 
-        return redirect()->route('users.employees.index')
-            ->with('status', 'You have been clocked in automatically.');
+        return redirect()->route('users.employees.index');
     }
 }

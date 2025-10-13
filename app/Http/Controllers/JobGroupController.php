@@ -68,7 +68,7 @@ class JobGroupController extends Controller
         $map = Map::findOrFail($request->map_id);
 
         if ($map->business_id !== $jobGroup->business_id) {
-            return back()->withErrors(['map_id' => 'This map does not belong to the same business as the group.']);
+            return back();
         }
 
         Map::where('job_group_id', $jobGroup->id)->update(['job_group_id' => null]);
@@ -76,8 +76,7 @@ class JobGroupController extends Controller
         $map->job_group_id = $jobGroup->id;
         $map->save();
 
-        return redirect()->route('job-groups.show', $jobGroup->id)
-            ->with('success', 'Map attached successfully.');
+        return redirect()->route('job-groups.show', $jobGroup->id);
     }
 
     public function store(Request $request)
@@ -101,8 +100,7 @@ class JobGroupController extends Controller
         }
 
         if (! $businessId) {
-            return redirect()->route('job-groups.index')
-                ->with('error', 'No business resolved for this action.');
+            return redirect()->route('job-groups.index');
         }
 
         JobGroup::create([
@@ -111,8 +109,7 @@ class JobGroupController extends Controller
             'business_id' => $businessId,
         ]);
 
-        return redirect()->route('job-groups.index')
-            ->with('success', 'Group created.');
+        return redirect()->route('job-groups.index');
     }
 
     public function show(Request $request, string $id)
@@ -126,15 +123,15 @@ class JobGroupController extends Controller
             // ok
         } elseif ($user->hasRole('Business')) {
             if (! $user->ownedBusiness || $group->business_id !== $user->ownedBusiness->id) {
-                return redirect()->route('job-groups.index')->with('error', 'This group is not in your business.');
+                return redirect()->route('job-groups.index');
             }
         } elseif ($user->hasRole('Worker')) {
             $isMember = $group->users->contains('id', $user->id);
             if (! $isMember) {
-                return redirect()->route('job-groups.index')->with('error', 'You are not a member of this group.');
+                return redirect()->route('job-groups.index');
             }
         } else {
-            return redirect()->route('job-groups.index')->with('error', 'You do not have access.');
+            return redirect()->route('job-groups.index');
         }
 
         $availableUsers = User::whereHas('businesses', function ($q) use ($group) {
@@ -169,8 +166,7 @@ class JobGroupController extends Controller
             }
 
             if (! $allowedBusinessIds->contains($group->business_id)) {
-                return redirect()->route('job-groups.index')
-                    ->with('error', 'This group is not in your business.');
+                return redirect()->route('job-groups.index');
             }
         }
 
@@ -193,8 +189,7 @@ class JobGroupController extends Controller
                 : $user->businesses()->pluck('businesses.id');
 
             if (! $allowedBusinessIds->contains($group->business_id)) {
-                return redirect()->route('job-groups.index')
-                    ->with('error', 'This group is not in your business.');
+                return redirect()->route('job-groups.index');
             }
         }
 
@@ -203,7 +198,7 @@ class JobGroupController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('job-groups.index')->with('success', 'Group updated.');
+        return redirect()->route('job-groups.index');
     }
 
     public function updateUsers(Request $request, JobGroup $group)
@@ -214,7 +209,7 @@ class JobGroupController extends Controller
             ! $authUser->hasRole('Owner') &&
             ! ($authUser->hasRole('Business') && $authUser->ownedBusiness && $authUser->ownedBusiness->id === $group->business_id)
         ) {
-            return redirect()->back()->with('error', 'You do not have permission to manage users for this group.');
+            return redirect()->back();
         }
 
         $validated = $request->validate([
@@ -231,8 +226,7 @@ class JobGroupController extends Controller
 
         $group->users()->syncWithoutDetaching($allowedUserIds);
 
-        return redirect()->route('job-groups.show', $group->id)
-            ->with('success', 'Employee(s) added to group.');
+        return redirect()->route('job-groups.show', $group->id);
     }
 
     public function removeUser(Request $request, JobGroup $group, User $user)
@@ -243,14 +237,14 @@ class JobGroupController extends Controller
             ! $authUser->hasRole('Owner') &&
             ! ($authUser->hasRole('Business') && $authUser->ownedBusiness && $authUser->ownedBusiness->id === $group->business_id)
         ) {
-            return redirect()->back()->with('error', 'You do not have permission to remove users from this group.');
+            return redirect()->back();
         }
 
         if ($group->users()->where('users.id', $user->id)->exists()) {
             $group->users()->detach($user->id);
         }
 
-        return redirect()->back()->with('success', 'User removed from group.');
+        return redirect()->back();
     }
 
     public function destroy(Request $request, string $id)
@@ -264,13 +258,12 @@ class JobGroupController extends Controller
                 : $user->businesses()->pluck('businesses.id');
 
             if (! $allowedBusinessIds->contains($group->business_id)) {
-                return redirect()->route('job-groups.index')
-                    ->with('error', 'This group is not in your business.');
+                return redirect()->route('job-groups.index');
             }
         }
 
         $group->delete();
 
-        return redirect()->route('job-groups.index')->with('success', 'Group deleted.');
+        return redirect()->route('job-groups.index');
     }
 }

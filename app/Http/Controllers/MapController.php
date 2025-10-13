@@ -56,16 +56,11 @@ class MapController extends Controller
 
         $validation = [
             'name'    => 'nullable|string|max:150',
-            'lat'     => 'nullable|numeric|between:-90,90',
-            'lng'     => 'nullable|numeric|between:-180,180',
+            'lat'     => 'nullable|numeric',
+            'lng'     => 'nullable|numeric',
             'radius'  => 'nullable|numeric',
             'polygon' => 'nullable',
             'type'    => 'required|string|in:marker,circle,polygon',
-        ];
-
-        $messages = [
-            'lat.between' => 'The latitude must be between -90 and 90 degrees.',
-            'lng.between' => 'The longitude must be between -180 and 180 degrees.',
         ];
 
         if ($user->hasRole('Owner')) {
@@ -132,13 +127,13 @@ class MapController extends Controller
 
         $map->update($data);
 
-        return redirect()->route('maps.index')->with('success', 'Map updated successfully.');
+        return redirect()->route('maps.index');
     }
 
     public function destroy(string $id)
     {
         Map::destroy($id);
 
-        return redirect()->route('maps.index')->with('success', 'Map deleted.');
+        return redirect()->route('maps.index');
     }
 }

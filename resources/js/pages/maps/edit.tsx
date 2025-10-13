@@ -1,7 +1,10 @@
 import MapDrawEditor from '@/components/maps/map-editor';
 import MapEditorInputs from '@/components/maps/map-editor-inputs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, EditableMap, Map } from '@/types';
+import { Button } from '@headlessui/react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
@@ -20,7 +23,7 @@ export default function Edit({ map }: { map: Map }) {
         type: map.type ?? '',
     });
 
-    const { data, setData, put, errors } = form;
+    const { data, setData, put, errors, processing } = form;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,34 +34,47 @@ export default function Edit({ map }: { map: Map }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Map" />
 
-            <div className="container px-4">
-                <div className="mx-auto mt-8 w-full max-w-[650px] space-y-4 rounded-lg border border-gray-300 p-5 shadow-sm">
-                    <h1 className="mb-4 text-center text-2xl font-bold text-gray-800 dark:text-white">Edit Map</h1>
+            <div className="px-4">
+                <div className="mx-auto mt-8 max-w-3xl space-y-6 rounded-xl border border-gray-200 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-md">
+                    <div className="mb-4 flex items-center justify-between">
+                        <div>
+                            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Edit</h1>
+                            <p className="text-sm text-gray-500">You can edit by replacing the old shape or changing the data values.</p>
+                        </div>
+                        <Link
+                            href="/maps"
+                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                        >
+                            Back
+                        </Link>
+                    </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-400">Name</label>
-                            <input
+                            <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</Label>
+                            <Input
                                 type="text"
                                 value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                onChange={(e: any) => setData('name', e.target.value)}
+                                placeholder="Enter map name"
                             />
-                            {errors.name && <div className="text-sm text-red-500">{errors.name}</div>}
+                            {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                         </div>
 
                         <MapEditorInputs data={data} setData={setData} errors={errors} />
 
-                        <MapDrawEditor map={map} data={data} setData={setData} />
+                        <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-white/10">
+                            <MapDrawEditor map={map} data={data} setData={setData} />
+                        </div>
 
-                        <Link href="/maps" className="text-blue-600 hover:underline dark:text-blue-400">
-                            ← Back to list
-                        </Link>
-
-                        <div className="flex justify-end pt-2">
-                            <button type="submit" className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50">
-                                Update
-                            </button>
+                        <div className="flex justify-end gap-3 pt-4">
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                                className="inline-flex items-center rounded-lg bg-pink-200/20 px-4 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 disabled:opacity-50 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                            >
+                                {processing ? 'Updating...' : 'Update'}
+                            </Button>
                         </div>
                     </form>
                 </div>

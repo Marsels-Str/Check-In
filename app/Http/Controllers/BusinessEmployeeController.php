@@ -16,47 +16,57 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user()->load('roles');
 
         $employees = collect();
-        $businesses = [];
+        $businesses = collect();
         $selectedBusinessId = null;
 
         if ($authUser->hasRole('Owner')) {
-            $selectedBusinessId = $request->query('business_id');
             $businesses = Business::select('id', 'name')->orderBy('name')->get();
 
+            $selectedBusinessId = $request->query('business_id') ?? $businesses->first()?->id;
+
             if ($selectedBusinessId) {
-                $employees = Business::find($selectedBusinessId)
-                    ?->employees()
-                    ->with([
-                        'roles',
-                        'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1)
-                    ])
-                    ->get() ?? collect();
+                $business = Business::find($selectedBusinessId);
+
+                if ($business) {
+                    $employees = $business->employees()
+                        ->with([
+                            'roles',
+                            'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1),
+                        ])
+                        ->get();
+                }
             }
-        } elseif ($authUser->hasRole('Business') && $authUser->ownedBusiness) {
+        }
+
+        elseif ($authUser->hasRole('Business') && $authUser->ownedBusiness) {
+            $businesses = collect([$authUser->ownedBusiness]);
             $selectedBusinessId = $authUser->ownedBusiness->id;
-            $employees = $authUser->ownedBusiness
-                ->employees()
+
+            $employees = $authUser->ownedBusiness->employees()
                 ->with([
                     'roles',
-                    'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1)
+                    'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1),
                 ])
                 ->get();
-        } elseif ($authUser->hasRole('Worker')) {
+        }
+
+        elseif ($authUser->hasRole('Worker')) {
             $business = $authUser->businesses()->first();
             $selectedBusinessId = $business?->id;
+
             $employees = $business
                 ?->employees()
                 ->with([
                     'roles',
-                    'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1)
+                    'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1),
                 ])
                 ->get() ?? collect();
         }
 
         return Inertia::render('users/employees/index', [
-            'employees'          => $employees,
-            'currentUser'        => $authUser,
-            'businesses'         => $businesses,
+            'employees' => $employees,
+            'currentUser' => $authUser,
+            'businesses' => $businesses,
             'selectedBusinessId' => $selectedBusinessId,
         ]);
     }
@@ -79,7 +89,7 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (!$this->canManage($authUser, $user)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => 'Unauthorized']);
         }
 
         $existing = TimeLog::where('user_id', $user->id)
@@ -88,7 +98,7 @@ class BusinessEmployeeController extends Controller
             ->first();
 
         if ($existing) {
-            return response()->json(['error' => 'User is already clocked in'], 422);
+            return response()->json(['error' => 'User is already clocked in']);
         }
 
         $business = $user->businesses()->first();
@@ -236,11 +246,11 @@ class BusinessEmployeeController extends Controller
             $business = $authUser->ownedBusiness;
 
             if (!$business) {
-                return response()->json(['error' => 'No business found.'], 404);
+                return response()->json(['error' => 'No business found.']);
             }
 
             if (!$business->employees()->where('users.id', $user->id)->exists()) {
-                return response()->json(['error' => 'This user is not an employee of your business.'], 422);
+                return response()->json(['error' => 'This user is not an employee of your business.']);
             }
 
             $business->employees()->detach($user->id);
@@ -250,6 +260,6 @@ class BusinessEmployeeController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return response()->json(['error' => 'You do not have permission to remove employees.'], 403);
+        return response()->json(['error' => 'You do not have permission to remove employees.']);
     }
 }

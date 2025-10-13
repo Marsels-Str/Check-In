@@ -47,19 +47,20 @@ export interface SharedData {
 }
 
 export interface UserProfile {
-    age?: number;
+    user_id?: number;
+    age?: number | string;
     city?: string;
     phone?: string;
-    height?: number;
-    weight?: number;
+    height?: number | string;
+    weight?: number | string;
     country?: string;
     unique_id?: string;
     personal_code?: string;
-    portrait?: string | null;
+    portrait?: string | File | null;
 }
 
 export interface BusinessProfile {
-    id?: number;
+    id: number;
     maps?: Map[];
     name?: string;
     city?: string;
@@ -89,12 +90,12 @@ export interface Map {
 }
 
 export interface EditableMap {
-  name?: string;
-  type?: string;
-  lat?: number | string | null;
-  lng?: number | string | null;
-  radius?: number | string | null;
-  polygon?: any;
+  name: string;
+  type: string;
+  lat: number | string | null;
+  lng: number | string | null;
+  radius: number | string | null;
+  polygon: any;
 }
 
 export interface User {

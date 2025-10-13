@@ -12,7 +12,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles')->get();
+        $users = User::with('roles', 'profile:user_id,portrait', 'businesses:id,name')
+        ->withExists(['timeLogs as is_clocked_in' => function ($query) {
+            $query->whereNull('clock_out');
+        }])->get();
         $currentUser = auth()->user();
 
         return Inertia::render('users/index', [
@@ -57,13 +60,24 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|max:15',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        $user->profile()->create([
+            'age' => null,
+            'height' => null,
+            'weight' => null,
+            'phone' => null,
+            'personal_code' => null,
+            'country' => null,
+            'city' => null,
+            'portrait' => null,
         ]);
 
         return redirect()->route('users.index');
@@ -71,15 +85,16 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        return Inertia::render('users/show', [
+        $user = User::with(['profile', 'roles', 'businesses', 'ownedBusiness'])->findOrFail($id);
 
-        'user' => User::findOrFail($id)
+        return Inertia::render('users/show', [
+            'user' => $user
         ]);
     }
 
     public function edit(string $id)
     {
-        $user = User::FindOrFail($id);
+        $user = User::with('profile')->findOrFail($id);
 
         return Inertia::render('users/edit', [
             'user' => $user
@@ -91,7 +106,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|max:100|unique:users,email,'.$id,
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|string|min:8|max:15',
         ]);
 
         $user = User::findOrFail($id);
@@ -105,7 +120,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index');
+        return back();
     }
 
     public function destroy(string $id)

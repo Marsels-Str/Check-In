@@ -3,12 +3,7 @@ import { useCan } from '@/lib/can';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Groups',
-        href: '/job-groups',
-    },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Groups', href: '/job-groups' }];
 
 export default function Index({ jobGroups }: { jobGroups: any[] }) {
     const canCreate = useCan('groups.create');
@@ -23,60 +18,86 @@ export default function Index({ jobGroups }: { jobGroups: any[] }) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Group" />
-            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">Job Group</h1>
+            <Head title="Job Groups" />
 
-            <div>
-                {canCreate && (
-                    <Link
-                        href={route('job-groups.create')}
-                        className="inline-flex items-center rounded border border-transparent bg-blue-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
-                    >
-                        Create
-                    </Link>
-                )}
+            <div className="px-4">
+                <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                    <div>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Job Groups</h1>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Manage and organize your job groups efficiently.</p>
+                    </div>
+
+                    {canCreate && (
+                        <Link
+                            href={route('job-groups.create')}
+                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                        >
+                            Create
+                        </Link>
+                    )}
+                </div>
+
+                <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
+                    <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent dark:scrollbar-thumb-gray-600 max-h-[340px] overflow-y-auto md:max-h-[230px]">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                            <thead className="sticky top-0 z-10 bg-gray-50 backdrop-blur-sm dark:bg-[#0f0f0f]/95">
+                                <tr>
+                                    <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">ID</th>
+                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">Name</th>
+                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">Description</th>
+                                    <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                                {jobGroups.length > 0 ? (
+                                    jobGroups.map((group) => (
+                                        <tr key={group.id} className="transition hover:bg-gray-50 dark:hover:bg-white/5">
+                                            <td className="py-4 pr-3 pl-6 text-sm text-gray-900 dark:text-gray-200">{group.id}</td>
+                                            <td className="px-3 py-4 text-sm text-gray-900 dark:text-gray-200">{group.name}</td>
+                                            <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">{group.description || '—'}</td>
+                                            <td className="py-4 pr-6 pl-3 text-right text-sm">
+                                                <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
+                                                    <Link
+                                                        href={route('job-groups.show', group.id)}
+                                                        className="hover:text-green-600 dark:hover:text-green-300"
+                                                    >
+                                                        Show
+                                                    </Link>
+
+                                                    {canEdit && (
+                                                        <Link
+                                                            href={route('job-groups.edit', group.id)}
+                                                            className="hover:text-green-600 dark:hover:text-green-300"
+                                                        >
+                                                            Edit
+                                                        </Link>
+                                                    )}
+
+                                                    {canDelete && (
+                                                        <button
+                                                            onClick={() => handleDelete(group.id)}
+                                                            className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={4} className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                                            No job groups found.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
-            <table className="mt-4 w-full table-auto">
-                <thead>
-                    <tr className="text-xs uppercase">
-                        <th className="border-b border-gray-400 py-2 text-gray-500 dark:text-gray-400">ID</th>
-                        <th className="border-b border-gray-400 text-gray-500 dark:text-gray-400">Name</th>
-                        <th className="border-b border-gray-400 text-gray-500 dark:text-gray-400">Description</th>
-                        <th className="border-b border-gray-400 text-gray-500 dark:text-gray-400">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {jobGroups.map((jobGroup) => (
-                        <tr key={jobGroup.id} className="text-center">
-                            <td className="border-b border-gray-400 py-2 text-gray-900 dark:text-white">{jobGroup.id}</td>
-
-                            <td className="border-b border-gray-400 py-2 text-gray-900 dark:text-white">{jobGroup.name}</td>
-
-                            <td className="border-b border-gray-400 text-gray-900 dark:text-white">{jobGroup.description}</td>
-
-                            <td className="border-b border-gray-400">
-                                <Link href={route('job-groups.show', jobGroup.id)} className="mr-2 text-yellow-500 hover:text-yellow-700">
-                                    Show
-                                </Link>
-
-                                {canEdit && (
-                                    <Link href={route('job-groups.edit', jobGroup.id)} className="mr-2 text-blue-500 hover:text-blue-700">
-                                        Edit
-                                    </Link>
-                                )}
-
-                                {canDelete && (
-                                    <Link onClick={() => handleDelete(jobGroup.id)} className="text-red-500 hover:text-red-700">
-                                        Delete
-                                    </Link>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
         </AppLayout>
     );
 }

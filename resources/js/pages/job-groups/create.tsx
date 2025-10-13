@@ -1,5 +1,9 @@
+import BusinessDropdownMenu from '@/components/business-dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { Button } from '@headlessui/react';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -31,73 +35,71 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Job Group" />
 
-            <div>
-                <Link
-                    href={route('job-groups.index')}
-                    className="inline-flex items-center rounded border border-transparent bg-blue-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-blue-700"
-                >
-                    Back
-                </Link>
+            <div className="px-4">
+                <div className="mb-6 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Create Job Group</h1>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Add a new job group and assign it to a business.</p>
+                    </div>
 
-                <form onSubmit={submit} className="mx-auto mt-6 w-full max-w-md space-y-6">
-                    <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
-                        <label htmlFor="name" className="block text-center text-sm font-medium">
+                    <Link
+                        href={route('job-groups.index')}
+                        className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                    >
+                        Back
+                    </Link>
+                </div>
+
+                <form
+                    onSubmit={submit}
+                    className="mx-auto w-full max-w-md space-y-6 rounded-xl border border-gray-200 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm"
+                >
+                    <div>
+                        <Label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Name
-                        </label>
-                        <input
+                        </Label>
+                        <Input
                             type="text"
                             id="name"
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
-                            className="block w-full rounded-md border"
+                            placeholder="Enter group name"
                         />
-                        {errors.name && <div className="text-center text-sm text-red-600">{errors.name}</div>}
+                        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                     </div>
 
-                    <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
-                        <label htmlFor="description" className="block text-center text-sm font-medium">
+                    <div>
+                        <Label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Description
-                        </label>
-                        <input
+                        </Label>
+                        <Input
                             type="text"
                             id="description"
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
-                            className="block w-full rounded-md border"
+                            placeholder="Enter group description"
                         />
-                        {errors.description && <div className="text-center text-sm text-red-600">{errors.description}</div>}
+                        {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
                     </div>
 
                     {isOwner && (
-                        <div className="space-y-3 rounded-md border px-4 py-5 shadow-sm sm:p-6">
-                            <label htmlFor="business_id" className="block text-center text-sm font-medium">
-                                Business
-                            </label>
-                            <select
-                                id="business_id"
-                                value={data.business_id || ''}
-                                onChange={(e) => setData('business_id', e.target.value)}
-                                className="block w-full rounded-md border bg-gray-400"
-                            >
-                                <option value="">Select business</option>
-                                {businesses.map((b: any) => (
-                                    <option key={b.id} value={b.id}>
-                                        {b.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.business_id && <div className="text-center text-sm text-red-600">{errors.business_id}</div>}
+                        <div className="flex justify-center">
+                            <BusinessDropdownMenu
+                                businesses={businesses}
+                                selectedBusinessId={data.business_id}
+                                onChange={(id) => setData('business_id', id)}
+                            />
                         </div>
                     )}
 
-                    <div className="text-center">
-                        <button
+                    <div className="flex justify-end pt-2">
+                        <Button
                             type="submit"
                             disabled={processing}
-                            className="inline-flex justify-center rounded-md border bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-4 py-2 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 disabled:opacity-50 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
                             {processing ? 'Saving...' : 'Save'}
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>

@@ -5,6 +5,7 @@ import { useCan } from '@/lib/can';
 import { type BreadcrumbItem, User } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Employees', href: '/employees' }];
 
@@ -22,32 +23,60 @@ export default function Index({
     const isOwner = currentUser.roles?.some((r: any) => r.name === 'Owner');
     const canRemove = useCan('users.remove');
 
+    const [message, setMessage] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (message || error) {
+            const timer = setTimeout(() => {
+                setMessage(null);
+                setError(null);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [message, error]);
+
     const handleRemove = async (userId: number) => {
         try {
-            const res = await axios.delete(route('users.employees.remove', userId), {
+            const res = await axios.delete(route('employees.remove', userId), {
                 data: isOwner ? { business_id: selectedBusinessId } : {},
             });
-            if (res.data.success) router.reload();
+            if (res.data.success) {
+                setMessage('Employee removed successfully.');
+                router.reload({ only: ['employees'] });
+            } else {
+                setError(res.data.error || 'Could not remove employee.');
+            }
         } catch (err: any) {
-            alert(err.response?.data?.error || 'Unexpected error');
+            setError(err.response?.data?.error || 'Unexpected error');
         }
     };
 
     const handleClockIn = async (userId: number) => {
         try {
             const res = await axios.post(route('employees.clockin', userId));
-            if (res.data.success) router.reload({ only: ['employees'] });
+            if (res.data.success) {
+                setMessage('Employee clocked in successfully.');
+                router.reload({ only: ['employees'] });
+            } else {
+                setError(res.data.error || 'Could not clock in.');
+            }
         } catch (err: any) {
-            alert(err.response?.data?.error || 'Unexpected error');
+            setError(err.response?.data?.error || 'Unexpected error');
         }
     };
 
     const handleClockOut = async (userId: number) => {
         try {
             const res = await axios.post(route('employees.clockout', userId));
-            if (res.data.success) router.reload({ only: ['employees'] });
+            if (res.data.success) {
+                setMessage('Employee clocked out successfully.');
+                router.reload({ only: ['employees'] });
+            } else {
+                setError(res.data.error || 'Could not clock out.');
+            }
         } catch (err: any) {
-            alert(err.response?.data?.error || 'Unexpected error');
+            setError(err.response?.data?.error || 'Unexpected error');
         }
     };
 
@@ -55,55 +84,86 @@ export default function Index({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employees" />
 
-            <div className="mx-auto max-w-6xl p-4">
-                <h1 className="mb-6 text-center text-3xl font-bold md:text-5xl">Employees</h1>
+            <div className="mx-auto max-w-6xl p-4 md:p-6">
+                <div className="mb-8 text-center sm:text-left">
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-5xl dark:text-gray-100">Employees</h1>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage employees and track their working time.</p>
+                </div>
 
-                <EmployeeSearchAndAdd
-                    isOwner={isOwner}
-                    businesses={businesses}
-                    selectedBusinessId={selectedBusinessId}
-                    onReload={() => router.reload({ only: ['employees'] })}
-                />
+                <div className="mb-6">
+                    {message && (
+                        <div className="mb-3 rounded-lg bg-green-100 px-4 py-2 text-sm text-green-800 dark:bg-green-900/40 dark:text-green-200">
+                            {message}
+                        </div>
+                    )}
+                    {error && (
+                        <div className="mb-3 rounded-lg bg-red-100 px-4 py-2 text-sm text-red-800 dark:bg-red-900/40 dark:text-red-200">{error}</div>
+                    )}
 
-                <div className="overflow-x-auto rounded-lg border border-gray-400 p-4">
-                    <table className="w-full border-collapse text-sm">
+                    <EmployeeSearchAndAdd
+                        isOwner={isOwner}
+                        businesses={businesses}
+                        selectedBusinessId={selectedBusinessId}
+                        onReload={() => router.reload({ only: ['employees'] })}
+                    />
+                </div>
+
+                <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white/80 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#0a0a0a]/80 dark:shadow-sm">
+                    <table className="min-w-full text-sm">
                         <thead>
-                            <tr className="bg-gray-100 text-xs text-gray-600 uppercase dark:bg-gray-800 dark:text-gray-300">
-                                <th className="border-b border-gray-400 px-3 py-2">Id</th>
-                                <th className="border-b border-gray-400 px-3">Name</th>
-                                <th className="border-b border-gray-400 px-3">Email</th>
-                                <th className="border-b border-gray-400 px-3">Clocked In For</th>
-                                <th className="border-b border-gray-400 px-3">Actions</th>
+                            <tr className="bg-gray-100/60 text-xs text-gray-600 uppercase dark:bg-[#111111]/90 dark:text-gray-300">
+                                <th className="border-b border-gray-300 px-3 py-3 text-left">ID</th>
+                                <th className="border-b border-gray-300 px-3 py-3 text-left">Name</th>
+                                <th className="border-b border-gray-300 px-3 py-3 text-left">Clocked In</th>
+                                <th className="border-b border-gray-300 px-3 py-3 text-left">Actions</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {employees.length ? (
                                 employees.map((emp) => (
-                                    <tr key={emp.id} className="text-center hover:bg-gray-50 dark:hover:bg-gray-700">
-                                        <td className="border-b border-gray-400 py-2 text-gray-900 dark:text-white">{emp.id}</td>
-                                        <td className="border-b border-gray-400 text-gray-900 dark:text-white">{emp.name}</td>
-                                        <td className="border-b border-gray-400 text-gray-900 dark:text-white">{emp.email}</td>
-                                        <td className="border-b border-gray-400 text-gray-900 dark:text-white">
-                                            {emp.time_logs?.[0]?.clock_in ? <LiveTimer startTime={emp.time_logs[0].clock_in} /> : '-'}
-                                        </td>
-                                        <td className="border-b border-gray-400">
-                                            {canRemove && (
-                                                <button onClick={() => handleRemove(emp.id)} className="mr-3 text-red-500 hover:text-red-700">
-                                                    Remove
-                                                </button>
+                                    <tr
+                                        key={emp.id}
+                                        className="border-b border-gray-200 text-gray-800 transition hover:bg-gray-50 dark:border-white/5 dark:text-gray-200 dark:hover:bg-white/5"
+                                    >
+                                        <td className="px-3 py-2 font-medium">{emp.id}</td>
+                                        <td className="px-3 py-2">{emp.name}</td>
+                                        <td className="px-3 py-2">
+                                            {emp.time_logs?.[0]?.clock_in ? (
+                                                <LiveTimer startTime={emp.time_logs[0].clock_in} />
+                                            ) : (
+                                                <span className="text-gray-500 dark:text-gray-400">—</span>
                                             )}
-                                            <button onClick={() => handleClockIn(emp.id)} className="mr-3 text-green-600 hover:text-green-800">
-                                                Clock In
-                                            </button>
-                                            <button onClick={() => handleClockOut(emp.id)} className="text-blue-600 hover:text-blue-800">
-                                                Clock Out
-                                            </button>
+                                        </td>
+                                        <td className="px-3 py-2">
+                                            <div className="flex flex-wrap gap-2">
+                                                {canRemove && (
+                                                    <button
+                                                        onClick={() => handleRemove(emp.id)}
+                                                        className="rounded-md bg-red-100/20 px-2.5 py-1 text-xs font-medium text-red-600 ring-1 ring-red-400/30 transition-all hover:bg-red-200/30 hover:text-red-700 dark:bg-red-900/40 dark:text-red-300 dark:ring-red-500/30 dark:hover:bg-red-900/30 dark:hover:text-red-200"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={() => handleClockIn(emp.id)}
+                                                    className="rounded-md bg-green-100/20 px-2.5 py-1 text-xs font-medium text-green-700 ring-1 ring-green-400/30 transition-all hover:bg-green-200/30 hover:text-green-800 dark:bg-green-900/40 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-900/30 dark:hover:text-green-200"
+                                                >
+                                                    Clock-In
+                                                </button>
+                                                <button
+                                                    onClick={() => handleClockOut(emp.id)}
+                                                    className="rounded-md bg-blue-100/20 px-2.5 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-400/30 transition-all hover:bg-blue-200/30 hover:text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 dark:ring-blue-500/30 dark:hover:bg-blue-900/30 dark:hover:text-blue-200"
+                                                >
+                                                    Clock-Out
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={5} className="py-6 text-center text-gray-500 dark:text-gray-400">
+                                    <td colSpan={4} className="py-8 text-center text-gray-500 dark:text-gray-400">
                                         No employees found.
                                     </td>
                                 </tr>

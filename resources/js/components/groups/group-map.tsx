@@ -1,4 +1,5 @@
 import FitToBounds from '@/components/fit-to-bounds';
+import { Button } from '@headlessui/react';
 import { router } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { Circle, MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
@@ -58,10 +59,7 @@ export default function GroupMap({ group, availableMaps, canAddMap }: any) {
             <div className="mx-auto max-w-5xl p-4">
                 {canAddMap && (
                     <form onSubmit={handleAttach} className="mb-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                        <select
-                            name="map_id"
-                            className="flex-1 rounded-lg border border-gray-300 bg-gray-400 px-3 py-2 text-gray-800 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-600 dark:text-gray-100"
-                        >
+                        <select name="map_id" className="flex-1 rounded-lg border bg-black px-3 py-2 shadow-sm">
                             {availableMaps.map((m: any) => (
                                 <option key={m.id} value={m.id}>
                                     {m.name || `Map #${m.id}`}
@@ -69,17 +67,17 @@ export default function GroupMap({ group, availableMaps, canAddMap }: any) {
                             ))}
                         </select>
 
-                        <button
+                        <Button
                             type="submit"
-                            className="rounded-lg bg-blue-600 px-5 py-2 whitespace-nowrap text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400"
+                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
                             Add
-                        </button>
+                        </Button>
                     </form>
                 )}
 
                 {map ? (
-                    <div className="relative mt-4 h-80 overflow-hidden rounded-xl border border-gray-300 shadow-md dark:border-gray-700">
+                    <div className="relative mt-4 h-80 overflow-hidden rounded-xl border border shadow-md">
                         <MapContainer center={initialCenter} zoom={10} style={{ height: '100%', width: '100%' }}>
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
@@ -102,7 +100,7 @@ export default function GroupMap({ group, availableMaps, canAddMap }: any) {
                         </MapContainer>
                     </div>
                 ) : (
-                    <p className="mt-3 text-gray-500 dark:text-gray-400">No map attached to this group.</p>
+                    <p className="mt-3 text-gray-500">No map attached to this group.</p>
                 )}
             </div>
         </div>

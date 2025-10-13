@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Models\Business;
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Business;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,12 +14,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class ProfileController extends Controller
 {
-    public function completeForm(): Response
+    public function create(): Response
     {
-        return Inertia::render('complete-profiles/complete');
+        return Inertia::render('complete-profiles/user');
     }
 
-    public function storeCompleteForm(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->merge([
             'weight' => $request->weight ? str_replace(',', '.', $request->weight) : null,
@@ -56,7 +57,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return redirect()->route('profile.afterComplete');
+        return redirect()->route('profile.afterComplete')->with('can_access_after_complete', true);
     }
 
     public function edit(Request $request): Response
@@ -102,48 +103,51 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request, ?User $user = null): RedirectResponse
     {
-        $user = $request->user();
+        $user = $user ?? $request->user();
 
-        $validatedUser = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:users,email,' . $user->id,
+        $validated = $request->validate([
+            'name'          => 'sometimes|required|string|max:50',
+            'email'         => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
+            'age'           => 'nullable|integer|min:14|max:120',
+            'height'        => 'nullable|numeric|min:1',
+            'weight'        => 'nullable|numeric|min:1',
+            'country'       => 'nullable|string|max:50',
+            'city'          => 'nullable|string|max:50',
+            'phone'         => [
+                'nullable',
+                'string',
+                'min:8',
+                'max:15',
+                'unique:user_profiles,phone,' . optional($user->profile)->id,
+            ],
+            'personal_code' => [
+                'nullable',
+                'string',
+                'regex:/^\d{6}-\d{5}$/',
+                'unique:user_profiles,personal_code,' . optional($user->profile)->id,
+            ],
         ]);
 
-        $user->update($validatedUser);
-
-        if ($user->wasChanged('email')) {
-            $user->update(['email_verified_at' => null]);
-        }
-
-        $request->merge([
-            'weight' => $request->weight ? str_replace(',', '.', $request->weight) : null,
-            'height' => $request->height ? str_replace(',', '.', $request->height) : null,
-        ]);
-
-        $validatedProfile = $request->validate([
-            'age'           => 'required|integer|min:1|max:120',
-            'height'        => 'required|numeric|min:0',
-            'weight'        => 'required|numeric|min:0',
-            'phone'         => 'required|string|min:8|max:15',
-            'personal_code' => 'required|string|max:255|unique:user_profiles,personal_code,' . optional($user->profile)->id,
-            'country'       => 'required|string|max:50',
-            'city'          => 'required|string|max:50',
-            'portrait'      => 'nullable|image|max:2048',
-        ]);
-
-        $profile = $user->profile ?? $user->profile()->create();
-        $profile->update($validatedProfile);
-
-        if ($request->hasFile('portrait')) {
-            $file = $request->file('portrait');
-            $profile->update([
-                'portrait' => 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath())),
+        if (isset($validated['name']) || isset($validated['email'])) {
+            $user->update([
+                'name'  => $validated['name'] ?? $user->name,
+                'email' => $validated['email'] ?? $user->email,
             ]);
         }
 
-        return back()->with('status', 'profile-updated');
+        $profile = $user->profile ?: $user->profile()->create([]);
+
+        foreach ($validated as $key => $value) {
+            if (in_array($key, ['age', 'height', 'weight', 'country', 'city', 'phone', 'personal_code'])) {
+                $profile->{$key} = $value ?? $profile->{$key};
+            }
+        }
+
+        $profile->save();
+
+        return back()->with('status', 'profile-saved');
     }
 
     public function updatePortrait(Request $request): RedirectResponse
@@ -159,7 +163,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return back()->with('status', 'portrait-updated');
+        return back();
     }
 
     public function removePortrait(Request $request): RedirectResponse
@@ -168,7 +172,7 @@ class ProfileController extends Controller
             $request->user()->profile->update(['portrait' => null]);
         }
 
-        return back()->with('status', 'portrait-removed');
+        return back();
     }
 
     public function destroy(Request $request): RedirectResponse
