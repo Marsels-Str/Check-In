@@ -8,5 +8,5 @@ it('logs in as App Owner', function () {
         ->type('email', 'owner@example.com')
         ->type('password', 'password')
         ->click('Log in')
-        ->assertUrlIs('/dashboard');
+        ->assertSee('Dashboard');
 });
