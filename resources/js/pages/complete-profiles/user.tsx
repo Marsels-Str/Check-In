@@ -34,40 +34,34 @@ export default function CompleteProfile() {
                             <Label htmlFor="age" className="text-gray-700 dark:text-gray-300">
                                 Age
                             </Label>
-                            <Input
-                                type="number"
-                                id="age"
-                                value={data.age}
-                                onChange={(e) => setData('age', e.target.value)}
-                                placeholder="You must be at least 14 years old"
-                            />
+                            <Input type="number" id="age" value={data.age} onChange={(e) => setData('age', e.target.value)} placeholder="14-100" />
                             {errors.age && <p className="mt-1 text-sm text-red-500">{errors.age}</p>}
                         </div>
 
                         <div>
                             <Label htmlFor="height" className="text-gray-700 dark:text-gray-300">
-                                Height
+                                Height(CM)
                             </Label>
                             <Input
                                 type="number"
                                 id="height"
                                 value={data.height}
                                 onChange={(e) => setData('height', e.target.value)}
-                                placeholder="Height in CM"
+                                placeholder="100-300"
                             />
                             {errors.height && <p className="mt-1 text-sm text-red-500">{errors.height}</p>}
                         </div>
 
                         <div>
                             <Label htmlFor="weight" className="text-gray-700 dark:text-gray-300">
-                                Weight
+                                Weight(KG)
                             </Label>
                             <Input
                                 type="number"
                                 id="weight"
                                 value={data.weight}
                                 onChange={(e) => setData('weight', e.target.value)}
-                                placeholder="Weight in KG"
+                                placeholder="40-700"
                             />
                             {errors.weight && <p className="mt-1 text-sm text-red-500">{errors.weight}</p>}
                         </div>
@@ -81,7 +75,7 @@ export default function CompleteProfile() {
                                 id="phone"
                                 value={data.phone}
                                 onChange={(e) => setData('phone', e.target.value)}
-                                placeholder="Phone Number"
+                                placeholder="Area code + phone number 8-15 digits"
                             />
                             {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
                         </div>
@@ -109,7 +103,7 @@ export default function CompleteProfile() {
                                 id="country"
                                 value={data.country}
                                 onChange={(e) => setData('country', e.target.value)}
-                                placeholder="Country"
+                                placeholder="4-60 characters"
                             />
                             {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
                         </div>
@@ -118,7 +112,13 @@ export default function CompleteProfile() {
                             <Label htmlFor="city" className="text-gray-700 dark:text-gray-300">
                                 City
                             </Label>
-                            <Input type="text" id="city" value={data.city} onChange={(e) => setData('city', e.target.value)} placeholder="City" />
+                            <Input
+                                type="text"
+                                id="city"
+                                value={data.city}
+                                onChange={(e) => setData('city', e.target.value)}
+                                placeholder="1-170 characters"
+                            />
                             {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
                         </div>
 

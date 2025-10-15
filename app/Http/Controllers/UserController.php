@@ -58,9 +58,17 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:100|unique:users',
+            'name' => 'required|string|min:1|max:50',
+            'email' => 'required|email|max:100|unique:users',
             'password' => 'required|string|min:8|max:15',
+        ],[
+            'name.required' => 'OK Mr.nobody, enter name.',
+            'name.max' => 'There is no way youre name is that long!',
+            'email.required' => 'You must have an email, right?',
+            'email.unique' => 'Nice try, but not today.',
+            'password.required' => 'You want to be safe or not?',
+            'password.min' => 'You can do better than that.',
+            'password.max' => 'Thats enough genius!'
         ]);
 
         $user = User::create([
@@ -104,9 +112,17 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:100|unique:users,email,'.$id,
+            'name' => 'required|string|min:1|max:50',
+            'email' => 'required|email|max:100|unique:users,email,'.$id,
             'password' => 'nullable|string|min:8|max:15',
+        ], [
+            'name.required' => 'OK Mr.nobody, enter name.',
+            'name.max' => 'There is no way youre name is that long!',
+            'email.required' => 'You must have an email, right?',
+            'email.unique' => 'Nice try, but not today.',
+            'password.required' => 'You want to be safe or not?',
+            'password.min' => 'You can do better than that.',
+            'password.max' => 'Thats enough genius!'
         ]);
 
         $user = User::findOrFail($id);

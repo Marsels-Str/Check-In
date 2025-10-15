@@ -17,7 +17,7 @@ export default function Welcome() {
                         {auth.user ? (
                             <Link
                                 href={route('dashboard')}
-                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
                                 Dashboard
                             </Link>
@@ -25,13 +25,13 @@ export default function Welcome() {
                             <>
                                 <Link
                                     href={route('login')}
-                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                                 >
                                     Log in
                                 </Link>
                                 <Link
                                     href={route('register')}
-                                    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                                 >
                                     Register
                                 </Link>
@@ -51,8 +51,8 @@ export default function Welcome() {
                             </p>
                             <ul className="mb-4 flex flex-col lg:mb-6">
                                 <li className="relative flex items-center gap-4 py-2 before:absolute before:top-1/2 before:bottom-0 before:left-[0.4rem] before:border-l before:border-[#FFD54F] dark:before:border-[#FFD54F]">
-                                    <span className="relative py-1 bg-white dark:bg-black">
-                                        <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border bg-[#FF4081] shadow-[0px_0px_1px_0px_FDFDFCrgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] dark:border-[#FF4081] dark:bg-[#FFD54F]">
+                                    <span className="relative bg-white py-1 dark:bg-black">
+                                        <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[#FFD54F] bg-[#FF4081] shadow-[0px_0px_1px_0px_FDFDFCrgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] dark:border-[#FF4081] dark:bg-[#FFD54F]">
                                             <span className="h-1.5 w-1.5 rounded-full bg-[#FFD54F] dark:bg-[#FF4081]" />
                                         </span>
                                     </span>
@@ -60,7 +60,7 @@ export default function Welcome() {
                                 </li>
                                 <li className="relative flex items-center gap-4 py-2 before:absolute before:top-0 before:bottom-1/2 before:left-[0.4rem] before:border-l before:border-[#FF4081] dark:before:border-[#FF4081]">
                                     <span className="relative bg-white py-1 dark:bg-black">
-                                        <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border bg-[#FFD54F] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] dark:border-[#FFD54F] dark:bg-[#FF4081]">
+                                        <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[#FF4081] bg-[#FFD54F] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] dark:border-[#FFD54F] dark:bg-[#FF4081]">
                                             <span className="h-1.5 w-1.5 rounded-full bg-[#FF4081] dark:bg-[#FFD54F]" />
                                         </span>
                                     </span>

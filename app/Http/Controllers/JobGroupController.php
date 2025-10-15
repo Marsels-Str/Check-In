@@ -120,7 +120,6 @@ class JobGroupController extends Controller
             ->findOrFail($id);
 
         if ($user->hasRole('Owner')) {
-            // ok
         } elseif ($user->hasRole('Business')) {
             if (! $user->ownedBusiness || $group->business_id !== $user->ownedBusiness->id) {
                 return redirect()->route('job-groups.index');

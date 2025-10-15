@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
@@ -14,6 +15,94 @@ class BusinessProfileController extends Controller
     public function create(): Response
     {
         return Inertia::render('complete-profiles/business');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->merge([
+            'name' => htmlspecialchars(trim($request->name)),
+            'city' => htmlspecialchars(trim($request->city)),
+            'country' => htmlspecialchars(trim($request->country)),
+        ]);
+
+        $validated = $request->validate([
+            'name'           => 'required|string|min:1|max:50',
+            'industry'       => 'required|string|min:2|max:50',
+            'email'          => 'required|email|max:100|unique:businesses,email',
+            'street_address' => 'nullable|string|max:100',
+            'logo'           => 'nullable|image|max:2048',
+            'description'    => 'nullable|string|max:1000',
+            'employees'      => 'nullable|integer|min:0',
+            'country'        => [
+                'required',
+                'string',
+                'min:4',
+                'max:60',
+                'regex:/^[\p{L}\s]+$/u'
+            ],
+            'city'           => [
+                'required',
+                'string',
+                'min:1',
+                'max:170',
+                'regex:/^[\p{L}\s]+$/u'
+            ],
+            'phone'          => [
+                'required',
+                'string',
+                'min:8',
+                'max:15',
+                'regex:/^\+?[0-9]+$/',
+                'unique:businesses,phone',
+            ],
+        ], [
+            'name.required' => 'A company with no name, really?',
+            'name.max' => 'Now thats too much.',
+            'industry.required' => 'if you cant name the industry the cancel button is at the bottom ↓',
+            'industry.min' => 'Did you mean "IT"?',
+            'industry.max' => 'Must be a big business.',
+            'email.required' => 'You must have an email, right?',
+            'email.unique' => 'Oh no someone stole youre business email!',
+            'street_address.max' => 'Havent heard of that street.',
+            'description.max' => 'Stop, we get it!',
+            'country.required' => 'Where are you from?',
+            'country.regex' => 'Say "No" to numbers and special characters!',
+            'country.min' => 'Did you create a new country?',
+            'country.max' => 'Impossible!',
+            'city.required' => 'Be more specific.',
+            'city.regex' => 'Say "No" to numbers and special characters!',
+            'city.max' => 'Impossible!',
+            'phone.required' => 'Nothing bad is gonna happen if you add it.',
+            'phone.regex' => 'No no no, this is not good.',
+            'phone.unique' => 'Trying to assign a friend?',
+            'phone.min' => 'You do have a phone number, right?',
+            'phone.max' => 'Where on earth did you get this?',
+        ]);
+
+        $business = Business::create([
+            'user_id'        => $request->user()->id,
+            ...$validated,
+        ]);
+
+        $user = $request->user();
+        $user->syncRoles(['Business']);
+
+        if ($request->hasFile('logo')) {
+            $this->handleLogoUpload($business, $request->file('logo'));
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    public function cancel(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        $user->syncRoles(['Worker']);
+
+        session()->forget('can_access_business_complete');
+
+        return redirect()->route('dashboard')->with('status', 'Business setup canceled successfully.');
     }
 
     public function edit(Request $request): Response
@@ -53,33 +142,81 @@ class BusinessProfileController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name'           => 'required|string|max:255',
-            'industry'       => 'nullable|string|max:100',
-            'email'          => 'required|email|max:255',
-            'phone'          => 'nullable|string|max:20',
-            'country'        => 'required|string|max:50',
-            'city'           => 'required|string|max:50',
-            'street_address' => 'nullable|string|max:255',
-            'logo'           => 'nullable|image|max:2048',
-            'description'    => 'nullable|string|max:1000',
-            'employees'      => 'nullable|integer|min:0',
-        ]);
-
         $user = $request->user();
+        $business = $user->ownedBusiness ?? null;
 
-        if ($user->hasRole('Business')) {
-            $business = $user->ownedBusiness;
-        } elseif ($user->hasRole('Owner')) {
+        if ($user->hasRole('Owner')) {
             $businessId = $request->input('business_id');
             $business = Business::find($businessId);
-        } else {
-            return back();
         }
 
         if (! $business) {
-            return back();
+            return back()->with('error', 'No business found.');
         }
+
+        $request->merge([
+            'name' => htmlspecialchars(trim($request->name)),
+            'city' => htmlspecialchars(trim($request->city)),
+            'country' => htmlspecialchars(trim($request->country)),
+        ]);
+
+        $validated = $request->validate([
+            'name'           => 'required|string|min:1|max:50',
+            'industry'       => 'required|string|min:2|max:50',
+            'street_address' => 'nullable|string|max:100',
+            'logo'           => 'nullable|image|max:2048',
+            'description'    => 'nullable|string|max:1000',
+            'employees'      => 'nullable|integer|min:0',
+            'country'        => [
+                'required',
+                'string',
+                'min:4',
+                'max:60',
+                'regex:/^[\p{L}\s]+$/u'
+            ],
+            'city'           => [
+                'required',
+                'string',
+                'min:1',
+                'max:170',
+                'regex:/^[\p{L}\s]+$/u'
+            ],
+            'email'          => [
+                'required',
+                'email',
+                'max:100',
+                Rule::unique('businesses', 'email')->ignore($business->id),
+            ],
+            'phone'          => [
+                'required',
+                'string',
+                'min:8',
+                'max:15',
+                'regex:/^\+?[0-9]+$/',
+                Rule::unique('businesses', 'phone')->ignore($business->id),
+            ],
+        ], [
+            'name.required' => 'A company with no name, really?',
+            'name.max' => 'Now thats too much.',
+            'email.required' => 'You must have an email, right?',
+            'email.unique' => 'Oh no someone stole youre business email!',
+            'industry.required' => 'Why did you remove it?',
+            'industry.min' => 'Did you mean "IT"?',
+            'industry.max' => 'Must be a big business.',
+            'street_address.max' => 'Havent heard of that street.',
+            'country.required' => 'Where are you from?',
+            'country.regex' => 'Say "No" to numbers and special characters!',
+            'country.min' => 'Did you create a new country?',
+            'country.max' => 'Impossible!',
+            'city.required' => 'Be more specific.',
+            'city.regex' => 'Say "No" to numbers and special characters!',
+            'city.max' => 'Impossible!',
+            'phone.required' => 'Nothing bad is gonna happen if you add it.',
+            'phone.regex' => 'No no no, this is not good.',
+            'phone.unique' => 'Trying to assign a friend?',
+            'phone.min' => 'You do have a phone number, right?',
+            'phone.max' => 'Where on earth did you get this?',
+        ]);
 
         $business->update($validated);
 
@@ -88,42 +225,6 @@ class BusinessProfileController extends Controller
         }
 
         return back();
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'name'           => 'required|string|max:50',
-            'industry'       => 'required|string|max:100',
-            'email'          => 'required|email|max:150',
-            'phone'          => [
-                'required',
-                'string',
-                'min:8',
-                'max:15',
-                'unique:businesses,phone',
-            ],
-            'country'        => 'required|string|max:50',
-            'city'           => 'required|string|max:50',
-            'street_address' => 'required|string|max:100',
-            'logo'           => 'nullable|image|max:2048',
-            'description'    => 'nullable|string|max:1000',
-            'employees'      => 'nullable|integer|min:0',
-        ]);
-
-        $business = Business::create([
-            'user_id'        => $request->user()->id,
-            ...$validated,
-        ]);
-
-        $user = $request->user();
-        $user->syncRoles(['Business']);
-
-        if ($request->hasFile('logo')) {
-            $this->handleLogoUpload($business, $request->file('logo'));
-        }
-
-        return redirect()->route('dashboard');
     }
 
     public function updateLogo(Request $request): RedirectResponse

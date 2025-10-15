@@ -82,20 +82,20 @@ export default function BusinessCard({ business }: { business: Business }) {
                     )}
                 </div>
 
-                <div className="w-full space-y-1 border-t pt-4 text-sm text-muted-foreground">
+                <div className="w-full space-y-1 border-t pt-4 text-sm">
                     {business.phone && (
                         <p>
-                            <span className="font-medium text-foreground">Phone:</span> {business.phone}
+                            <span className="font-medium">Phone: +</span>{business.phone || '—'}
                         </p>
                     )}
                     <p>
-                        <span className="font-medium text-foreground">Address:</span> {business.street_address || '—'}
+                        <span className="font-medium">Address:</span> {business.street_address || '—'}
                     </p>
                     <p>
-                        <span className="font-medium text-foreground">City:</span> {business.city || '—'}
+                        <span className="font-medium">City:</span> {business.city || '—'}
                     </p>
                     <p>
-                        <span className="font-medium text-foreground">Country:</span> {business.country || '—'}
+                        <span className="font-medium">Country:</span> {business.country || '—'}
                     </p>
                 </div>
             </CardContent>

@@ -18,7 +18,7 @@ export default function UserCreateFields() {
 
     return (
         <div className="mx-auto w-full max-w-md">
-            <form method="post" onSubmit={submit} className="space-y-6 rounded-lg px-6 py-6 shadow backdrop-blur-sm">
+            <form method="post" onSubmit={submit} className="space-y-6 rounded-lg px-6 py-6">
                 <div className="space-y-4">
                     <div>
                         <Label htmlFor="name" className="text-gray-300 dark:text-gray-100">

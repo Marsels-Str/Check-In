@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     //Business
     Route::get('/complete-business', [BusinessProfileController::class, 'create'])->name('business.complete')->middleware('after.business.complete.access');
     Route::post('/complete-business', [BusinessProfileController::class, 'store'])->name('business.store');
+    Route::post('/complete-business/cancel', [BusinessProfileController::class, 'cancel'])->name('business.cancel');
 
     // After complete profile choice
     Route::get('/profile/after-complete', fn () => Inertia::render('complete-profiles/after-complete'))->name('profile.afterComplete')->middleware('after.profile.complete.access');

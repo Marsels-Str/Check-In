@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 
 export default function CompleteBusiness() {
     const { data, setData, post, errors, processing } = useForm({
@@ -24,6 +24,10 @@ export default function CompleteBusiness() {
         });
     }
 
+    function cancelSetup() {
+        router.post(route('business.cancel'));
+    }
+
     return (
         <>
             <Head title="Create Business" />
@@ -31,7 +35,7 @@ export default function CompleteBusiness() {
             <div className="mx-auto w-full max-w-lg px-4 py-10">
                 <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm transition-all duration-300 dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
                     <h1 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">Create your business</h1>
-                    <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">Fill out your company’s details to set up your business profile.</p>
+                    <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">Fill out your company's details to set up your business profile.</p>
 
                     <form onSubmit={submit} className="space-y-5">
                         <div>
@@ -67,7 +71,7 @@ export default function CompleteBusiness() {
                                 Business email
                             </Label>
                             <Input
-                                type="email"
+                                type="text"
                                 id="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
@@ -81,7 +85,7 @@ export default function CompleteBusiness() {
                                 Phone number
                             </Label>
                             <Input
-                                type="text"
+                                type="number"
                                 id="phone"
                                 value={data.phone}
                                 onChange={(e) => setData('phone', e.target.value)}
@@ -108,7 +112,13 @@ export default function CompleteBusiness() {
                             <Label htmlFor="city" className="text-gray-700 dark:text-gray-300">
                                 City
                             </Label>
-                            <Input type="text" id="city" value={data.city} onChange={(e) => setData('city', e.target.value)} placeholder="City" />
+                            <Input
+                                type="text"
+                                id="city"
+                                value={data.city}
+                                onChange={(e) => setData('city', e.target.value)}
+                                placeholder="City"
+                            />
                             {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
                         </div>
 
@@ -154,13 +164,21 @@ export default function CompleteBusiness() {
                             {errors.logo && <p className="mt-1 text-sm text-red-500">{errors.logo}</p>}
                         </div>
 
-                        <div className="pt-2 text-center">
+                        <div className="flex justify-center gap-3 pt-4">
                             <Button
                                 type="submit"
                                 disabled={processing}
                                 className="rounded-lg bg-pink-200/20 px-4 py-2 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
                                 {processing ? 'Saving...' : 'Save'}
+                            </Button>
+
+                            <Button
+                                type="button"
+                                onClick={cancelSetup}
+                                className="rounded-lg bg-gray-200/60 px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300/50 transition-all duration-300 hover:bg-gray-300/60 hover:text-gray-900 dark:bg-gray-800/60 dark:text-gray-300 dark:ring-gray-700 dark:hover:bg-gray-700/60 dark:hover:text-white"
+                            >
+                                Cancel
                             </Button>
                         </div>
                     </form>

@@ -4,24 +4,30 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Models\Business;
 
 class EnsureCantAccessBusinessComplete
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        // Only allow access if the session key exists
-        if (! session('can_access_business_complete')) {
-            return redirect()->route('dashboard');
+        $user = $request->user();
+
+        if (!$user) {
+            return redirect()->route('login');
         }
 
-        // Once accessed, remove the key to prevent revisiting
-        session()->forget('can_access_business_complete');
+        $profile = $user->profile;
+        $hasCompletedProfile = $profile && !empty($profile->unique_id);
+
+        if (!$hasCompletedProfile) {
+            return redirect()->route('profile.complete');
+        }
+
+        $hasBusiness = Business::where('user_id', $user->id)->exists();
+
+        if ($hasBusiness) {
+            return redirect()->route('dashboard');
+        }
 
         return $next($request);
     }
