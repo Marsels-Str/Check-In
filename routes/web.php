@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
 
     // Profile Settings
     Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/settings/profile/{user?}', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::patch('/settings/profile/{user?}', [ProfileController::class, 'update'])->name('profile.update');
 
     // Business Settings
     Route::get('/settings/business', [BusinessProfileController::class, 'edit'])->name('business.edit');
