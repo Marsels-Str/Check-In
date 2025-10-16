@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'App Owner',
             'email' => 'owner@example.com',
             'password' => Hash::make('password'),
+            'email_verified_at' => now(),
         ]);
 
         $user->assignRole('Owner');
