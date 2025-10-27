@@ -2,7 +2,6 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import SettingsLayout from '@/layouts/settings/layout';
-import LockedOverlay from '@/components/profile-settings/locked-auto-clock';
 import AutoClockForm from '@/components/profile-settings/auto-clock-form';
 import ExtendWorkTimeForm from '@/components/profile-settings/extend-work-time-form';
 import LockedAutoClock from '@/components/profile-settings/locked-auto-clock';
@@ -31,7 +30,7 @@ export default function AutoClock() {
                     <ExtendWorkTimeForm initialMinutes={settings.extended_minutes} />
 
                      {!hasBusiness && (
-                        <LockedAutoClock message="You must belong to a business in order to access Auto Clock settings." />
+                        <LockedAutoClock />
                     )}
                 </div>
             </SettingsLayout>
