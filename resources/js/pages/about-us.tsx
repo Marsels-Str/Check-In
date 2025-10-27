@@ -1,7 +1,7 @@
-import Accordion from '@/components/ui/accordion';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import Accordion from '@/components/ui/accordion';
 
 export default function AboutUs() {
     const breadcrumbs: BreadcrumbItem[] = [

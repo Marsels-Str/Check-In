@@ -1,10 +1,10 @@
-import AppLayout from '@/layouts/app-layout';
 import { useCan } from '@/lib/can';
+import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import GroupImages from '../../components/groups/group-images';
 import GroupMap from '../../components/groups/group-map';
 import GroupUsers from '../../components/groups/group-users';
+import GroupImages from '../../components/groups/group-images';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Groups', href: '/job-groups' },

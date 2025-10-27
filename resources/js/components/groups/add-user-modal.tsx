@@ -1,6 +1,6 @@
-import { Button } from '@headlessui/react';
-import { router } from '@inertiajs/react';
 import { useState } from 'react';
+import { router } from '@inertiajs/react';
+import { Button } from '@headlessui/react';
 
 export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
     const [error, setError] = useState<string | null>(null);
@@ -23,12 +23,10 @@ export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
 
     return (
         <>
-            {/* Full-screen overlay */}
             <div
                 className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-md transition-opacity duration-300"
                 style={{ pointerEvents: 'auto' }}
             >
-                {/* Modal Box */}
                 <div className="relative z-[100000] w-full max-w-md rounded-2xl border border-gray-200 bg-white/95 p-6 shadow-2xl backdrop-blur-sm dark:border-white/10 dark:bg-[#0f0f0f]/90 dark:text-gray-100">
                     <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">Available Users</h2>
 

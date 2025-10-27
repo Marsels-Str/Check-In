@@ -18,7 +18,18 @@ interface Business {
     };
 }
 
-export default function BusinessCard({ business }: { business: Business }) {
+export default function BusinessCard({ business }: { business?: Business | null }) {
+    if (!business) {
+        return (
+            <Card className="mx-auto w-full max-w-sm rounded-xl shadow-lg">
+                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center text-gray-500">
+                    <p>No business profile found.</p>
+                    <p className="text-sm">Create one to view details here.</p>
+                </CardContent>
+            </Card>
+        );
+    }
+
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
@@ -85,7 +96,8 @@ export default function BusinessCard({ business }: { business: Business }) {
                 <div className="w-full space-y-1 border-t pt-4 text-sm">
                     {business.phone && (
                         <p>
-                            <span className="font-medium">Phone: +</span>{business.phone || '—'}
+                            <span className="font-medium">Phone: </span>
+                            {business.phone}
                         </p>
                     )}
                     <p>

@@ -1,9 +1,9 @@
-import BussinesDropDownMenu from '@/components/business-dropdown-menu';
-import { useCan } from '@/lib/can';
-import type { BusinessProfile, User } from '@/types';
-import { router } from '@inertiajs/react';
 import axios from 'axios';
+import { useCan } from '@/lib/can';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import type { BusinessProfile, User } from '@/types';
+import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
 export default function EmployeeSearchAndAdd({
     isOwner,
@@ -18,68 +18,53 @@ export default function EmployeeSearchAndAdd({
 }) {
     const [uniqueId, setUniqueId] = useState('');
     const [searchResult, setSearchResult] = useState<User | null>(null);
-    const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? null);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
+    const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? businesses[0]?.id ?? null);
+    const [alert, setAlert] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
 
     const canAdd = useCan('users.add');
 
     useEffect(() => {
-        if (!businessId && businesses.length > 0) {
-            setBusinessId(selectedBusinessId ?? businesses[0].id ?? null);
-        }
-    }, [businesses, selectedBusinessId]);
-
-    useEffect(() => {
-        if (error || success) {
-            const timer = setTimeout(() => {
-                setError(null);
-                setSuccess(null);
-            }, 3000);
+        if (alert) {
+            const timer = setTimeout(() => setAlert(null), 3000);
             return () => clearTimeout(timer);
         }
-    }, [error, success]);
+    }, [alert]);
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
+        setAlert(null);
         setSearchResult(null);
 
-        if (!uniqueId.trim()) {
-            setError('Enter a Unique ID!');
-            return;
-        }
+        if (!uniqueId.trim()) return setAlert({ type: 'error', message: 'Enter a Unique ID!' });
 
         try {
-            const res = await axios.get(route('employees.search'), { params: { unique_id: uniqueId } });
-            if (res.data?.id) setSearchResult(res.data);
-            else setError('No user found with that ID.');
+            const { data } = await axios.get(route('employees.search'), { params: { unique_id: uniqueId } });
+            data?.id ? setSearchResult(data) : setAlert({ type: 'error', message: 'No user found with that ID.' });
         } catch {
-            setError('Enter a valid Unique ID.');
+            setAlert({ type: 'error', message: 'Enter a valid Unique ID.' });
         }
     };
 
     const handleAddEmployee = async () => {
-        if (!searchResult) return setError('Search for a user first!');
-        if (isOwner && !businessId) return setError('Select a business first!');
+        if (!searchResult) return setAlert({ type: 'error', message: 'Search for a user first!' });
+        if (isOwner && !businessId) return setAlert({ type: 'error', message: 'Select a business first!' });
 
         try {
-            const res = await axios.post(route('employees.store'), {
+            const { data } = await axios.post(route('employees.store'), {
                 user_id: searchResult.id,
                 ...(isOwner ? { business_id: businessId } : {}),
             });
 
-            if (res.data.success) {
-                setSearchResult(null);
+            if (data.success) {
                 setUniqueId('');
-                setError(null);
-                setSuccess('Employee added successfully!');
+                setSearchResult(null);
+                setAlert({ type: 'success', message: 'Employee added successfully!' });
                 onReload();
             } else {
-                setError(res.data.error || 'Could not add employee.');
+                setAlert({ type: 'error', message: data.error || 'Could not add employee.' });
             }
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Unexpected error');
+            setAlert({ type: 'error', message: err.response?.data?.error || 'Unexpected error' });
         }
     };
 
@@ -93,13 +78,12 @@ export default function EmployeeSearchAndAdd({
 
                 {isOwner && businesses.length > 0 && (
                     <div className="sm:self-start">
-                        <BussinesDropDownMenu
+                        <BusinessDropdownMenu
                             businesses={businesses}
                             selectedBusinessId={businessId}
                             onChange={(id) => {
                                 const newId = Number(id);
                                 setBusinessId(newId);
-
                                 router.visit(route('employees.index'), {
                                     data: { business_id: newId },
                                     only: ['employees', 'selectedBusinessId'],
@@ -115,6 +99,7 @@ export default function EmployeeSearchAndAdd({
                 <form onSubmit={handleSearch} className="mb-4 flex flex-wrap items-center gap-3">
                     <input
                         type="number"
+                        name="unique_id"
                         value={uniqueId}
                         onChange={(e) => setUniqueId(e.target.value)}
                         placeholder="Enter employee Unique ID"
@@ -129,26 +114,24 @@ export default function EmployeeSearchAndAdd({
                 </form>
             )}
 
-            {error && (
-                <div className="mb-3 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 shadow-sm transition-opacity duration-500 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300">
-                    {error}
-                </div>
-            )}
-
-            {success && (
-                <div className="mb-3 rounded-lg border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-700 shadow-sm transition-opacity duration-500 dark:border-green-700 dark:bg-green-900/30 dark:text-green-300">
-                    {success}
+            {alert && (
+                <div
+                    className={`mb-3 rounded-lg border px-4 py-2 text-sm shadow-sm transition-opacity duration-500 ${
+                        alert.type === 'error'
+                            ? 'border-red-300 bg-red-50 text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300'
+                            : 'border-green-300 bg-green-50 text-green-700 dark:border-green-700 dark:bg-green-900/30 dark:text-green-300'
+                    }`}
+                >
+                    {alert.message}
                 </div>
             )}
 
             {searchResult && (
                 <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-white/10 dark:bg-white/5">
-                    <p className="text-gray-800 dark:text-gray-200">
-                        <strong>{searchResult.name}</strong>
-                    </p>
+                    <p className="font-medium text-gray-800 dark:text-gray-200">{searchResult.name}</p>
                     <button
                         onClick={handleAddEmployee}
-                        className="mt-3 inline-flex items-center rounded-lg bg-green-100/20 px-4 py-2 text-sm font-medium text-green-700 ring-1 ring-green-400/30 transition-all duration-300 hover:bg-green-200/30 hover:text-green-800 hover:ring-green-400/50 dark:bg-green-900/40 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-900/30 dark:hover:text-green-200 dark:hover:ring-green-500/50"
+                        className="mt-3 inline-flex items-center rounded-lg bg-green-100/20 px-4 py-2 text-sm font-medium text-green-700 ring-1 ring-green-400/30 transition-all hover:bg-green-200/30 hover:text-green-800 dark:bg-green-900/40 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-900/30 dark:hover:text-green-200"
                     >
                         Add Employee
                     </button>

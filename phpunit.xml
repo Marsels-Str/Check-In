@@ -17,7 +17,7 @@
             <directory>app</directory>
         </include>
     </source>
-    <php>
+    <!-- <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
@@ -29,14 +29,13 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
-    </php>
-    <!-- <php>
+    </php> -->
+    <php>
     <env name="APP_ENV" value="local"/>
     <env name="APP_MAINTENANCE_DRIVER" value="file"/>
     <env name="BCRYPT_ROUNDS" value="4"/>
     <env name="CACHE_STORE" value="array"/>
 
-    <!-- Force Pest to use your real MySQL connection -->
     <env name="DB_CONNECTION" value="mysql"/>
     <env name="DB_HOST" value="127.0.0.1"/>
     <env name="DB_PORT" value="3306"/>
@@ -49,5 +48,5 @@
     <env name="QUEUE_CONNECTION" value="sync"/>
     <env name="SESSION_DRIVER" value="array"/>
     <env name="TELESCOPE_ENABLED" value="false"/>
-</php> -->
+</php>
 </phpunit>

@@ -59,7 +59,7 @@ export default function GroupMap({ group, availableMaps, canAddMap }: any) {
             <div className="mx-auto max-w-5xl p-4">
                 {canAddMap && (
                     <form onSubmit={handleAttach} className="mb-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                        <select name="map_id" className="flex-1 rounded-lg border bg-black px-3 py-2 shadow-sm">
+                        <select name="map_id" className="flex-1 rounded-lg border px-3 py-2 shadow-sm">
                             {availableMaps.map((m: any) => (
                                 <option key={m.id} value={m.id}>
                                     {m.name || `Map #${m.id}`}

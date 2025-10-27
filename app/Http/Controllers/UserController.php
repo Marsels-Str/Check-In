@@ -39,8 +39,8 @@ class UserController extends Controller
     public function assignRole(Request $request, User $user)
     {
         $request->validate([ 
-        'role_ids' => 'required|array',
-        'role_ids.*' => 'exists:roles,id',
+            'role_ids' => 'required|array',
+            'role_ids.*' => 'exists:roles,id',
         ]);
 
         $user->syncRoles($request->role_ids);
@@ -75,17 +75,6 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
-
-        $user->profile()->create([
-            'age' => null,
-            'height' => null,
-            'weight' => null,
-            'phone' => null,
-            'personal_code' => null,
-            'country' => null,
-            'city' => null,
-            'portrait' => null,
         ]);
 
         return redirect()->route('users.index');

@@ -14,105 +14,84 @@ use Illuminate\Support\Facades\Mail;
 class AutoClockScheduler extends Command
 {
     protected $signature = 'auto-clock:run';
-    protected $description = 'Handles automatic clock-in/out, lunch breaks, and reminders for users.';
+    protected $description = 'Handles auto clock-in/out, lunch breaks, and reminder emails.';
 
     public function handle()
     {
+        //Kad jāgriež pulkstenis stundu uz priekšu vai atpakaļ, tad izmantot šo ->subHour() vai ->addHour()
         $now = Carbon::now();
-
         AutoClockToken::where('expires_at', '<=', now())->delete();
-
         $settings = AutoClockSetting::with('user')->get();
 
         foreach ($settings as $setting) {
-            if (!$setting->user || !$setting->work_start || !$setting->work_end) {
-                continue;
-            }
+            if (!$setting->user || !$setting->work_start || !$setting->work_end) continue;
 
-            $userNow   = $now->copy()->setTimezone('Europe/Riga');
-            $workStart = Carbon::createFromTimeString($setting->work_start, 'Europe/Riga');
-            $workEnd   = Carbon::createFromTimeString($setting->work_end, 'Europe/Riga');
+            $workStart = Carbon::createFromTimeString($setting->work_start);
+            $workEnd = Carbon::createFromTimeString($setting->work_end);
 
-            $this->info("Checking {$setting->user->name} | Now: {$userNow->format('H:i')} | Start: {$workStart->format('H:i')} | End: {$workEnd->format('H:i')}");
-
-            if ($userNow->between($workStart->copy()->subMinutes(5), $workStart)) {
+            if ($now->between($workStart->copy()->subMinutes(5), $workStart)) {
                 $this->sendEmail($setting->user, 'clockin');
             }
 
-            if ($userNow->between($workEnd->copy()->subMinutes(5), $workEnd)) {
+            if ($now->between($workEnd->copy()->subMinutes(5), $workEnd) && $this->isUserClockedIn($setting->user)) {
                 $this->sendEmail($setting->user, 'clockout');
             }
 
             if ($setting->lunch_start && $setting->lunch_end) {
-                $lunchStart = Carbon::createFromTimeString($setting->lunch_start, 'Europe/Riga');
-                $lunchEnd   = Carbon::createFromTimeString($setting->lunch_end, 'Europe/Riga');
+                $lunchStart = Carbon::createFromTimeString($setting->lunch_start);
+                $lunchEnd = Carbon::createFromTimeString($setting->lunch_end);
 
-                if ($userNow->isSameMinute($lunchStart)) {
-                    if ($this->isUserClockedIn($setting->user)) {
-                        $this->info("→ Pausing work for lunch ({$lunchStart->format('H:i')})");
-                        $setting->user->pauseForLunch();
-                    }
+                if ($now->isSameMinute($lunchStart) && $this->isUserClockedIn($setting->user)) {
+                    $this->info("→ Lunch started");
+                    $setting->user->pauseForLunch();
                 }
 
-                if ($userNow->isSameMinute($lunchEnd)) {
-                    if (! $this->isUserClockedIn($setting->user)) {
-                        $this->info("→ Resuming work after lunch ({$lunchEnd->format('H:i')})");
-                        $setting->user->resumeAfterLunch();
-                    }
+                if ($now->isSameMinute($lunchEnd) && ! $this->isUserClockedIn($setting->user)) {
+                    $this->info("→ Lunch ended");
+                    $setting->user->resumeAfterLunch();
                 }
             }
 
-            if (!is_null($setting->extended_minutes) && $setting->extended_minutes > 0) {
+            if (!empty($setting->extended_minutes)) {
                 $extendedEnd = $workEnd->copy()->addMinutes($setting->extended_minutes);
+                if ($now->lessThan($extendedEnd)) continue;
 
-                if ($userNow->lessThan($extendedEnd)) {
-                    $this->info("→ Still within extended time (ends at {$extendedEnd->format('H:i')})");
-                    continue;
-                }
-
-                $this->info("→ Auto clock-out (extension complete +{$setting->extended_minutes}m)");
                 $setting->user->clockOutAutomatically();
                 $setting->update(['extended_minutes' => null]);
                 continue;
             }
 
-            if ($userNow->greaterThanOrEqualTo($workEnd) && $this->isUserClockedIn($setting->user)) {
-                $this->info('→ Auto clock-out (normal end reached)');
+            if ($now->greaterThanOrEqualTo($workEnd) && $this->isUserClockedIn($setting->user)) {
+                $this->info("→ Auto clock-out at end of day");
                 $setting->user->clockOutAutomatically();
             }
         }
 
-        $this->info('Auto clock job executed at ' . now());
+        $this->info('Auto clock executed at ' . now());
     }
 
     private function sendEmail($user, $type)
     {
-        $existingToken = AutoClockToken::where('user_id', $user->id)
+        $exists = AutoClockToken::where('user_id', $user->id)
             ->where('action_type', $type)
             ->where('expires_at', '>', now())
             ->exists();
 
-        if ($existingToken) {
-            $this->info("→ Skipping: {$type} email already active for {$user->name}");
-            return;
-        }
+        if ($exists) return;
 
         $token = Str::random(32);
-
         AutoClockToken::create([
-            'user_id'     => $user->id,
-            'token'       => $token,
+            'user_id' => $user->id,
+            'token' => $token,
             'action_type' => $type,
-            'expires_at'  => now()->addMinutes(5),
+            'expires_at' => now()->addMinutes(5),
         ]);
 
-        if ($type === 'clockin') {
-            Mail::to($user->email)->send(new ClockInReminderMail($user, $token));
-        } else {
-            Mail::to($user->email)->send(new ClockOutReminderMail($user, $token));
-        }
+        $type === 'clockin'
+            ? Mail::to($user->email)->send(new ClockInReminderMail($user, $token))
+            : Mail::to($user->email)->send(new ClockOutReminderMail($user, $token));
 
-        $this->info("→ Sent {$type} email to {$user->email}");
+        $this->info("→ {$type} email sent to {$user->email}");
     }
 
     private function isUserClockedIn($user)

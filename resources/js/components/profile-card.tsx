@@ -98,7 +98,7 @@ export default function ProfileCard({ user }: { user: User }) {
                         <span className="font-medium">Personal code:</span> {user.profile?.personal_code ?? '—'}
                     </p>
                     <p>
-                        <span className="font-medium">Phone: +</span>{user.profile?.phone ?? '—'}
+                        <span className="font-medium">Phone: </span>{user.profile?.phone ?? '—'}
                     </p>
                 </div>
             </CardContent>

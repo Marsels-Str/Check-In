@@ -1,7 +1,7 @@
-import AppLayout from '@/layouts/app-layout';
 import { useCan } from '@/lib/can';
-import { type BreadcrumbItem, User } from '@/types';
 import { Button } from '@headlessui/react';
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem, User } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Users', href: '/users' }];

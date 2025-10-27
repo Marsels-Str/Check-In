@@ -1,7 +1,8 @@
-import UserCreateFields from '@/components/users/user-create-fields';
+
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import UserCreateFields from '@/components/users/user-create-fields';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'User Create', href: '/users' }];
 

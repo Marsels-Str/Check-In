@@ -81,21 +81,22 @@ export interface Map {
   id: number;
   name?: string;
   type?: string;
-  lat?: number | null;
-  lng?: number | null;
-  radius?: number | null;
   polygon?: any;
   created_at: string;
   updated_at: string;
+  lat?: number | null;
+  lng?: number | null;
+  business_id: number;
+  radius?: number | null;
 }
 
 export interface EditableMap {
-  name: string;
-  type: string;
-  lat: number | string | null;
-  lng: number | string | null;
-  radius: number | string | null;
-  polygon: any;
+  name?: string;
+  type?: string;
+  lat?: number | string | null;
+  lng?: number | string | null;
+  radius?: number | string | null;
+  polygon?: any;
 }
 
 export interface User {

@@ -1,11 +1,12 @@
-import BusinessCard from '@/components/business-card';
-import BusinessDropdownMenu from '@/components/business-dropdown-menu';
-import HeadingSmall from '@/components/heading-small';
-import BusinessForm from '@/components/profile-settings/business-form';
 import AppLayout from '@/layouts/app-layout';
+import BusinessCard from '@/components/business-card';
+import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import BusinessDropdownMenu from '@/components/business-dropdown-menu';
+import BusinessForm from '@/components/profile-settings/business-form';
+import CreateBusinessForm from '@/components/profile-settings/create-business-form';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Business settings', href: '/settings/business' }];
 
@@ -65,9 +66,7 @@ export default function Business({
                             {business ? (
                                 <BusinessForm key={business.id} business={business} action={route('business.update')} />
                             ) : (
-                                <p className="text-gray-500">
-                                    No business found. Please create or select a business.
-                                </p>
+                                <CreateBusinessForm/>
                             )}
                         </div>
                     </div>

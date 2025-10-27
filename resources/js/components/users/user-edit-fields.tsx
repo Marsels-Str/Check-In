@@ -1,9 +1,9 @@
-import InputError from '@/components/input-error';
 import { type User } from '@/types';
-import { useForm } from '@inertiajs/react';
-import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Button } from '../ui/button';
+import { useForm } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 
 export default function Edit({ user }: { user: User }) {
     const { data, setData, put, processing, errors } = useForm({

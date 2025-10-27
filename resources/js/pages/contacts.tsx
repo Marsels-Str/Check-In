@@ -1,7 +1,7 @@
+import { useState } from 'react';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 
 export default function Contacts() {
     const breadcrumbs: BreadcrumbItem[] = [

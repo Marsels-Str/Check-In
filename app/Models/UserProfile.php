@@ -17,6 +17,7 @@ class UserProfile extends Model
         'city',
         'portrait',
         'unique_id',
+        'user_id',
     ];
 
     protected static function booted()

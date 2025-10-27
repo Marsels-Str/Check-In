@@ -2,16 +2,18 @@
 
 use App\Models\User;
 
-it('logs in as App Owner, creates a job group for his own business and uploads an image (Base64)', function () {
+test('Biznesa īpašnieks ieiet savā profilā dodas uz grupu sadaļu, izveido grupu un pievieno tai attēlu!', function () {
     config(['database.default' => 'mysql']);
 
+    //ē-pasts priekš ieiešanas profilā
     $owner = User::where('email', 'owner@example.com')->firstOrFail();
 
+    //attēls
     $imagePath = base_path('tests/Fixtures/Stoli.png');
     expect(file_exists($imagePath))->toBeTrue('Test image not found at tests/Fixtures/Stoli.png');
-
     $imageBase64 = base64_encode(file_get_contents($imagePath));
 
+    //ieiešana profilā un grupas izveide
     $page = visit('/')
         ->click('Log in')
         ->type('email', $owner->email)
@@ -21,11 +23,10 @@ it('logs in as App Owner, creates a job group for his own business and uploads a
         ->click('Create')
         ->type('name', 'Test Group')
         ->type('description', 'Test Description')
-        ->click('Select Business')
-        ->click('AppOwner Business')
         ->click('Save')
         ->click('Show');
 
+    //pievieno attelu grupai
     $page->script("
         const hiddenInput = document.querySelector('input[name=\"image_base64\"]') 
             || document.createElement('input');
@@ -35,12 +36,13 @@ it('logs in as App Owner, creates a job group for his own business and uploads a
         document.querySelector('form').appendChild(hiddenInput);
     ");
 
+    //saglabā attēlu
     $page->click('Upload')
     ->screenshot()
          ->assertSee('Test Group');
 });
 
-it('fails to upload when no image is provided', function () {
+test('Neļauj pievienot tukšu lauku, ja attēls nav atlasīts!', function () {
     config(['database.default' => 'mysql']);
 
     $owner = User::where('email', 'owner@example.com')->firstOrFail();
@@ -54,8 +56,6 @@ it('fails to upload when no image is provided', function () {
         ->click('Create')
         ->type('name', 'Test Group')
         ->type('description', 'Test Description')
-        ->click('Select Business')
-        ->click('AppOwner Business')
         ->click('Save')
         ->click('Show')
         ->click('Upload')

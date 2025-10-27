@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function CompleteProfile() {
@@ -75,7 +75,7 @@ export default function CompleteProfile() {
                                 id="phone"
                                 value={data.phone}
                                 onChange={(e) => setData('phone', e.target.value)}
-                                placeholder="Area code + phone number 8-15 digits"
+                                placeholder="8-15"
                             />
                             {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
                         </div>

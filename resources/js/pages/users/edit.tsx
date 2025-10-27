@@ -1,8 +1,8 @@
+import AppLayout from '@/layouts/app-layout';
+import { Head, Link } from '@inertiajs/react';
+import { type BreadcrumbItem, type User } from '@/types';
 import UserForm from '@/components/users/user-edit-fields';
 import UserProfileFields from '@/components/users/user-profile-edit-fields';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type User } from '@/types';
-import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Users', href: '/users' },

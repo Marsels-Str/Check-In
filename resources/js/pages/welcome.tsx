@@ -1,5 +1,5 @@
-import WelcomeLogo from '@/components/welcome-logo';
 import { type SharedData } from '@/types';
+import WelcomeLogo from '@/components/welcome-logo';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Welcome() {

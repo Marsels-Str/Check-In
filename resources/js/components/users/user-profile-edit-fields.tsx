@@ -1,9 +1,9 @@
-import InputError from '@/components/input-error';
-import type { UserProfile } from '@/types';
-import { useForm } from '@inertiajs/react';
-import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Button } from '../ui/button';
+import type { UserProfile } from '@/types';
+import { useForm } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 
 export default function UserProfileFields({ user_profile }: { user_profile: UserProfile }) {
     const { data, setData, patch, processing, errors } = useForm<UserProfile>({
@@ -19,7 +19,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
 
     function submit(e: React.FormEvent) {
         e.preventDefault();
-        patch(route('profile.update', user_profile.user_id));
+        patch(route('users.update-user-profile', user_profile.user_id));
     }
 
     return (
@@ -36,7 +36,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             name="age"
                             value={data.age || ''}
                             onChange={(e) => setData('age', e.target.value)}
-                            placeholder="Age"
+                            placeholder="14-100"
                         />
                         <InputError message={errors.age} className="mt-1" />
                     </div>
@@ -51,7 +51,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             name="height"
                             value={data.height || ''}
                             onChange={(e) => setData('height', e.target.value)}
-                            placeholder="Height"
+                            placeholder="100-300"
                         />
                         <InputError message={errors.height} className="mt-1" />
                     </div>
@@ -66,7 +66,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             name="weight"
                             value={data.weight || ''}
                             onChange={(e) => setData('weight', e.target.value)}
-                            placeholder="Weight"
+                            placeholder="40-700"
                         />
                         <InputError message={errors.weight} className="mt-1" />
                     </div>
@@ -81,7 +81,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             name="phone"
                             value={data.phone || ''}
                             onChange={(e) => setData('phone', e.target.value)}
-                            placeholder="Phone number"
+                            placeholder="8-15"
                         />
                         <InputError message={errors.phone} className="mt-1" />
                     </div>
@@ -111,7 +111,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             name="country"
                             value={data.country || ''}
                             onChange={(e) => setData('country', e.target.value)}
-                            placeholder="Country"
+                            placeholder="4-60 characters"
                         />
                         <InputError message={errors.country} className="mt-1" />
                     </div>
@@ -126,7 +126,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             name="city"
                             value={data.city || ''}
                             onChange={(e) => setData('city', e.target.value)}
-                            placeholder="City"
+                            placeholder="1-170 characters"
                         />
                         <InputError message={errors.city} className="mt-1" />
                     </div>

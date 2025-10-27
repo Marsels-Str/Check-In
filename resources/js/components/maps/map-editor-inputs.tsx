@@ -5,7 +5,7 @@ import type { EditableMap } from '@/types';
 export default function MapEditorInputs({
     data,
     setData,
-    errors,
+    errors = {},
 }: {
     data: EditableMap;
     setData: (key: keyof EditableMap, value: any) => void;
@@ -37,7 +37,7 @@ export default function MapEditorInputs({
                         className="mt-1 w-full rounded-md border p-2"
                         rows={3}
                     />
-                    {errors?.polygon && <div className="text-sm text-red-500">{errors.polygon}</div>}
+                    {errors.polygon && <div className="text-sm text-red-500">{errors.polygon}</div>}
                 </div>
             )}
         </div>

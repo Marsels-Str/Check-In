@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
+import { useForm } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
 export default function UserCreateFields() {

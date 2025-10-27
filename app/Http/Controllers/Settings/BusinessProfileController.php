@@ -102,12 +102,22 @@ class BusinessProfileController extends Controller
 
         session()->forget('can_access_business_complete');
 
-        return redirect()->route('dashboard')->with('status', 'Business setup canceled successfully.');
+        return redirect()->route('dashboard');
     }
 
     public function edit(Request $request): Response
     {
         $user = $request->user();
+
+        if ($user->hasRole('Worker') && $user->businesses()->exists() && ! $user->ownedBusiness) {
+            return Inertia::render('settings/locked/business');
+        }
+
+        if ($user->hasRole('Worker') && ! $user->ownedBusiness) {
+            return Inertia::render('settings/business', [
+                'auth' => ['user' => $user->load('profile')],
+            ]);
+        }
 
         if ($user->hasRole('Owner')) {
             $businesses = Business::select(
@@ -151,7 +161,7 @@ class BusinessProfileController extends Controller
         }
 
         if (! $business) {
-            return back()->with('error', 'No business found.');
+            return back();
         }
 
         $request->merge([
@@ -235,7 +245,7 @@ class BusinessProfileController extends Controller
         $business = $user->ownedBusiness ?? $user->businesses()->first();
 
         if (! $business) {
-            return back()->with('error', 'No business found to update.');
+            return back();
         }
 
         $this->handleLogoUpload($business, $request->file('logo'));

@@ -41,20 +41,17 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
             <Head title="Maps" />
 
             <div className="px-4">
-                {/* Header */}
                 <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Maps</h1>
                         <p className="text-sm text-gray-600 dark:text-gray-400">View, edit, and manage youre maps.</p>
                     </div>
 
-                    {/* Business Dropdown */}
                     {auth.user.roles.includes('Owner') && (
                         <BusinessDropdownMenu businesses={businesses} selectedBusinessId={currentBusinessId} onChange={handleBusinessChange} />
                     )}
                 </div>
 
-                {/* Map Display */}
                 <div className="relative z-50 mb-10 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
                     {center ? (
                         <MapContainer center={center} zoom={13} className="h-[550px] w-full rounded-lg">
@@ -63,7 +60,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                                 canCreate={auth.user.roles.includes('Owner') || auth.user.roles.includes('Business')}
                                 canEdit={auth.user.roles.includes('Owner') || auth.user.roles.includes('Business')}
                                 auth={auth}
-                                selectedBusinessId={selectedBusinessId}
+                                selectedBusinessId={currentBusinessId}
                             />
                         </MapContainer>
                     ) : (
@@ -71,7 +68,6 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                     )}
                 </div>
 
-                {/* Table Section */}
                 <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
                     <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent dark:scrollbar-thumb-gray-600 max-h-[340px] overflow-y-auto md:max-h-[230px]">
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">

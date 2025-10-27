@@ -1,20 +1,18 @@
-import AutoClockForm from '@/components/profile-settings/auto-clock-form';
-import ExtendWorkTimeForm from '@/components/profile-settings/extend-work-time-form';
 import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import SettingsLayout from '@/layouts/settings/layout';
+import LockedOverlay from '@/components/profile-settings/locked-auto-clock';
+import AutoClockForm from '@/components/profile-settings/auto-clock-form';
+import ExtendWorkTimeForm from '@/components/profile-settings/extend-work-time-form';
+import LockedAutoClock from '@/components/profile-settings/locked-auto-clock';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Auto Clock', href: '/settings/auto-clock' }];
 
 export default function AutoClock() {
     const { props }: any = usePage();
-    const settings = props.settings || {};
-
-    const [setSuccess] = useState<string | null>(null);
-    const [setError] = useState<string | null>(null);
-
+    const { settings = {}, hasBusiness } = props;
+    
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <SettingsLayout>
@@ -31,6 +29,10 @@ export default function AutoClock() {
                     <hr className="my-10 border-gray-300 dark:border-gray-700" />
 
                     <ExtendWorkTimeForm initialMinutes={settings.extended_minutes} />
+
+                     {!hasBusiness && (
+                        <LockedAutoClock message="You must belong to a business in order to access Auto Clock settings." />
+                    )}
                 </div>
             </SettingsLayout>
         </AppLayout>

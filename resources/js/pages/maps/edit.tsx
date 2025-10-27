@@ -23,6 +23,7 @@ export default function Edit({ map }: { map: Map }) {
         type: map.type ?? '',
     });
 
+    // @ts-ignore
     const { data, setData, put, errors, processing } = form;
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -42,7 +43,7 @@ export default function Edit({ map }: { map: Map }) {
                             <p className="text-sm text-gray-500">You can edit by replacing the old shape or changing the data values.</p>
                         </div>
                         <Link
-                            href="/maps"
+                            href={route('maps.index', { business_id: map.business_id })}
                             className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
                             Back
@@ -56,7 +57,7 @@ export default function Edit({ map }: { map: Map }) {
                                 type="text"
                                 value={data.name}
                                 onChange={(e: any) => setData('name', e.target.value)}
-                                placeholder="Enter map name"
+                                placeholder="Max 100 characters"
                             />
                             {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                         </div>

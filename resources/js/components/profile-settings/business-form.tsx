@@ -1,9 +1,9 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Transition } from '@headlessui/react';
-import { Form } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function BusinessForm({ business, action }: { business: any; action: string }) {
     return (

@@ -1,9 +1,9 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Transition } from '@headlessui/react';
 import { Form, Link } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function ProfileForm({ user, mustVerifyEmail, status }: { user: any; mustVerifyEmail: boolean; status?: string }) {
     return (

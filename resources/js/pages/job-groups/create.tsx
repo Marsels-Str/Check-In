@@ -1,10 +1,10 @@
-import BusinessDropdownMenu from '@/components/business-dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@headlessui/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Button } from '@headlessui/react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Head, Link, useForm } from '@inertiajs/react';
+import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Groups', href: '/job-groups' },
@@ -86,7 +86,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                         <div className="flex justify-center">
                             <BusinessDropdownMenu
                                 businesses={businesses}
-                                selectedBusinessId={data.business_id}
+                                selectedBusinessId={null}
                                 onChange={(id) => setData('business_id', id)}
                             />
                         </div>

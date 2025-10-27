@@ -5,9 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\HasOne;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -92,49 +90,54 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(TimeLog::class);
     }
 
+    private function activeTimeLog()
+    {
+        return $this->timeLogs()
+            ->whereNull('clock_out')
+            ->latest()
+            ->first();
+    }
+
     public function clockInAutomatically()
     {
         if ($this->timeLogs()->whereNull('clock_out')->exists()) {
             return false;
         }
 
-        $businessId = $this->businesses()->first()?->id;
-
-        if (! $businessId) {
-            \Log::warning("User {$this->id} tried to clock in but has no assigned business.");
-            return false;
-        }
+        $businessId = $this->businesses()->value('id');
+        if (! $businessId) return false;
 
         $this->timeLogs()->create([
             'business_id' => $businessId,
-            'clock_in' => now('Europe/Riga'),
+            'clock_in'    => now(),
             'worked_time' => null,
         ]);
 
         return true;
     }
 
+    private function secondsToHms(int $seconds): string
+    {
+        $seconds = abs($seconds);
+        $h = intdiv($seconds, 3600);
+        $m = intdiv($seconds % 3600, 60);
+        $s = $seconds % 60;
+        return sprintf('%02d:%02d:%02d', $h, $m, $s);
+    }
+
     public function clockOutAutomatically()
     {
-        $activeLog = $this->timeLogs()
-            ->whereNull('clock_out')
-            ->latest()
-            ->first();
+        $activeLog = $this->activeTimeLog();
+        if (! $activeLog) return false;
 
-        if (! $activeLog) {
-            return false;
-        }
+        $clockIn  = Carbon::parse($activeLog->clock_in);
+        $clockOut = now();
 
-        $clockIn = Carbon::parse($activeLog->clock_in, 'Europe/Riga');
-        $clockOut = now('Europe/Riga');
-
-        $diffInSeconds = $clockOut->diffInSeconds($clockIn);
-
-        $workedTime = gmdate('H:i:s', $diffInSeconds);
+        $workedSeconds = abs($clockOut->diffInSeconds($clockIn));
 
         $activeLog->update([
-            'clock_out' => $clockOut,
-            'worked_time' => $workedTime,
+            'clock_out'   => $clockOut,
+            'worked_time' => $this->secondsToHms($workedSeconds),
         ]);
 
         return true;
@@ -142,31 +145,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function pauseForLunch()
     {
-        $activeLog = $this->timeLogs()
-            ->whereNull('clock_out')
-            ->latest()
-            ->first();
+        $activeLog = $this->activeTimeLog();
+        if (! $activeLog) return false;
 
-        if (! $activeLog) {
-            return false;
-        }
+        $clockIn  = Carbon::parse($activeLog->clock_in);
+        $clockOut = now();
 
-        $clockIn = Carbon::parse($activeLog->clock_in, 'Europe/Riga');
-        $now = now('Europe/Riga');
-        $elapsedSeconds = $now->diffInSeconds($clockIn);
-
-        $previousSeconds = 0;
-        if ($activeLog->worked_time) {
-            [$h, $m, $s] = explode(':', $activeLog->worked_time);
-            $previousSeconds = ($h * 3600) + ($m * 60) + $s;
-        }
-
-        $totalSeconds = $previousSeconds + $elapsedSeconds;
-        $formattedTime = gmdate('H:i:s', $totalSeconds);
+        $workedSeconds = abs($clockOut->diffInSeconds($clockIn));
 
         $activeLog->update([
-            'worked_time' => $formattedTime,
-            'clock_out' => $now,
+            'worked_time' => $this->secondsToHms($workedSeconds),
+            'clock_out'   => $clockOut,
         ]);
 
         return true;
@@ -175,16 +164,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function resumeAfterLunch()
     {
         $businessId = $this->businesses()->first()?->id;
-
-        if (! $businessId) {
-            \Log::warning("User {$this->id} tried to resume after lunch but has no assigned business.");
-            return false;
-        }
+        if (! $businessId) return false;
 
         $this->timeLogs()->create([
             'business_id' => $businessId,
-            'clock_in' => now('Europe/Riga'),
-            'worked_time' => 0,
+            'clock_in'    => now(),
+            'worked_time' => null,
         ]);
 
         return true;

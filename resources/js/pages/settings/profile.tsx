@@ -1,11 +1,11 @@
-import DeleteUser from '@/components/delete-user';
-import HeadingSmall from '@/components/heading-small';
-import ProfileCard from '@/components/profile-card';
-import ProfileForm from '@/components/profile-settings/profile-form';
 import AppLayout from '@/layouts/app-layout';
+import { Head, usePage } from '@inertiajs/react';
+import DeleteUser from '@/components/delete-user';
+import ProfileCard from '@/components/profile-card';
+import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import ProfileForm from '@/components/profile-settings/profile-form';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Profile settings', href: '/settings/profile' }];
 

@@ -7,7 +7,7 @@ export default function LiveTimer({ startTime }: { startTime: string }) {
         const update = () => {
             const start = new Date(startTime);
 
-            start.setHours(start.getHours() -1);
+            start.setHours(start.getHours());
 
             const now = new Date().getTime();
             const diff = Math.floor((now - start.getTime()) / 1000);

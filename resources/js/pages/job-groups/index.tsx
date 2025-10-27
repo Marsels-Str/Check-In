@@ -1,5 +1,5 @@
-import AppLayout from '@/layouts/app-layout';
 import { useCan } from '@/lib/can';
+import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 

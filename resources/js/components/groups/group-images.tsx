@@ -1,5 +1,5 @@
-import { Button, Input } from '@headlessui/react';
 import { router } from '@inertiajs/react';
+import { Button, Input } from '@headlessui/react';
 
 export default function GroupImages({ group, errors }: any) {
     const handleDelete = (id: number) => {
