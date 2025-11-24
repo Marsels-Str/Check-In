@@ -48,7 +48,6 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
 
     //Maps
     Route::resource('maps', MapController::class);
-    Route::get('/maps/{map}/index', [MapController::class, 'index'])->name('maps.index');
 
     //Profile Complete
     Route::get('/complete-profile', [ProfileController::class, 'create'])->name('profile.complete');
