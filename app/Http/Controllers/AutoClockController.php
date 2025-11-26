@@ -57,7 +57,7 @@ class AutoClockController extends Controller
         );
 
         //Atgriež veiksmīgu paziņojumu priekš (front-end)
-        return response()->json(['success' => true]);
+        return redirect()->back();
     }
 
     public function extendWork(Request $request)
@@ -74,7 +74,7 @@ class AutoClockController extends Controller
         AutoClockSetting::firstOrCreate(['user_id' => $user->id])->update($validated);
 
         //Atrgriežas
-        return back();
+        return redirect()->back();
     }
 
     public function loginClockIn(string $token)

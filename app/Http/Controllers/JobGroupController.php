@@ -178,7 +178,7 @@ class JobGroupController extends Controller
         }
 
         $validated = $request->validate([
-            'user_ids'   => 'array',
+            'user_ids'   => 'required|array',
             'user_ids.*' => 'exists:users,id',
         ]);
 

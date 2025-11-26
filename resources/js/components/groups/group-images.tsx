@@ -1,5 +1,8 @@
-import { router } from '@inertiajs/react';
-import { Button, Input } from '@headlessui/react';
+import InputError from '@/components/input-error';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@headlessui/react';
+import { Form, router } from '@inertiajs/react';
 
 export default function GroupImages({ group, errors }: any) {
     const handleDelete = (id: number) => {
@@ -8,36 +11,35 @@ export default function GroupImages({ group, errors }: any) {
         }
     };
 
-    const handleUpload = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        router.post(route('job-groups.images.store', { jobGroup: group.id }), formData, {
-            forceFormData: true,
-        });
-    };
-
     return (
         <div className="mt-8">
-            <form onSubmit={handleUpload} className="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-                <label className="flex flex-col text-sm font-medium text-gray-700 dark:text-gray-300">
-                    <span className="mb-1">Upload new image:</span>
-                    <Input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        className="block w-full rounded-lg bg-transparent p-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:text-gray-100"
-                    />
-                </label>
+            <Form
+                method="post"
+                action={route('job-groups.images.store', { jobGroup: group.id })}
+                className="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center"
+            >
+                {({ errors }) => (
+                    <>
+                        <Label className="flex flex-col text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <span className="mb-1">Upload new image:</span>
+                            <Input
+                                type="file"
+                                name="image"
+                                accept="image/*"
+                                className="block w-full rounded-lg bg-transparent p-2 text-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 dark:text-gray-100"
+                            />
+                            <InputError message={errors.image} />
+                        </Label>
 
-                <Button
-                    type="submit"
-                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                >
-                    Upload
-                </Button>
-            </form>
-
-            {errors.image && <p className="mb-3 text-sm text-red-500">{errors.image}</p>}
+                        <Button
+                            type="submit"
+                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                        >
+                            Upload
+                        </Button>
+                    </>
+                )}
+            </Form>
 
             {group.images?.length ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">

@@ -30,9 +30,9 @@ class UserController extends Controller
         $userRoles = $user->roles()->pluck('id')->toArray();
         
         return inertia('users/assign',[
-        'user' => $user,
-        'roles' => $roles,
-        'userRoles' => $userRoles,
+            'user' => $user,
+            'roles' => $roles,
+            'userRoles' => $userRoles,
         ]);
     }
 
@@ -40,10 +40,11 @@ class UserController extends Controller
     {
         $request->validate([ 
             'role_ids' => 'required|array',
-            'role_ids.*' => 'exists:roles,id',
+            'role_ids.*' => 'required|exists:roles,id',
         ]);
 
-        $user->syncRoles($request->role_ids);
+        $roles = Role::whereIn('id', $request->role_ids)->get();
+        $user->syncRoles($roles);
 
         return redirect()->route('users.index');
     }
@@ -62,7 +63,7 @@ class UserController extends Controller
             'email' => 'required|email|max:100|unique:users',
             'password' => 'required|string|min:8|max:15',
         ],[
-            'name.required' => 'OK Mr.nobody, enter name.',
+            'name.required' => 'OK Mr.nobody, enter a name.',
             'name.max' => 'There is no way youre name is that long!',
             'email.required' => 'You must have an email, right?',
             'email.unique' => 'Nice try, but not today.',

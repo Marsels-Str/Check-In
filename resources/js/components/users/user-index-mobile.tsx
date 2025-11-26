@@ -1,19 +1,13 @@
-import { User } from '@/types';
+import BusinessName from '@/components/users/tiny-ui/business-name';
+import RoleName from '@/components/users/tiny-ui/role-name';
+import StatusBadge from '@/components/users/tiny-ui/status-badge';
+import UserAvatar from '@/components/users/tiny-ui/user-avatar';
 import { useCan } from '@/lib/can';
+import { User } from '@/types';
 import { Button } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
-import RoleName from '@/components/users/tiny-ui/role-name';
-import UserAvatar from '@/components/users/tiny-ui/user-avatar';
-import StatusBadge from '@/components/users/tiny-ui/status-badge';
-import BusinessName from '@/components/users/tiny-ui/business-name';
 
-export default function UserIndexCards({
-    users,
-    currentUser,
-}: {
-    users: User[];
-    currentUser: User;
-}) {
+export default function UserIndexCards({ users, currentUser }: { users: User[]; currentUser: User }) {
     const canAssign = useCan('roles.assign');
     const canEdit = useCan('users.edit');
     const canDelete = useCan('users.delete');
@@ -46,9 +40,13 @@ export default function UserIndexCards({
 
                     <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
                         <div className="text-gray-500 dark:text-gray-400">Business</div>
-                        <div className="text-gray-800 dark:text-gray-200"><BusinessName user={user} /></div>
+                        <div className="text-gray-800 dark:text-gray-200">
+                            <BusinessName user={user} />
+                        </div>
                         <div className="text-gray-500 dark:text-gray-400">Role</div>
-                        <div className="text-gray-800 dark:text-gray-200"><RoleName user={user} /></div>
+                        <div className="text-gray-800 dark:text-gray-200">
+                            <RoleName user={user} />
+                        </div>
                     </div>
 
                     <div className="mt-4 flex flex-wrap justify-end gap-3 text-sm">
