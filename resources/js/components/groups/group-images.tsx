@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@headlessui/react';
 import { Form, router } from '@inertiajs/react';
 
-export default function GroupImages({ group, errors }: any) {
+export default function GroupImages({ group }: any) {
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this image?')) {
             router.delete(route('groupImages.destroy', id));

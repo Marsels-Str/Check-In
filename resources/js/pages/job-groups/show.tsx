@@ -21,7 +21,6 @@ export default function Show({ group, users, errors, availableMaps }: any) {
             <Head title={`Group: ${group.name}`} />
 
             <div className="px-4">
-                {/* Header */}
                 <div className="mb-6 flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-semibold">{group.name}</h1>
@@ -36,7 +35,6 @@ export default function Show({ group, users, errors, availableMaps }: any) {
                     </Link>
                 </div>
 
-                {/* Overview */}
                 <section className="mb-8 rounded-xl border borde p-6 shadow-sm backdrop-blur-sm">
                     <h2 className="text-lg font-semibold">Overview</h2>
                     <p className="mt-2">{group.description || 'No description provided.'}</p>
@@ -53,18 +51,15 @@ export default function Show({ group, users, errors, availableMaps }: any) {
                     </div>
                 </section>
 
-                {/* Users */}
                 <section className="mb-8 rounded-xl border border p-6 shadow-sm backdrop-blur-sm">
                     <GroupUsers group={group} users={users} canAdd={canAdd} canRemove={canRemove} />
                 </section>
 
-                {/* Images */}
                 <section className="mb-8 rounded-xl border border p-6">
                     <h2 className="mb-4 text-lg font-semibold">Images</h2>
                     <GroupImages group={group} errors={errors} />
                 </section>
 
-                {/* Map */}
                 <section className="rounded-xl border border p-6 shadow-sm backdrop-blur-sm dark:shadow-sm">
                     <h2 className="mb-4 text-lg font-semibold">Map entry</h2>
                     <GroupMap group={group} availableMaps={availableMaps} canAddMap={canAddMap} />

@@ -1,9 +1,9 @@
-import { useCan } from '@/lib/can';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
-import RoleMobileView from '@/components/roles/role-index-mobile';
 import RoleDesktopView from '@/components/roles/role-index-desktop';
+import RoleMobileView from '@/components/roles/role-index-mobile';
+import AppLayout from '@/layouts/app-layout';
+import { useCan } from '@/lib/can';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Roles', href: '/roles' }];
 

@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
-export default function Edit({ user }: { user: User }) {
+export default function UserEditFields({ user }: { user: User }) {
     return (
         <div className="mx-auto w-full max-w-md">
             <Form

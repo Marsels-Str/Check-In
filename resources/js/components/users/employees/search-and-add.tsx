@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { useCan } from '@/lib/can';
-import { router } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import type { BusinessProfile, User } from '@/types';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
+import { useCan } from '@/lib/can';
+import type { BusinessProfile, User } from '@/types';
+import { router } from '@inertiajs/react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export default function EmployeeSearchAndAdd({
     isOwner,
