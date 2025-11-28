@@ -92,9 +92,5 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::post('/settings/auto-clock/extend', [AutoClockController::class, 'extendWork'])->name('auto-clock.extend');
 });
 
-Route::get('/{any}', function () {
-    return view('app'); // Change 'app' if your Blade template is named differently
-})->where('any', '.*');
-
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
