@@ -92,5 +92,9 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::post('/settings/auto-clock/extend', [AutoClockController::class, 'extendWork'])->name('auto-clock.extend');
 });
 
+Route::get('/{any}', function () {
+    return file_get_contents(public_path('index.php'));
+})->where('any', '.*');
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
