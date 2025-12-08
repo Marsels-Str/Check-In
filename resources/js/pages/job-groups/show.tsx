@@ -1,10 +1,9 @@
-import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import GroupImages from '../../components/groups/group-images';
 import GroupMap from '../../components/groups/group-map';
 import GroupUsers from '../../components/groups/group-users';
-import GroupImages from '../../components/groups/group-images';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Groups', href: '/job-groups' },
@@ -12,10 +11,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Show({ group, users, errors, availableMaps }: any) {
-    const canAdd = useCan('users.add');
-    const canRemove = useCan('users.remove');
-    const canAddMap = useCan('maps.add');
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Group: ${group.name}`} />
@@ -35,34 +30,34 @@ export default function Show({ group, users, errors, availableMaps }: any) {
                     </Link>
                 </div>
 
-                <section className="mb-8 rounded-xl border borde p-6 shadow-sm backdrop-blur-sm">
+                <section className="borde mb-8 rounded-xl border p-6 shadow-sm backdrop-blur-sm">
                     <h2 className="text-lg font-semibold">Overview</h2>
                     <p className="mt-2">{group.description || 'No description provided.'}</p>
 
                     <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                        <div className="rounded-lg border border p-3 text-sm shadow-sm">
+                        <div className="rounded-lg border p-3 text-sm shadow-sm">
                             <div>Business</div>
                             <div className="font-medium text-gray-500">{group.business?.name || 'N/A'}</div>
                         </div>
-                        <div className="rounded-lg border border p-3 text-sm shadow-sm">
+                        <div className="rounded-lg border p-3 text-sm shadow-sm">
                             <div>Users</div>
                             <div className="font-medium text-gray-500">{group.users?.length ?? 0}</div>
                         </div>
                     </div>
                 </section>
 
-                <section className="mb-8 rounded-xl border border p-6 shadow-sm backdrop-blur-sm">
-                    <GroupUsers group={group} users={users} canAdd={canAdd} canRemove={canRemove} />
+                <section className="mb-8 rounded-xl border p-6 shadow-sm backdrop-blur-sm">
+                    <GroupUsers group={group} users={users} />
                 </section>
 
-                <section className="mb-8 rounded-xl border border p-6">
+                <section className="mb-8 rounded-xl border p-6">
                     <h2 className="mb-4 text-lg font-semibold">Images</h2>
                     <GroupImages group={group} errors={errors} />
                 </section>
 
-                <section className="rounded-xl border border p-6 shadow-sm backdrop-blur-sm dark:shadow-sm">
+                <section className="rounded-xl border p-6 shadow-sm backdrop-blur-sm dark:shadow-sm">
                     <h2 className="mb-4 text-lg font-semibold">Map entry</h2>
-                    <GroupMap group={group} availableMaps={availableMaps} canAddMap={canAddMap} />
+                    <GroupMap group={group} availableMaps={availableMaps} />
                 </section>
             </div>
         </AppLayout>

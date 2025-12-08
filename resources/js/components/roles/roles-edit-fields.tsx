@@ -7,7 +7,7 @@ import { Form } from '@inertiajs/react';
 export default function RolesEditFields({ role, rolePermissions, permissions }: { role: any; rolePermissions: string[]; permissions: string[] }) {
     return (
         <Form
-            method="patch"
+            method="put"
             action={route('roles.update', role.id)}
             className="mx-auto w-full max-w-md space-y-6 rounded-lg border border-gray-200 bg-white px-6 py-6 shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm"
         >

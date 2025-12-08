@@ -1,11 +1,10 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/react';
-import InputError from '@/components/input-error';
 
 export default function AutoClockForm({ settings }: { settings: any }) {
-
     return (
         <div className="mx-auto w-full max-w-lg">
             <Form
@@ -24,7 +23,7 @@ export default function AutoClockForm({ settings }: { settings: any }) {
                         <div>
                             <Label htmlFor="work_end">Work End</Label>
                             <Input type="time" name="work_end" defaultValue={settings.work_end || ''} />
-                            <InputError className="mt-2" message={errors.work_end} />
+                            <InputError message={errors.work_end} />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">

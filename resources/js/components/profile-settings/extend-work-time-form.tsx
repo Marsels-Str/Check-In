@@ -1,16 +1,15 @@
-import { useState } from 'react';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
-import InputError from '@/components/input-error';
+import { useState } from 'react';
 
 export default function ExtendWorkTimeForm({ initialMinutes }: { initialMinutes: number }) {
     const [extendedMinutes, setExtendedMinutes] = useState(initialMinutes || '');
 
     return (
         <div className="mx-auto w-full max-w-lg">
-
             <Form
                 method="post"
                 action={route('auto-clock.extend')}
@@ -19,9 +18,7 @@ export default function ExtendWorkTimeForm({ initialMinutes }: { initialMinutes:
                 {({ errors }) => (
                     <>
                         <Label>Extend Work Time</Label>
-                        <p className="text-gray-500">
-                            If you plan to work longer, you can extend your work time (up to 12 hours max).
-                        </p>
+                        <p className="text-gray-500">If you plan to work longer, you can extend your work time (up to 12 hours max).</p>
 
                         <Input
                             type="number"

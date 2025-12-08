@@ -9,8 +9,9 @@ import { Link, router } from '@inertiajs/react';
 
 export default function UserIndexCards({ users, currentUser }: { users: User[]; currentUser: User }) {
     const canAssign = useCan('roles.assign');
-    const canEdit = useCan('users.edit');
+    const canUpdate = useCan('users.update');
     const canDelete = useCan('users.delete');
+    const canShow = useCan('users.show');
 
     function handleDelete(id: number) {
         if (confirm('Are you sure you want to delete this user?')) {
@@ -58,13 +59,15 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
                                 Assign
                             </Link>
                         )}
-                        <Link
-                            href={route('users.show', user.id)}
-                            className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                        >
-                            Show
-                        </Link>
-                        {canEdit && (
+                        {canShow && (        
+                            <Link
+                                href={route('users.show', user.id)}
+                                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
+                            >
+                                Show
+                            </Link>
+                        )}
+                        {canUpdate && (
                             <Link
                                 href={route('users.edit', user.id)}
                                 className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"

@@ -9,7 +9,7 @@ export default function UserEditFields({ user }: { user: User }) {
     return (
         <div className="mx-auto w-full max-w-md">
             <Form
-                method="patch"
+                method="put"
                 action={route('users.update', user.id)}
                 className="space-y-6 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm"
             >

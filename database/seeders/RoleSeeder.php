@@ -15,21 +15,54 @@ class RoleSeeder extends Seeder
     {
         $owner = Role::firstOrCreate(['name' => 'Owner']);
         $business = Role::firstOrCreate(['name' => 'Business']);
-        $worker   = Role::firstOrCreate(['name' => 'Worker']);
+        $worker   = Role::firstOrCreate(['name' => 'Unemployed']);
 
         $allPermissions = Permission::all();
 
         $owner->givePermissionTo(Permission::all());
 
         $business->givePermissionTo([
+            // Darba grupu privilēģijas
             'groups.create',
             'groups.view',
-            'groups.edit',
+            'groups.show',
+            'groups.update',
             'groups.delete',
+            // Papildus privilēģijas
+            'groups.attachMap',
+            'groups.detachMap',
+            'groups.addUsers',
+            'groups.removeUsers',
+            'groups.addImage',
+            'groups.removeImage',
+
+            // Darbinieku privilēģijas
+            'users.view',
             'users.add',
             'users.remove',
+            
+            // Kartes privilēģijas
             'maps.create',
-            'maps.add',
+            'maps.view',
+            'maps.show',
+            'maps.update',
+            'maps.delete',
+
+            // Lomu privilēģijas
+            'roles.create',
+            'roles.view',
+            'roles.show',
+            'roles.update',
+            'roles.delete',
+            // Papildus privilēģija
+            'roles.assign',
+
+            // Darbinieku privilēģijas
+            'employees.view',
+            'employees.add',
+            'employees.remove',
+            'employees.clockIn',
+            'employees.clockOut',
         ]);
         
         $worker->givePermissionTo([

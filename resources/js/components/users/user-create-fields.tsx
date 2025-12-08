@@ -14,19 +14,19 @@ export default function UserCreateFields() {
                             <div>
                                 <Label htmlFor="name">Name</Label>
                                 <Input id="name" name="name" placeholder="Full name" />
-                                <InputError message={errors.name} className="mt-1" />
+                                <InputError message={errors.name} />
                             </div>
 
                             <div>
                                 <Label htmlFor="email">Email</Label>
                                 <Input id="email" type="email" name="email" placeholder="Email address" />
-                                <InputError message={errors.email} className="mt-1" />
+                                <InputError message={errors.email} />
                             </div>
 
                             <div>
                                 <Label htmlFor="password">Password</Label>
                                 <Input id="password" type="password" name="password" placeholder="Password" />
-                                <InputError message={errors.password} className="mt-1" />
+                                <InputError message={errors.password} />
                             </div>
                         </div>
 

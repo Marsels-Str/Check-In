@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('business_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('role')->default('worker');
-            $table->timestamps();
 
             $table->unique(['business_id', 'user_id']);
         });

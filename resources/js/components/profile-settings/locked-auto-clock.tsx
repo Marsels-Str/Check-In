@@ -1,5 +1,5 @@
-import { router } from '@inertiajs/react';
 import { Button, Dialog, DialogPanel } from '@headlessui/react';
+import { router } from '@inertiajs/react';
 
 export default function LockedAutoClock() {
     const handleBack = () => {

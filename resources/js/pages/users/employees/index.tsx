@@ -1,40 +1,20 @@
 import EmployeeTable from '@/components/users/employees/employees-index-table';
 import EmployeeSearchAndAdd from '@/components/users/employees/search-and-add';
 import AppLayout from '@/layouts/app-layout';
-import { useCan } from '@/lib/can';
 import { type BreadcrumbItem, User } from '@/types';
-import { Head, router } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Head } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Employees', href: '/employees' }];
 
 export default function Index({
     employees,
-    currentUser,
     businesses,
     selectedBusinessId,
 }: {
     employees: User[];
-    currentUser: any;
     businesses: any[];
     selectedBusinessId: number | null;
 }) {
-    const isOwner = currentUser.roles?.some((r: any) => r.name === 'Owner');
-    const canRemove = useCan('users.remove');
-
-    const [message, setMessage] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (message || error) {
-            const timer = setTimeout(() => {
-                setMessage(null);
-                setError(null);
-            }, 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [message, error]);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employees" />
@@ -46,31 +26,10 @@ export default function Index({
                 </div>
 
                 <div className="mb-6">
-                    {message && (
-                        <div className="mb-3 rounded-lg bg-green-100 px-4 py-2 text-sm text-green-800 dark:bg-green-900/40 dark:text-green-200">
-                            {message}
-                        </div>
-                    )}
-                    {error && (
-                        <div className="mb-3 rounded-lg bg-red-100 px-4 py-2 text-sm text-red-800 dark:bg-red-900/40 dark:text-red-200">{error}</div>
-                    )}
-
-                    <EmployeeSearchAndAdd
-                        isOwner={isOwner}
-                        businesses={businesses}
-                        selectedBusinessId={selectedBusinessId}
-                        onReload={() => router.reload({ only: ['employees'] })}
-                    />
+                    <EmployeeSearchAndAdd businesses={businesses} selectedBusinessId={selectedBusinessId} />
                 </div>
 
-                <EmployeeTable
-                    employees={employees}
-                    canRemove={canRemove}
-                    isOwner={isOwner}
-                    selectedBusinessId={selectedBusinessId}
-                    onMessage={setMessage}
-                    onError={setError}
-                />
+                <EmployeeTable employees={employees} selectedBusinessId={selectedBusinessId} />
             </div>
         </AppLayout>
     );

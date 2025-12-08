@@ -3,6 +3,7 @@ import MapDrawShapes from '@/components/maps/map-draw-shapes';
 import NameCell from '@/components/maps/name-cell';
 import useMapCenter from '@/hooks/use-map-center';
 import AppLayout from '@/layouts/app-layout';
+import { useCan } from '@/lib/can';
 import { type BreadcrumbItem, type BusinessProfile, type Map, type PageProps } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
@@ -22,6 +23,10 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
     const [currentBusinessId, setCurrentBusinessId] = useState(selectedBusinessId);
     const [activeId, setActiveId] = useState<number | null>(null);
     const center = useMapCenter(profile);
+    const canCreate = useCan('maps.create');
+    const canUpdate = useCan('maps.update');
+    const canDelete = useCan('maps.delete');
+    const canShow = useCan('maps.show');
 
     function handleDelete(id: number) {
         if (confirm('Are you sure you want to delete this entry?')) router.delete(route('maps.destroy', id));
@@ -56,12 +61,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                     {center ? (
                         <MapContainer center={center} zoom={13} className="h-[550px] w-full rounded-lg">
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            <MapDrawShapes
-                                canCreate={auth.user.roles.includes('Owner') || auth.user.roles.includes('Business')}
-                                canEdit={auth.user.roles.includes('Owner') || auth.user.roles.includes('Business')}
-                                auth={auth}
-                                selectedBusinessId={currentBusinessId}
-                            />
+                            <MapDrawShapes canCreate={canCreate} canUpdate={canUpdate} auth={auth} selectedBusinessId={currentBusinessId} />
                         </MapContainer>
                     ) : (
                         <div className="p-6 text-center text-gray-600 dark:text-gray-400">Loading map...</div>
@@ -92,12 +92,22 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                                         </td>
                                         <td className="py-4 pr-6 pl-3 text-right text-sm">
                                             <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
-                                                <Link href={route('maps.show', map.id)} className="hover:text-green-600 dark:hover:text-green-300">
-                                                    Show
-                                                </Link>
-                                                <Link href={route('maps.edit', map.id)} className="hover:text-green-600 dark:hover:text-green-300">
-                                                    Edit
-                                                </Link>
+                                                {canShow && (
+                                                    <Link
+                                                        href={route('maps.show', map.id)}
+                                                        className="hover:text-green-600 dark:hover:text-green-300"
+                                                    >
+                                                        Show
+                                                    </Link>
+                                                )}
+                                                {canUpdate && (
+                                                    <Link
+                                                        href={route('maps.edit', map.id)}
+                                                        className="hover:text-green-600 dark:hover:text-green-300"
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                )}
                                                 <button
                                                     onClick={() => handleDelete(map.id)}
                                                     className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"

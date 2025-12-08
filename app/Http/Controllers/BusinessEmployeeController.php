@@ -19,7 +19,6 @@ class BusinessEmployeeController extends Controller
         $selectedBusinessId = null;
 
         $withRelations = [
-            'roles',
             'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1),
         ];
 
@@ -27,18 +26,26 @@ class BusinessEmployeeController extends Controller
             $businesses = Business::select('id', 'name')->orderBy('name')->get();
             $selectedBusinessId = $request->query('business_id') ?? $businesses->first()?->id;
 
-            if ($selectedBusinessId && $business = Business::find($selectedBusinessId)) {
-                $employees = $business->employees()->with($withRelations)->get();
-            }
+            $employees = $selectedBusinessId
+                ? Business::find($selectedBusinessId)?->employees()->with($withRelations)->get()
+                : collect();
         } elseif ($authUser->hasRole('Business') && $authUser->ownedBusiness) {
             $business = $authUser->ownedBusiness;
             $businesses = collect([$business]);
             $selectedBusinessId = $business->id;
+
             $employees = $business->employees()->with($withRelations)->get();
-        } elseif ($authUser->hasRole('Worker')) {
+        } elseif ($authUser->can('employees.manage.own') || $authUser->can('employees.view')) {
             $business = $authUser->businesses()->first();
             $selectedBusinessId = $business?->id;
-            $employees = $business?->employees()->with($withRelations)->get() ?? collect();
+
+            if ($business) {
+                $employees = $business->employees()->with($withRelations)->get();
+
+                if (!$employees->contains($authUser->id)) {
+                    $employees->push($authUser->loadMissing($withRelations));
+                }
+            }
         }
 
         return Inertia::render('users/employees/index', [
@@ -51,91 +58,75 @@ class BusinessEmployeeController extends Controller
 
     public function search(Request $request)
     {
-        $request->validate(['unique_id' => 'required|numeric']);
+        $request->validate([
+            'unique_id' => 'required|numeric',
+        ]);
 
-        $user = User::whereHas('profile', fn($q) => $q->where('unique_id', $request->unique_id))
+        $searchResult = User::whereHas('profile', fn($q) => $q->where('unique_id', $request->unique_id))
             ->with('profile')
             ->first();
 
-        return response()->json($user);
+        return back()->with('searchResult', $searchResult);
     }
 
     public function clockIn(Request $request, User $user)
     {
-        //Iegūst lietotāju kurš šobrīd ir pieslēdzies
         $authUser = $request->user();
 
-        //Pārbauda kāda pašreizējam lietotājam ir loma ar palīg funkciju (canManage)
         if (!$this->canManage($authUser, $user)) {
-            return response()->json(['error' => 'Unauthorized']);
+            return back()->with('error', 'You do not have permission to clock in this user!');
         }
 
-        //Pārbauda vai lietotājs jau ir atzīmējies sistēmā
         if (TimeLog::where('user_id', $user->id)->whereNull('clock_out')->exists()) {
-            return response()->json(['error' => 'User is already clocked in']);
+            return back()->with('error', 'You are already clocked in!');
         }
 
-        //Iegūst biznesu, kam lietotājs pieder
         $business = $user->businesses()->first();
 
-        //Izveido ierakstu datubāzē ar attiecīgo lietotāja id un biznesa id, kam lietotājs pieder
         TimeLog::create([
             'user_id' => $user->id,
             'business_id' => $business?->id,
             'clock_in' => now(),
         ]);
 
-        //Atgriež veiksmīgu paziņojumu priekš (front-end)
-        return response()->json(['success' => true]);
+        return back()->with('success', 'You clocked in successfully!');
     }
 
     public function clockOut(Request $request, User $user)
     {
-        //Iegūst lietotāju kurš šobrīd ir pieslēdzies
         $authUser = $request->user();
 
-        //Pārbauda kāda pašreizējam lietotājam ir loma ar palīg funkciju (canManage)
         if (!$this->canManage($authUser, $user)) {
-            return response()->json(['error' => 'Unauthorized']);
+            return back()->with('error', 'You do not have permission to clock out this user!');
         }
 
-        //Pārbauda vai lietotājs jau ir atzīmējies sistēmā
         $existing = TimeLog::where('user_id', $user->id)->whereNull('clock_out')->first();
 
-        //Ja ne tad atgriež kļūdas paziņojumu
         if (!$existing) {
-            return response()->json(['error' => 'User is not clocked in']);
+            return back()->with('error', 'You are not clocked in!');
         }
 
-        //Pārvērš datus no datubāzes par Carbon::parse(), lai veiktu aprēķināšanu
-        $clockIn = Carbon::parse($existing->clock_in);
-        //Izmanto esošo laiku
+        $clockIn = now();
         $clockOut = now();
-
-        //Aprēķina starpību starp darba sākumu un darba beigām
         $workedTime = gmdate('H:i:s', $clockIn->diffInSeconds($clockOut));
 
-        //Atjaunina laukus tabulā
         $existing->update([
             'clock_out' => $clockOut,
             'worked_time' => $workedTime,
         ]);
 
-        //Atgriež veiksmīgu paziņojumu priekš (front-end)
-        return response()->json(['success' => true]);
+        return back()->with('success', 'You clocked out successfully!');
     }
 
-    private function canManage($authUser, $targetUser)
+    private function canManage(User $authUser, User $targetUser): bool
     {
         if ($authUser->hasRole('Owner')) return true;
 
         if ($authUser->hasRole('Business') && $authUser->ownedBusiness) {
-            return $targetUser->businesses()
-                ->where('business_id', $authUser->ownedBusiness->id)
-                ->exists();
+            return $targetUser->businesses()->where('business_id', $authUser->ownedBusiness->id)->exists();
         }
 
-        return $authUser->hasRole('Worker') && $authUser->id === $targetUser->id;
+        return $authUser->id === $targetUser->id && $authUser->can('employees.clockIn') && $authUser->can('employees.clockOut');
     }
 
     public function store(Request $request)
@@ -143,7 +134,7 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (! $authUser->hasRole('Owner') && ! $authUser->hasRole('Business')) {
-            return response()->json(['error' => 'You do not have permission to add employees.']);
+            return back()->with('error', 'You do not have permission to add employees!');
         }
 
         $rules = ['user_id' => 'required|exists:users,id'];
@@ -157,31 +148,27 @@ class BusinessEmployeeController extends Controller
             ? Business::findOrFail($validated['business_id'])
             : $authUser->ownedBusiness;
 
-        $user = User::with('profile', 'roles', 'businesses')->findOrFail($validated['user_id']);
+        $user = User::with('profile', 'businesses')->findOrFail($validated['user_id']);
 
-        if ($user->hasRole('Owner') || 
-            ($user->profile && $user->profile->unique_id == env('APP_OWNER_UNIQUE_ID')) ||
-            $user->id === $authUser->id ||
-            $user->hasRole('Business')
-        ) {
-            return response()->json(['error' => 'The App Owner or Business cannot be added as an employee.']);
+        if ($user->hasRole('Owner') || $user->hasRole('Business')) {
+            return back()->with('error', 'This user cannot be added as an employee!');
         }
 
         $existingBusiness = $user->businesses()->first();
         if ($existingBusiness && $existingBusiness->id !== $business->id) {
-            return response()->json([
-                'error' => "This user already belongs to another business ({$existingBusiness->name})."
-            ]);
+            return back()->with('error', 'This user already belongs to a different business!');
         }
 
         if ($business->employees()->where('users.id', $user->id)->exists()) {
-            return response()->json(['error' => 'This user is already an employee of this business.']);
+            return back()->with('error', 'This user is already an employee of this business!');
         }
 
-        $business->employees()->attach($user->id, ['role' => 'Worker']);
+        $business->employees()->attach($user->id);
         $business->update(['employees' => $business->employees()->count()]);
 
-        return response()->json(['success' => true]);
+        $user->load('profile', 'timeLogs');
+
+        return back()->with('success', 'Employee added successfully!');
     }
 
     public function remove(Request $request, User $user)
@@ -189,7 +176,7 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (! $authUser->hasRole('Owner') && ! $authUser->hasRole('Business')) {
-            return response()->json(['error' => 'You do not have permission to remove employees.']);
+            return back()->with('error', 'You do not have permission to remove employees!');
         }
 
         $businesses = $authUser->hasRole('Owner')
@@ -220,6 +207,6 @@ class BusinessEmployeeController extends Controller
             $business->update(['employees' => $business->employees()->count()]);
         }
 
-        return response()->json(['success' => true]);
+        return back()->with('success', 'Employee removed successfully!');
     }
 }

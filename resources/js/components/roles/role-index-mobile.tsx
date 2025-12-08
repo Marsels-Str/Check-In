@@ -1,10 +1,11 @@
+import { useCan } from '@/lib/can';
 import { Button } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
-import { useCan } from '@/lib/can';
 
 export default function RolesMobileView({ roles }: { roles: any[] }) {
-    const canEdit = useCan('roles.edit');
+    const canEdit = useCan('roles.update');
     const canDelete = useCan('roles.delete');
+    const canShow = useCan('roles.show');
 
     function handleDelete(roleId: number) {
         if (confirm('Are you sure you want to delete this role?')) {
@@ -26,12 +27,14 @@ export default function RolesMobileView({ roles }: { roles: any[] }) {
                         </div>
 
                         <div className="flex gap-3 text-sm">
-                            <Link
-                                href={route('roles.show', role.id)}
-                                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                            >
-                                Show
-                            </Link>
+                            {canShow && (
+                                <Link
+                                    href={route('roles.show', role.id)}
+                                    className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
+                                >
+                                    Show
+                                </Link>
+                            )}
                             {canEdit && (
                                 <Link
                                     href={route('roles.edit', role.id)}

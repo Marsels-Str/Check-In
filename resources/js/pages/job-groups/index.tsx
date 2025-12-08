@@ -7,8 +7,9 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Groups', href: '/job-groups' }]
 
 export default function Index({ jobGroups }: { jobGroups: any[] }) {
     const canCreate = useCan('groups.create');
-    const canEdit = useCan('groups.edit');
+    const canUpdate = useCan('groups.update');
     const canDelete = useCan('groups.delete');
+    const canShow = useCan('groups.show');
 
     function handleDelete(id: number) {
         if (confirm('Are you sure you want to delete this group?')) {
@@ -58,14 +59,16 @@ export default function Index({ jobGroups }: { jobGroups: any[] }) {
                                             <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">{group.description || '—'}</td>
                                             <td className="py-4 pr-6 pl-3 text-right text-sm">
                                                 <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
-                                                    <Link
-                                                        href={route('job-groups.show', group.id)}
-                                                        className="hover:text-green-600 dark:hover:text-green-300"
-                                                    >
-                                                        Show
-                                                    </Link>
+                                                    {canShow && (
+                                                        <Link
+                                                            href={route('job-groups.show', group.id)}
+                                                            className="hover:text-green-600 dark:hover:text-green-300"
+                                                        >
+                                                            Show
+                                                        </Link>
+                                                    )}
 
-                                                    {canEdit && (
+                                                    {canUpdate && (
                                                         <Link
                                                             href={route('job-groups.edit', group.id)}
                                                             className="hover:text-green-600 dark:hover:text-green-300"

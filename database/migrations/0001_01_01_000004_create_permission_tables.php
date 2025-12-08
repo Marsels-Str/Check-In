@@ -25,6 +25,7 @@ return new class extends Migration
             $table->bigIncrements('id'); // permission id
             $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
             $table->string('guard_name'); // For MyISAM use string('guard_name', 25);
+            $table->string('group');
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);
@@ -41,6 +42,7 @@ return new class extends Migration
 
         $table->string('name');
         $table->string('guard_name');
+        $table->foreignId('business_id')->nullable()->constrained()->onDelete('cascade');
         $table->timestamps();
 
         // ❌ DELETE this if/else, just keep unique(['name', 'guard_name'])

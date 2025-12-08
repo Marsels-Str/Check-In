@@ -21,33 +21,58 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::get('contacts', fn () => Inertia::render('contacts'))->name('contacts');
 
     //Users
-    Route::resource('users', UserController::class)
-        ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
-        ->middleware('permission:users.view');
-
-    Route::get('/users/{user}/assign-role', [UserController::class, 'assignForm'])->name('users.roles.assign.form');
-    Route::post('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.roles.assign');
-
+    Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('permission:users.view');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create')->middleware('permission:users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store')->middleware('permission:users.create');
     Route::patch('/users/{user}/update-user-profile', [ProfileController::class, 'update'])->name('users.update-user-profile');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')->middleware('permission:users.show');
+    Route::get('/users/edit/{user}', [UserController::class, 'edit'])->name('users.edit')->middleware('permission:users.update');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update')->middleware('permission:users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware('permission:users.delete');
+    Route::post('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('users.roles.assign');
+    Route::get('/users/{user}/assign-role', [UserController::class, 'assignForm'])->name('users.roles.assign.form');
 
     //Roles
-    Route::resource('roles', RoleController::class)
-        ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
-        ->middleware('permission:roles.view');
-
-    //Job Groups
-    Route::resource('job-groups', JobGroupController::class)
-        ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
-        ->middleware('permission:groups.view');
-
-    Route::post('/job-groups/{group}/users', [JobGroupController::class, 'updateUsers'])->name('job-groups.update-users');
-    Route::delete('/job-groups/{group}/users/{user}', [JobGroupController::class, 'removeUser'])->name('job-groups.removeUser');
-    Route::post('/job-groups/{jobGroup}/images', [GroupImageController::class, 'store'])->name('job-groups.images.store');
-    Route::delete('/group-images/{id}', [GroupImageController::class, 'destroy'])->name('groupImages.destroy');
-    Route::post('/job-groups/{jobGroup}/attach-map', [JobGroupController::class, 'attachMap'])->name('job-groups.attachMap');
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index')->middleware('permission:roles.view');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store')->middleware('permission:roles.create');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create')->middleware('permission:roles.create');
+    Route::get('/roles/{role}', [RoleController::class, 'show'])->name('roles.show')->middleware('permission:roles.show');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update')->middleware('permission:roles.update');
+    Route::get('/roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit')->middleware('permission:roles.update');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy')->middleware('permission:roles.delete');
 
     //Maps
-    Route::resource('maps', MapController::class);
+    Route::get('/maps', [MapController::class, 'index'])->name('maps.index')->middleware('permission:maps.view');
+    Route::post('/maps', [MapController::class, 'store'])->name('maps.store')->middleware('permission:maps.create');
+    Route::get('/maps/{map}', [MapController::class, 'show'])->name('maps.show')->middleware('permission:maps.show');
+    Route::get('/maps/{map}/edit', [MapController::class, 'edit'])->name('maps.edit')->middleware('permission:maps.update');
+    Route::put('/maps/{map}', [MapController::class, 'update'])->name('maps.update')->middleware('permission:maps.update');
+    Route::delete('/maps/{map}', [MapController::class, 'destroy'])->name('maps.destroy')->middleware('permission:maps.delete');
+    
+    //Job Groups
+    Route::get('/job-groups', [JobGroupController::class, 'index'])->name('job-groups.index')->middleware('permission:groups.view');
+    Route::get('/job-groups/create', [JobGroupController::class, 'create'])->name('job-groups.create')->middleware('permission:groups.create');
+    Route::post('/job-groups', [JobGroupController::class, 'store'])->name('job-groups.store')->middleware('permission:groups.create');
+    Route::get('/job-groups/{group}', [JobGroupController::class, 'show'])->name('job-groups.show')->middleware('permission:groups.show');
+    Route::put('/job-groups/{group}', [JobGroupController::class, 'update'])->name('job-groups.update')->middleware('permission:groups.update');
+    Route::get('/job-groups/{group}/edit', [JobGroupController::class, 'edit'])->name('job-groups.edit')->middleware('permission:groups.update');
+    Route::delete('/job-groups/{group}', [JobGroupController::class, 'destroy'])->name('job-groups.destroy')->middleware('permission:groups.delete');
+    Route::post('/job-groups/{group}/attach-map', [JobGroupController::class, 'attachMap'])->name('job-groups.attach-map')->middleware('permission:groups.attachMap');
+    Route::delete('/job-groups/{group}/detach-map', [JobGroupController::class, 'detachMap'])->name('job-groups.detach-map')->middleware('permission:groups.detachMap');
+    Route::post('/job-groups/{group}/users', [JobGroupController::class, 'updateUsers'])->name('job-groups.update-users')->middleware('permission:groups.addUsers');
+    Route::delete('/job-groups/{group}/users/{user}', [JobGroupController::class, 'removeUser'])->name('job-groups.remove-users')->middleware('permission:groups.removeUsers');
+    
+    //Group Images
+    Route::delete('/group-images/{id}', [GroupImageController::class, 'destroy'])->name('groupImages.destroy')->middleware('permission:groups.removeImage');
+    Route::post('/job-groups/{group}/images', [GroupImageController::class, 'store'])->name('job-groups.images.store')->middleware('permission:groups.addImage');
+
+    //Employees
+    Route::get('/employees', [BusinessEmployeeController::class, 'index'])->name('employees.index')->middleware('permission:employees.view');
+    Route::post('/employees', [BusinessEmployeeController::class, 'store'])->name('employees.store')->middleware('permission:employees.add');
+    Route::get('/employees/search', [BusinessEmployeeController::class, 'search'])->name('employees.search')->middleware('permission:employees.view');
+    Route::delete('/employees/{user}', [BusinessEmployeeController::class, 'remove'])->name('employees.remove')->middleware('permission:employees.remove');
+    Route::post('/employees/{user}/clock-in', [BusinessEmployeeController::class, 'clockIn'])->name('employees.clockin')->middleware('permission:employees.clockIn');
+    Route::post('/employees/{user}/clock-out', [BusinessEmployeeController::class, 'clockOut'])->name('employees.clockout')->middleware('permission:employees.clockOut');
 
     //Profile Complete
     Route::get('/complete-profile', [ProfileController::class, 'create'])->name('profile.complete');
@@ -72,14 +97,6 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     //Business Logo management
     Route::post('/business/logo', [BusinessProfileController::class, 'updateLogo'])->name('business.updateLogo');
     Route::delete('/business/logo', [BusinessProfileController::class, 'removeLogo'])->name('business.removeLogo');
-
-    //Employees
-    Route::get('/employees', [BusinessEmployeeController::class, 'index'])->name('employees.index');
-    Route::post('/employees', [BusinessEmployeeController::class, 'store'])->name('employees.store');
-    Route::delete('/employees/{user}', [BusinessEmployeeController::class, 'remove'])->name('employees.remove');
-    Route::get('/employees/search', [BusinessEmployeeController::class, 'search'])->name('employees.search');
-    Route::post('/employees/{user}/clock-in', [BusinessEmployeeController::class, 'clockIn'])->name('employees.clockin');
-    Route::post('/employees/{user}/clock-out', [BusinessEmployeeController::class, 'clockOut'])->name('employees.clockout');
 
     //Auto clock login
     Route::get('/auto-clock/login-clockin/{token}', [AutoClockController::class, 'loginClockIn'])->name('auto-clock.login-clockin');

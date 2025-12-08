@@ -1,15 +1,14 @@
+import RoleCreateFields from '@/components/roles/roles-create-fields';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import RoleCreateFields from '@/components/roles/roles-create-fields';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles', href: '/roles' },
     { title: 'Create Role', href: '/roles/create' },
 ];
 
-export default function Create({ permissions }: { permissions: string[] }) {
-
+export default function Create({ permissions, businesses, auth }: { permissions: string[]; businesses: any[]; auth: any }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Role" />
@@ -29,7 +28,7 @@ export default function Create({ permissions }: { permissions: string[] }) {
                     </Link>
                 </div>
 
-                <RoleCreateFields permissions={permissions} />
+                <RoleCreateFields permissions={permissions} businesses={businesses} auth={auth} />
             </div>
         </AppLayout>
     );

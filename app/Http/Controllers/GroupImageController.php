@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class GroupImageController extends Controller
 {
-    public function store(Request $request, JobGroup $jobGroup)
+    public function store(Request $request, JobGroup $group)
     {
         $request->validate([
             'image' => 'required|file|mimes:jpg,jpeg,png|max:5120',
@@ -21,11 +21,11 @@ class GroupImageController extends Controller
         $path = $request->file('image')->getRealPath();
         $data = base64_encode(file_get_contents($path));
 
-        $jobGroup->images()->create([
+        $group->images()->create([
             'image_blob' => $data,
         ]);
 
-        return redirect()->route('job-groups.show', $jobGroup);
+        return redirect()->route('job-groups.show', $group);
     }
 
     public function destroy(string $id)

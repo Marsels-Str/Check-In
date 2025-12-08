@@ -1,9 +1,9 @@
-import { Form } from '@inertiajs/react';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Transition } from '@headlessui/react';
-import { Button } from '@/components/ui/button';
-import InputError from '@/components/input-error';
+import { Form } from '@inertiajs/react';
 
 export default function CreateBusinessForm() {
     return (
@@ -15,49 +15,49 @@ export default function CreateBusinessForm() {
                             <div>
                                 <Label htmlFor="name">Business Name</Label>
                                 <Input id="name" name="name" placeholder="Business name" />
-                                <InputError className="mt-2" message={errors.name} />
+                                <InputError message={errors.name} />
                             </div>
 
                             <div>
                                 <Label htmlFor="industry">Industry</Label>
                                 <Input id="industry" name="industry" placeholder="Industry" />
-                                <InputError className="mt-2" message={errors.industry} />
+                                <InputError message={errors.industry} />
                             </div>
 
                             <div>
                                 <Label htmlFor="email">Business Email</Label>
                                 <Input id="email" type="email" name="email" placeholder="Contact email" />
-                                <InputError className="mt-2" message={errors.email} />
+                                <InputError message={errors.email} />
                             </div>
 
                             <div>
                                 <Label htmlFor="phone">Business Phone</Label>
                                 <Input id="phone" name="phone" placeholder="Contact phone" />
-                                <InputError className="mt-2" message={errors.phone} />
+                                <InputError message={errors.phone} />
                             </div>
 
                             <div className="md:col-span-2">
                                 <Label htmlFor="street_address">Street Address</Label>
                                 <Input id="street_address" name="street_address" placeholder="Street address" />
-                                <InputError className="mt-2" message={errors.street_address} />
+                                <InputError message={errors.street_address} />
                             </div>
 
                             <div className="md:col-span-2">
                                 <Label htmlFor="description">Description</Label>
                                 <Input id="description" name="description" placeholder="Business description" />
-                                <InputError className="mt-2" message={errors.description} />
+                                <InputError message={errors.description} />
                             </div>
 
                             <div>
                                 <Label htmlFor="country">Country</Label>
                                 <Input id="country" name="country" placeholder="Country" />
-                                <InputError className="mt-2" message={errors.country} />
+                                <InputError message={errors.country} />
                             </div>
 
                             <div>
                                 <Label htmlFor="city">City</Label>
                                 <Input id="city" name="city" placeholder="City" />
-                                <InputError className="mt-2" message={errors.city} />
+                                <InputError message={errors.city} />
                             </div>
                         </div>
 

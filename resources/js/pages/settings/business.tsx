@@ -1,12 +1,12 @@
-import AppLayout from '@/layouts/app-layout';
 import BusinessCard from '@/components/business-card';
-import HeadingSmall from '@/components/heading-small';
-import SettingsLayout from '@/layouts/settings/layout';
-import { Head, router, usePage } from '@inertiajs/react';
-import { type BreadcrumbItem, type SharedData } from '@/types';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
+import HeadingSmall from '@/components/heading-small';
 import BusinessForm from '@/components/profile-settings/business-form';
 import CreateBusinessForm from '@/components/profile-settings/create-business-form';
+import AppLayout from '@/layouts/app-layout';
+import SettingsLayout from '@/layouts/settings/layout';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, router, usePage } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Business settings', href: '/settings/business' }];
 
@@ -49,10 +49,7 @@ export default function Business({
                         <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#0f0f0f]/70">
                             <div className="mb-4 flex items-center justify-between">
                                 <div>
-                                    <HeadingSmall
-                                        title="Business information"
-                                        description="Update your business details, contact info, and logo."
-                                    />
+                                    <HeadingSmall title="Business information" description="Update your business details, contact info, and logo." />
                                 </div>
                                 {businesses.length > 1 && (
                                     <BusinessDropdownMenu
@@ -66,7 +63,7 @@ export default function Business({
                             {business ? (
                                 <BusinessForm key={business.id} business={business} action={route('business.update')} />
                             ) : (
-                                <CreateBusinessForm/>
+                                <CreateBusinessForm />
                             )}
                         </div>
                     </div>

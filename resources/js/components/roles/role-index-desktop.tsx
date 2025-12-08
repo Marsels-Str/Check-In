@@ -1,10 +1,11 @@
+import { useCan } from '@/lib/can';
 import { Button } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
-import { useCan } from '@/lib/can';
 
 export default function RolesDesktopView({ roles }: { roles: any[] }) {
-    const canEdit = useCan('roles.edit');
+    const canEdit = useCan('roles.update');
     const canDelete = useCan('roles.delete');
+    const canShow = useCan('roles.show');
 
     function handleDelete(roleId: number) {
         if (confirm('Are you sure you want to delete this role?')) {
@@ -30,12 +31,14 @@ export default function RolesDesktopView({ roles }: { roles: any[] }) {
                             <td className="py-4 pr-3 pl-6 text-sm font-medium text-gray-900 dark:text-gray-200">{role.id}</td>
                             <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">{role.name}</td>
                             <td className="px-3 py-4 text-sm">
-                                <Link
-                                    href={route('roles.show', role.id)}
-                                    className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                                >
-                                    Show
-                                </Link>
+                                {canShow && (
+                                    <Link
+                                        href={route('roles.show', role.id)}
+                                        className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
+                                    >
+                                        Show
+                                    </Link>
+                                )}
                             </td>
                             <td className="py-4 pr-6 pl-3 text-right text-sm">
                                 <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">

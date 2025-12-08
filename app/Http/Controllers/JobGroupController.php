@@ -16,20 +16,19 @@ class JobGroupController extends Controller
         $user = $request->user();
 
         $jobGroups = match (true) {
-            $user->hasRole('Owner') =>
-                JobGroup::with('business')->get(),
-
-            $user->hasRole('Business') && $user->ownedBusiness =>
+            $user->hasRole('Owner') => JobGroup::with('business')->get(),
+            
+            $user->can('groups.view') && $user->hasRole('Business') && $user->ownedBusiness =>
                 JobGroup::with('business')
                     ->where('business_id', $user->ownedBusiness->id)
                     ->get(),
-
-            $user->hasRole('Worker') =>
-                JobGroup::whereIn('business_id', $user->businesses()->pluck('business_id'))
-                    ->whereHas('users', fn($q) => $q->where('users.id', $user->id))
+            
+            $user->can('groups.view') =>
+                JobGroup::whereHas('users',  fn($q) => $q->where('users.id', $user->id))
+                    ->whereIn('business_id', $user->businesses()->pluck('businesses.id'))
                     ->with('business')
                     ->get(),
-
+            
             default => collect(),
         };
 
@@ -40,13 +39,13 @@ class JobGroupController extends Controller
     {
         $user = $request->user();
 
+        if (! $user->can('groups.create')) {
+            return back();
+        }
+
         $businesses = match (true) {
-            $user->hasRole('Owner') =>
-                Business::select('id', 'name')->orderBy('name')->get(),
-            $user->hasRole('Business') && $user->ownedBusiness =>
-                collect([$user->ownedBusiness]),
-            $user->hasRole('Worker') =>
-                $user->businesses()->select('businesses.id', 'businesses.name')->get(),
+            $user->hasRole('Owner') => Business::select('id', 'name')->orderBy('name')->get(),
+            $user->hasRole('Business') && $user->ownedBusiness => collect([$user->ownedBusiness]),
             default => collect(),
         };
 
@@ -62,20 +61,23 @@ class JobGroupController extends Controller
     {
         $user = $request->user();
 
+        if (! $user->can('groups.create')) {
+            return back();
+        }
+
         $request->validate([
-            'name'        => 'required|string|max:50',
+            'name' => 'required|string|max:50',
             'description' => 'nullable|string',
             'business_id' => $user->hasRole('Owner') ? 'required|exists:businesses,id' : 'nullable',
         ]);
 
         $businessId = $this->resolveBusinessId($user, $request->input('business_id'));
-
-        if (! $businessId) {
-            return redirect()->route('job-groups.index');
+        if (!$businessId) {
+            return back();
         }
 
         JobGroup::create([
-            'name'        => $request->name,
+            'name' => $request->name,
             'description' => $request->description,
             'business_id' => $businessId,
         ]);
@@ -86,25 +88,24 @@ class JobGroupController extends Controller
     public function show(Request $request, string $id)
     {
         $user = $request->user();
-
         $group = JobGroup::with(['users', 'images:id,job_group_id,image_blob', 'map', 'business'])
             ->findOrFail($id);
 
-        if (! $this->ensureAuthorizedForGroup($user, $group)) {
-            return redirect()->route('job-groups.index');
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.show')) {
+            return back();
         }
 
-        $availableUsers = User::whereHas('businesses', fn($q) =>
-            $q->where('businesses.id', $group->business_id)
-        )
+        $availableUsers = User::whereHas('businesses', fn($q) => 
+                $q->where('businesses.id', $group->business_id)
+            )
             ->whereNotIn('id', $group->users->pluck('id'))
             ->get();
 
         $availableMaps = Map::where('business_id', $group->business_id)->get();
 
         return Inertia::render('job-groups/show', [
-            'group'         => $group,
-            'users'         => $availableUsers,
+            'group' => $group,
+            'users' => $availableUsers,
             'availableMaps' => $availableMaps,
         ]);
     }
@@ -114,8 +115,8 @@ class JobGroupController extends Controller
         $user = $request->user();
         $group = JobGroup::findOrFail($id);
 
-        if (! $this->ensureAuthorizedForGroup($user, $group)) {
-            return redirect()->route('job-groups.index');
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.update')) {
+            return back();
         }
 
         return Inertia::render('job-groups/edit', ['group' => $group]);
@@ -126,12 +127,12 @@ class JobGroupController extends Controller
         $group = JobGroup::findOrFail($id);
         $user = $request->user();
 
-        if (! $this->ensureAuthorizedForGroup($user, $group)) {
-            return redirect()->route('job-groups.index');
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.update')) {
+            return back();
         }
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:50',
+            'name' => 'required|string|max:50',
             'description' => 'nullable|string',
         ]);
 
@@ -145,8 +146,8 @@ class JobGroupController extends Controller
         $group = JobGroup::findOrFail($id);
         $user = $request->user();
 
-        if (! $this->ensureAuthorizedForGroup($user, $group)) {
-            return redirect()->route('job-groups.index');
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.delete')) {
+            return back();
         }
 
         $group->delete();
@@ -154,38 +155,63 @@ class JobGroupController extends Controller
         return redirect()->route('job-groups.index');
     }
 
-    public function attachMap(Request $request, JobGroup $jobGroup)
+    public function attachMap(Request $request, JobGroup $group)
     {
-        $data = $request->validate(['map_id' => 'required|exists:maps,id']);
-        $map = Map::findOrFail($data['map_id']);
-
-        if ($map->business_id !== $jobGroup->business_id) {
+        $user = $request->user();
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.attachMap')) {
             return back();
         }
 
-        Map::where('job_group_id', $jobGroup->id)->update(['job_group_id' => null]);
-        $map->update(['job_group_id' => $jobGroup->id]);
+        $data = $request->validate(['map_id' => 'required|exists:maps,id']);
+        $map = Map::findOrFail($data['map_id']);
 
-        return redirect()->route('job-groups.show', $jobGroup->id);
+        if ($map->business_id !== $group->business_id) {
+            return back();
+        }
+
+        if ($map->job_group_id !== $group->id) {
+            Map::where('job_group_id', $group->id)->update(['job_group_id' => null]);
+            $map->update(['job_group_id' => $group->id]);
+        }
+
+        return redirect()->route('job-groups.show', $group->id);
+    }
+
+    public function detachMap(Request $request, JobGroup $group)
+    {
+        $user = $request->user();
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.detachMap')) {
+            return back();
+        }
+
+        $data = $request->validate(['map_id' => 'required|exists:maps,id']);
+        $map = Map::findOrFail($data['map_id']);
+
+        if ($map->business_id !== $group->business_id || $map->job_group_id !== $group->id) {
+            return back();
+        }
+
+        $map->update(['job_group_id' => null]);
+
+        return redirect()->back();
     }
 
     public function updateUsers(Request $request, JobGroup $group)
     {
         $user = $request->user();
-
-        if (! $this->ensureAuthorizedForGroup($user, $group)) {
+        if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.addUsers')) {
             return back();
         }
 
         $validated = $request->validate([
-            'user_ids'   => 'required|array',
+            'user_ids' => 'required|array',
             'user_ids.*' => 'exists:users,id',
         ]);
 
         $allowedUserIds = User::whereHas('businesses', fn($q) =>
-            $q->where('businesses.id', $group->business_id)
-        )
-            ->whereIn('id', $validated['user_ids'] ?? [])
+                $q->where('businesses.id', $group->business_id)
+            )
+            ->whereIn('id', $validated['user_ids'])
             ->pluck('id')
             ->toArray();
 
@@ -197,8 +223,7 @@ class JobGroupController extends Controller
     public function removeUser(Request $request, JobGroup $group, User $user)
     {
         $authUser = $request->user();
-
-        if (! $this->ensureAuthorizedForGroup($authUser, $group)) {
+        if (! $this->ensureAuthorizedForGroup($authUser, $group, 'groups.removeUsers')) {
             return back();
         }
 
@@ -206,29 +231,25 @@ class JobGroupController extends Controller
             $group->users()->detach($user->id);
         }
 
-        return back();
+        return redirect()->back();
     }
 
     private function resolveBusinessId($user, $inputId = null)
     {
         return match (true) {
-            $user->hasRole('Owner')    => $inputId,
-            $user->hasRole('Business') => $user->ownedBusiness?->id,
-            $user->hasRole('Worker')   => $user->businesses()->value('businesses.id'),
-            default                    => null,
+            $user->hasRole('Owner') => $inputId,
+            $user->hasRole('Business') && $user->ownedBusiness => $user->ownedBusiness->id,
+            default => null,
         };
     }
 
-    private function ensureAuthorizedForGroup($user, JobGroup $group): bool
+    private function ensureAuthorizedForGroup($user, JobGroup $group, string $permission): bool
     {
-        if ($user->hasRole('Owner')) {
-            return true;
-        }
+        if ($user->hasRole('Owner')) return true;
 
-        $allowedBusinessIds = $user->hasRole('Business') && $user->ownedBusiness
-            ? collect([$user->ownedBusiness->id])
-            : $user->businesses()->pluck('businesses.id');
+        if (! $user->can($permission)) return false;
 
-        return $allowedBusinessIds->contains($group->business_id);
+        $userBusinessId = $user->ownedBusiness?->id ?? $user->businesses()->value('businesses.id');
+        return $userBusinessId === $group->business_id;
     }
 }

@@ -1,9 +1,9 @@
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form, Link } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import { Button } from '@/components/ui/button';
-import InputError from '@/components/input-error';
+import { Form, Link } from '@inertiajs/react';
 
 export default function ProfileForm({ user, mustVerifyEmail, status }: { user: any; mustVerifyEmail: boolean; status?: string }) {
     return (
@@ -14,55 +14,55 @@ export default function ProfileForm({ user, mustVerifyEmail, status }: { user: a
                         <div>
                             <Label htmlFor="name">Name</Label>
                             <Input id="name" name="name" defaultValue={user.name} placeholder="Full name" />
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError message={errors.name} />
                         </div>
 
                         <div>
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" type="email" name="email" defaultValue={user.email} placeholder="Email" />
-                            <InputError className="mt-2" message={errors.email} />
+                            <InputError message={errors.email} />
                         </div>
 
                         <div>
                             <Label htmlFor="age">Age</Label>
                             <Input id="age" name="age" defaultValue={user.profile?.age} placeholder="Age" />
-                            <InputError className="mt-2" message={errors.age} />
+                            <InputError message={errors.age} />
                         </div>
 
                         <div>
                             <Label htmlFor="height">Height</Label>
                             <Input id="height" name="height" defaultValue={user.profile?.height} placeholder="Height in CM" />
-                            <InputError className="mt-2" message={errors.height} />
+                            <InputError message={errors.height} />
                         </div>
 
                         <div>
                             <Label htmlFor="weight">Weight</Label>
                             <Input id="weight" name="weight" defaultValue={user.profile?.weight} placeholder="Weight in KG" />
-                            <InputError className="mt-2" message={errors.weight} />
+                            <InputError message={errors.weight} />
                         </div>
 
                         <div>
                             <Label htmlFor="phone">Phone</Label>
                             <Input id="phone" name="phone" defaultValue={user.profile?.phone} placeholder="Phone number" />
-                            <InputError className="mt-2" message={errors.phone} />
+                            <InputError message={errors.phone} />
                         </div>
 
                         <div>
                             <Label htmlFor="personal_code">Personal Code</Label>
                             <Input id="personal_code" name="personal_code" defaultValue={user.profile?.personal_code} placeholder="000000-00000" />
-                            <InputError className="mt-2" message={errors.personal_code} />
+                            <InputError message={errors.personal_code} />
                         </div>
 
                         <div>
                             <Label htmlFor="country">Country</Label>
                             <Input id="country" name="country" defaultValue={user.profile?.country} placeholder="Country" />
-                            <InputError className="mt-2" message={errors.country} />
+                            <InputError message={errors.country} />
                         </div>
 
                         <div>
                             <Label htmlFor="city">City</Label>
                             <Input id="city" name="city" defaultValue={user.profile?.city} placeholder="City" />
-                            <InputError className="mt-2" message={errors.city} />
+                            <InputError message={errors.city} />
                         </div>
                     </div>
 

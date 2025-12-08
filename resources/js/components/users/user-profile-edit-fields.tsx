@@ -42,7 +42,13 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
 
                             <div>
                                 <Label htmlFor="personal_code">Personal Code</Label>
-                                <Input id="personal_code" type="text" name="personal_code" defaultValue={user_profile.personal_code} placeholder="000000-00000" />
+                                <Input
+                                    id="personal_code"
+                                    type="text"
+                                    name="personal_code"
+                                    defaultValue={user_profile.personal_code}
+                                    placeholder="000000-00000"
+                                />
                                 <InputError message={errors.personal_code} />
                             </div>
 
