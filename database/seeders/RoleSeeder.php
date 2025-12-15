@@ -63,10 +63,14 @@ class RoleSeeder extends Seeder
             'employees.remove',
             'employees.clockIn',
             'employees.clockOut',
+
+            // Uzņēmuma privilēģijas
+            'business.create',
         ]);
         
         $worker->givePermissionTo([
             'groups.view',
+            'business.create',
         ]);
     }
 }

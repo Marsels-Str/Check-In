@@ -109,14 +109,12 @@ class BusinessProfileController extends Controller
     {
         $user = $request->user();
 
-        if ($user->hasRole('Worker') && $user->businesses()->exists() && ! $user->ownedBusiness) {
+        if ($user->businesses()->exists()) {
             return Inertia::render('settings/locked/business');
         }
 
-        if ($user->hasRole('Worker') && ! $user->ownedBusiness) {
-            return Inertia::render('settings/business', [
-                'auth' => ['user' => $user->load('profile')],
-            ]);
+        if (! $user->can('business.create')) {
+            return Inertia::render('settings/locked/business');
         }
 
         if ($user->hasRole('Owner')) {
@@ -154,6 +152,14 @@ class BusinessProfileController extends Controller
     {
         $user = $request->user();
         $business = $user->ownedBusiness ?? null;
+
+        if ($user->businesses()->exists()) {
+            return Inertia::render('settings/locked/business');
+        }
+
+        if (! $user->can('business.create')) {
+            return Inertia::render('settings/locked/business');
+        }
 
         if ($user->hasRole('Owner')) {
             $businessId = $request->input('business_id');

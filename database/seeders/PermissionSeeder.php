@@ -75,6 +75,7 @@ class PermissionSeeder extends Seeder
         // Uzņēmumu izvēles privilēģija
         'business' => [
             'business.access',
+            'business.create',
         ],
     ];
 

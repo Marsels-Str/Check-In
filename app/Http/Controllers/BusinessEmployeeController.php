@@ -35,7 +35,7 @@ class BusinessEmployeeController extends Controller
             $selectedBusinessId = $business->id;
 
             $employees = $business->employees()->with($withRelations)->get();
-        } elseif ($authUser->can('employees.manage.own') || $authUser->can('employees.view')) {
+        } elseif ($authUser->can('employees.view')) {
             $business = $authUser->businesses()->first();
             $selectedBusinessId = $business?->id;
 
