@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
                 'country'       => 'Latvijā',
                 'city'          => 'Rigā',
                 'portrait'      => null,
-                'unique_id'     => env('APP_OWNER_UNIQUE_ID'),
             ]
         );
 

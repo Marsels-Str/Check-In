@@ -37,6 +37,6 @@ class Business extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(User::class, 'business_users')->withTimestamps();
+        return $this->belongsToMany(User::class, 'business_users');
     }
 }
