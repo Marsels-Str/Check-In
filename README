@@ -1,0 +1,18 @@
+Pieņemot kad ir nelielas iepriekšējas zināšanas par programmēšanu, virtuālajiem serveriem un git komandām!
+
+Iejiet sev tīkamajā mapē un tad projektu klonēt ar - git clone (projekta github saite)
+
+Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis komandas:
+
+1. npm install (saīsinātā versija) - npm i
+
+2. composer install (saīsinātā versija) - composer i
+
+Lai izveidotu datubāzi izmantot - php artisan migrate
+Lai iegūtu datus datubāzē - php artisan db:seed
+Vēlāk var izmantot kopējo komandu, lai pilnībā attiestatītu datubāzi - php artisan migrate:fresh --seed
+
+Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
+vai atsevišķi - php artisan serve un npm run dev
+
+Ja pieprasa ģenerēt atslēgu tad izmantot - php artisan key:generate
