@@ -1,18 +1,41 @@
-Pieņemot kad ir nelielas iepriekšējas zināšanas par programmēšanu, virtuālajiem serveriem un git komandām!
+<style>
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-Iejiet sev tīkamajā mapē un tad projektu klonēt ar - git clone (projekta github saite)
+    p {
+        text-align: center;
+    }
 
-Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis komandas:
+    strong {
+        font-weight: bold;
+    }
 
-1. npm install (saīsinātā versija) - npm i
+    img[alt="Project Logo"] {
+        width: 420px;
+    }
 
-2. composer install (saīsinātā versija) - composer i
+    img[src*="img.shields.io"] {
+        display: inline-block;
+        margin: 5px;
+    }
+</style>
 
-Lai izveidotu datubāzi izmantot - php artisan migrate
-Lai iegūtu datus datubāzē - php artisan db:seed
-Vēlāk var izmantot kopējo komandu, lai pilnībā attiestatītu datubāzi - php artisan migrate:fresh --seed
+<p align="center">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="420" alt="Project Logo">
+</p>
 
-Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
-vai atsevišķi - php artisan serve un npm run dev
+<p align="center">
+    <img src="https://img.shields.io/badge/PHP-8.x-blue" alt="PHP 8.x" />
+    <img src="https://img.shields.io/badge/Laravel-12-red" alt="Laravel 12" />
+    <img src="https://img.shields.io/badge/Composer-required-orange" alt="Composer required" />
+    <img src="https://img.shields.io/badge/Node.js-required-green" alt="Node.js required" />
+    <img src="https://img.shields.io/badge/License-MIT-lightgrey" alt="MIT License" />
+</p>
 
-Ja pieprasa ģenerēt atslēgu tad izmantot - php artisan key:generate
+<p align="center">
+    <strong>Laravel balstīts projekts</strong><br>
+    Vienkārša uzstādīšana · Skaidras komandas · Izstrādei gatavs
+</p>
