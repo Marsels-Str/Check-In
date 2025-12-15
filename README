@@ -1,18 +1,25 @@
-Pieņemot kad ir nelielas iepriekšējas zināšanas par programmēšanu, virtuālajiem serveriem un git komandām!
+<p align="center">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Project Logo">
+</p>
 
-Iejiet sev tīkamajā mapē un tad projektu klonēt ar - git clone (projekta github saite)
+<p align="center">
+    <img src="https://img.shields.io/badge/PHP-8.x-blue">
+    <img src="https://img.shields.io/badge/Laravel-12-red">
+    <img src="https://img.shields.io/badge/Node.js-required-green">
+    <img src="https://img.shields.io/badge/License-MIT-lightgrey">
+</p>
 
-Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis komandas:
+---
 
-1. npm install (saīsinātā versija) - npm i
+## 🚀 Projekta uzstādīšana
 
-2. composer install (saīsinātā versija) - composer i
+> Pieņemot kad ir nelielas iepriekšējas zināšanas par programmēšanu, virtuālajiem serveriem un git komandām!
 
-Lai izveidotu datubāzi izmantot - php artisan migrate
-Lai iegūtu datus datubāzē - php artisan db:seed
-Vēlāk var izmantot kopējo komandu, lai pilnībā attiestatītu datubāzi - php artisan migrate:fresh --seed
+---
 
-Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
-vai atsevišķi - php artisan serve un npm run dev
+## 📥 Projekta klonēšana
 
-Ja pieprasa ģenerēt atslēgu tad izmantot - php artisan key:generate
+Iejiet sev tīkamajā mapē un tad projektu klonēt ar:
+
+```bash
+git clone (projekta github saite)
