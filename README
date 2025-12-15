@@ -16,5 +16,3 @@ Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
 vai atsevišķi - php artisan serve un npm run dev
 
 Ja pieprasa ģenerēt atslēgu tad izmantot - php artisan key:generate
-
-END
