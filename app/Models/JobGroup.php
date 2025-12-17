@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\GroupImage;
+use App\Models\GroupMessage;
 use Illuminate\Database\Eloquent\Model;
 
 class JobGroup extends Model
@@ -36,5 +37,10 @@ class JobGroup extends Model
     public function map()
     {
         return $this->hasOne(Map::class, 'job_group_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(GroupMessage::class, 'job_group_id');
     }
 }

@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 import GroupImages from '../../components/groups/group-images';
 import GroupMap from '../../components/groups/group-map';
 import GroupUsers from '../../components/groups/group-users';
+import GroupChat from '../../components/groups/group-chat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Groups', href: '/job-groups' },
@@ -48,6 +49,14 @@ export default function Show({ group, users, errors, availableMaps }: any) {
 
                 <section className="mb-8 rounded-xl border p-6 shadow-sm backdrop-blur-sm">
                     <GroupUsers group={group} users={users} />
+                </section>
+
+                <section className="mb-8 rounded-xl border p-6">
+                    <h2 className="mb-4 text-lg font-semibold">Live Chat</h2>
+
+                    <GroupChat
+                        groupId={group.id}
+                    />
                 </section>
 
                 <section className="mb-8 rounded-xl border p-6">

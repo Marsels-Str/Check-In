@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\JobGroup;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobGroupController;
 use App\Http\Controllers\AutoClockController;
 use App\Http\Controllers\GroupImageController;
+use App\Http\Controllers\GroupMessageController;
 use App\Http\Controllers\BusinessEmployeeController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\BusinessProfileController;
@@ -107,6 +109,25 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::get('/settings/auto-clock', [AutoClockController::class, 'index'])->name('auto-clock.edit');
     Route::put('/settings/auto-clock', [AutoClockController::class, 'update'])->name('auto-clock.update');
     Route::post('/settings/auto-clock/extend', [AutoClockController::class, 'extendWork'])->name('auto-clock.extend');
+
+    // Group Messages
+    Route::post('/groups/{group}/messages', [GroupMessageController::class, 'store']);
+
+    Route::get('/groups/{group}/messages', function (JobGroup $group) {
+        $user = auth()->user();
+
+        $isAllowed =
+            $group->users()->where('users.id', $user->id)->exists()
+            || ($group->business && $group->business->user_id === $user->id)
+            || $user->hasRole('Owner');
+
+        abort_unless($isAllowed, 403);
+
+        return $group->messages()
+            ->with('user:id,name')
+            ->orderBy('created_at')
+            ->get();
+    });
 });
 
 require __DIR__.'/settings.php';
