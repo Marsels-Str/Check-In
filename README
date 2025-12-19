@@ -3,11 +3,24 @@ Tālāk lasot varēs uzzināt, kā palaist šo kodu lokāli!
 
 Iejiet sev tīkamajā mapē un tad projektu klonēt ar - git clone (projekta github saite)
 
-Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis komandas:
+Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis darbības:
 
-1. npm install (saīsinātā versija) - npm i
+    1. nokopēt ".env.example" failu vai vienkārši pārsaukt to par ".env"
+    
+    2. npm install (saīsinātā versija) - npm i
 
-2. composer install (saīsinātā versija) - composer i
+    3. composer install (saīsinātā versija) - composer i
+
+    Šīs darbības nepieciešamas, lai "Laravel e-pasta" izsūtīšanas funkcija strādātu:
+
+        1. aiziet uz "Google Chrome" pārlūku, uzspiest uz sava konta ikonas un atvērt "Google Konta Pārvaldības" sadaļu
+
+        2. tad atvērt "Drošība un Pierakstīšanās" sadaļu un aktivizēt "Divpakāpju Verifikāciju" (visticamāk, būs arī jāielāde aplikācija "Authenticator")
+
+        3. tad būtu jābūt redzamai papildus apakšnodaļai "Lietotņu Paroles", tajā varēs izveidot speciālu paroli priekš e-pastu izsūtīšanas no jūsu personīgā Gmail konta
+
+        4. tad visbeidzot aizpildīt šos laukus (MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS) ar saviem datiem!
+        (MAIL_USERNAME un MAIL_FROM_ADDRESS laukiem ir jābut vienādiem, piemēru var redzēt ".env.exmaple" failā, protams kad parole ir jāliek tā ko dabujāt no "Lietotņu Paroles" sadaļā)
 
 Lai izveidotu datubāzi izmantot - php artisan migrate
 Lai iegūtu datus datubāzē - php artisan db:seed
