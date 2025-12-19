@@ -13,30 +13,31 @@ Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis darbības:
 
     5. php artisan reverb:install (šai komandai nav jāizpildās līdz galam, tāpēc tiklīdz redzat izmainas ".env" failā varat šo komandu pārtraukt ar "CTRL + C")
 
-    6. php artisan install:broadcasting --reverb (var vienkārši spiest "ENTER" vai ari ierkastīt "yes")
+    6. tad atkomentēt vaļa šo (BROADCAST_CONNECTION) no ".env" faila vienkārši noņemot "#" no rindiņas priekšas
 
     7. php artisan key:generate
-
-    8. php artisan reverb:start (palaist atsevišķā terminālī, lai apstādinātu "CTRL + C")
-
-    Šīs darbības nepieciešamas, lai "Laravel e-pasta" izsūtīšanas funkcija strādātu:
-
-        1. aiziet uz "Google Chrome" pārlūku, uzspiest uz sava konta ikonas un atvērt "Google Konta Pārvaldības" sadaļu
-
-        2. tad atvērt "Drošība un Pierakstīšanās" sadaļu un aktivizēt "Divpakāpju Verifikāciju" (visticamāk, būs arī jāielāde aplikācija "Authenticator")
-
-        3. tad būtu jābūt redzamai papildus apakšnodaļai "Lietotņu Paroles", tajā varēs izveidot speciālu paroli priekš e-pastu izsūtīšanas no jūsu personīgā Gmail konta
-
-        4. tad visbeidzot aizpildīt šos laukus (MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS) ar saviem datiem!
-        (MAIL_USERNAME un MAIL_FROM_ADDRESS laukiem ir jābut vienādiem, piemēru var redzēt ".env.exmaple" failā, protams kad parole ir jāliek tā ko dabujāt no "Lietotņu Paroles" sadaļā)
 
 Lai izveidotu datubāzi izmantot - php artisan migrate
 Lai iegūtu datus datubāzē - php artisan db:seed
 Vēlāk var izmantot kopējo komandu, lai pilnībā attiestatītu datubāzi - php artisan migrate:fresh --seed
 
+Šīs darbības nepieciešamas, lai "Laravel e-pasta" izsūtīšanas funkcija strādātu:
+
+    1. aiziet uz "Google Chrome" pārlūku, uzspiest uz sava konta ikonas un atvērt "Google Konta Pārvaldības" sadaļu
+
+    2. tad atvērt "Drošība un Pierakstīšanās" sadaļu un aktivizēt "Divpakāpju Verifikāciju" (visticamāk, būs arī jāielāde aplikācija "Authenticator")
+
+    3. tad būtu jābūt redzamai papildus apakšnodaļai "Lietotņu Paroles", tajā varēs izveidot speciālu paroli priekš e-pastu izsūtīšanas no jūsu personīgā Gmail konta
+
+    4. tad visbeidzot aizpildīt šos laukus (MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS) ar saviem datiem!
+    (MAIL_USERNAME un MAIL_FROM_ADDRESS laukiem ir jābut vienādiem, piemēru var redzēt ".env.exmaple" failā, protams kad parole ir jāliek tā ko dabujāt no "Lietotņu Paroles" sadaļā)
+
 Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
 vai atsevišķos termināļos - php artisan serve un npm run dev
-(šīm komandām nepieciešami atsevišķi termināļi, jo tās pēc palaišanas darbosies līdz tiks apturētas)
+(šīm komandām nepieciešami atsevišķi termināļi, jo tās pēc palaišanas darbosies līdz tiks apturētas) ("CTRL + C", lai apstādinātu)
 
 Lai aktivizētu automātisko e-pastu izsūtīšanu izmantot - php artisan schedule:work
-(šai komandai nepieciešams atsevišķs terminālis, jo tā pēc palaišanas darbosies līdz tiks apturēta)
+(šai komandai nepieciešams atsevišķs terminālis, jo tā pēc palaišanas darbosies līdz tiks apturēta) ("CTRL + C", lai apstādinātu)
+
+Lai live-chat strādātu ir jāizmanto - php artisan reverb:start
+(šai komandai nepieciešams atsevišķs terminālis, jo tā pēc palaišanas darbosies līdz tiks apturēta) ("CTRL + C", lai apstādinātu)
