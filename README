@@ -13,8 +13,9 @@ Lai iegūtu datus datubāzē - php artisan db:seed
 Vēlāk var izmantot kopējo komandu, lai pilnībā attiestatītu datubāzi - php artisan migrate:fresh --seed
 
 Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
-vai atsevišķi - php artisan serve un npm run dev
+vai atsevišķos termināļos - php artisan serve un npm run dev
 
-Ja pieprasa ģenerēt atslēgu tad izmantot - php artisan key:generate
+Lai ģenerētu atslēgu izmantot - php artisan key:generate
 
 Lai aktivizētu automātisko e-pastu izsūtīšanu izmantot - php artisan schedule:work
+(šai komandai nepieciešams atsevišķs terminālis, jo tā pēc palaišanas darbosies līdz tiks apturēta)
