@@ -15,6 +15,7 @@ Vēlāk var izmantot kopējo komandu, lai pilnībā attiestatītu datubāzi - ph
 
 Lai palaistu projektu, izpildiet kopējo komandu - composer run dev
 vai atsevišķos termināļos - php artisan serve un npm run dev
+(šīm komandām nepieciešami atsevišķi termināļi, jo tās pēc palaišanas darbosies līdz tiks apturētas)
 
 Lai ģenerētu atslēgu izmantot - php artisan key:generate
 
