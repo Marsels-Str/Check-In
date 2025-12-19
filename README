@@ -7,11 +7,17 @@ Tad atvērt projektu ar - cd (projekta nosaukums) un izpildīt šis darbības:
 
     1. nokopēt ".env.example" failu vai vienkārši pārsaukt to par ".env"
     
-    2. npm install (saīsinātā versija) - npm i
+    3. npm install (saīsinātā versija) - npm i
 
-    3. composer install (saīsinātā versija) - composer i
+    4. composer install (saīsinātā versija) - composer i
 
-    4. php artisan key:generate
+    5. php artisan reverb:install (šai komandai nav jāizpildās līdz galam, tāpēc tiklīdz redzat izmainas ".env" failā varat šo komandu pārtraukt ar "CTRL + C")
+
+    6. php artisan install:broadcasting --reverb (var vienkārši spiest "ENTER" vai ari ierkastīt "yes")
+
+    7. php artisan key:generate
+
+    8. php artisan reverb:start (palaist atsevišķā terminālī, lai apstādinātu "CTRL + C")
 
     Šīs darbības nepieciešamas, lai "Laravel e-pasta" izsūtīšanas funkcija strādātu:
 
