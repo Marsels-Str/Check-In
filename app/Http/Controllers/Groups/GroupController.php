@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Groups;
 
 use App\Models\Map;
 use App\Models\User;
 use Inertia\Inertia;
-use App\Models\JobGroup;
+use App\Models\Group;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class JobGroupController extends Controller
+class GroupController extends Controller
 {
     public function index(Request $request)
     {
         $user = $request->user();
 
-        $jobGroups = match (true) {
-            $user->hasRole('Owner') => JobGroup::with('business')->get(),
+        $groups = match (true) {
+            $user->hasRole('Owner') => Group::with('business')->get(),
             
             $user->can('groups.view') && $user->hasRole('Business') && $user->ownedBusiness =>
-                JobGroup::with('business')
+                Group::with('business')
                     ->where('business_id', $user->ownedBusiness->id)
                     ->get(),
             
             $user->can('groups.view') =>
-                JobGroup::whereHas('users',  fn($q) => $q->where('users.id', $user->id))
+                Group::whereHas('users',  fn($q) => $q->where('users.id', $user->id))
                     ->whereIn('business_id', $user->businesses()->pluck('businesses.id'))
                     ->with('business')
                     ->get(),
@@ -32,7 +33,7 @@ class JobGroupController extends Controller
             default => collect(),
         };
 
-        return Inertia::render('job-groups/index', compact('jobGroups'));
+        return Inertia::render('groups/index', compact('groups'));
     }
 
     public function create(Request $request)
@@ -49,7 +50,7 @@ class JobGroupController extends Controller
             default => collect(),
         };
 
-        return Inertia::render('job-groups/create', [
+        return Inertia::render('groups/create', [
             'businesses' => $businesses,
             'auth' => [
                 'user' => $user->load('roles', 'ownedBusiness', 'businesses'),
@@ -76,19 +77,19 @@ class JobGroupController extends Controller
             return back();
         }
 
-        JobGroup::create([
+        Group::create([
             'name' => $request->name,
             'description' => $request->description,
             'business_id' => $businessId,
         ]);
 
-        return redirect()->route('job-groups.index');
+        return redirect()->route('groups.index');
     }
 
     public function show(Request $request, string $id)
     {
         $user = $request->user();
-        $group = JobGroup::with(['users', 'images:id,job_group_id,image_blob', 'map', 'business'])
+        $group = Group::with(['users', 'images:id,group_id,image_blob', 'map', 'business'])
             ->findOrFail($id);
 
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.show')) {
@@ -103,7 +104,7 @@ class JobGroupController extends Controller
 
         $availableMaps = Map::where('business_id', $group->business_id)->get();
 
-        return Inertia::render('job-groups/show', [
+        return Inertia::render('groups/show', [
             'group' => $group,
             'users' => $availableUsers,
             'availableMaps' => $availableMaps,
@@ -113,18 +114,18 @@ class JobGroupController extends Controller
     public function edit(Request $request, string $id)
     {
         $user = $request->user();
-        $group = JobGroup::findOrFail($id);
+        $group = Group::findOrFail($id);
 
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.update')) {
             return back();
         }
 
-        return Inertia::render('job-groups/edit', ['group' => $group]);
+        return Inertia::render('groups/edit', ['group' => $group]);
     }
 
     public function update(Request $request, string $id)
     {
-        $group = JobGroup::findOrFail($id);
+        $group = Group::findOrFail($id);
         $user = $request->user();
 
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.update')) {
@@ -138,12 +139,12 @@ class JobGroupController extends Controller
 
         $group->update($validated);
 
-        return redirect()->route('job-groups.index');
+        return redirect()->route('groups.index');
     }
 
     public function destroy(Request $request, string $id)
     {
-        $group = JobGroup::findOrFail($id);
+        $group = Group::findOrFail($id);
         $user = $request->user();
 
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.delete')) {
@@ -152,10 +153,10 @@ class JobGroupController extends Controller
 
         $group->delete();
 
-        return redirect()->route('job-groups.index');
+        return redirect()->route('groups.index');
     }
 
-    public function attachMap(Request $request, JobGroup $group)
+    public function attachMap(Request $request, Group $group)
     {
         $user = $request->user();
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.attachMap')) {
@@ -169,15 +170,15 @@ class JobGroupController extends Controller
             return back();
         }
 
-        if ($map->job_group_id !== $group->id) {
-            Map::where('job_group_id', $group->id)->update(['job_group_id' => null]);
-            $map->update(['job_group_id' => $group->id]);
+        if ($map->group_id !== $group->id) {
+            Map::where('group_id', $group->id)->update(['group_id' => null]);
+            $map->update(['group_id' => $group->id]);
         }
 
-        return redirect()->route('job-groups.show', $group->id);
+        return redirect()->route('groups.show', $group->id);
     }
 
-    public function detachMap(Request $request, JobGroup $group)
+    public function detachMap(Request $request, Group $group)
     {
         $user = $request->user();
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.detachMap')) {
@@ -187,16 +188,16 @@ class JobGroupController extends Controller
         $data = $request->validate(['map_id' => 'required|exists:maps,id']);
         $map = Map::findOrFail($data['map_id']);
 
-        if ($map->business_id !== $group->business_id || $map->job_group_id !== $group->id) {
+        if ($map->business_id !== $group->business_id || $map->group_id !== $group->id) {
             return back();
         }
 
-        $map->update(['job_group_id' => null]);
+        $map->update(['group_id' => null]);
 
         return redirect()->back();
     }
 
-    public function updateUsers(Request $request, JobGroup $group)
+    public function updateUsers(Request $request, Group $group)
     {
         $user = $request->user();
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.addUsers')) {
@@ -217,10 +218,10 @@ class JobGroupController extends Controller
 
         $group->users()->syncWithoutDetaching($allowedUserIds);
 
-        return redirect()->route('job-groups.show', $group->id);
+        return redirect()->route('groups.show', $group->id);
     }
 
-    public function removeUser(Request $request, JobGroup $group, User $user)
+    public function removeUser(Request $request, Group $group, User $user)
     {
         $authUser = $request->user();
         if (! $this->ensureAuthorizedForGroup($authUser, $group, 'groups.removeUsers')) {
@@ -243,7 +244,7 @@ class JobGroupController extends Controller
         };
     }
 
-    private function ensureAuthorizedForGroup($user, JobGroup $group, string $permission): bool
+    private function ensureAuthorizedForGroup($user, Group $group, string $permission): bool
     {
         if ($user->hasRole('Owner')) return true;
 

@@ -55,7 +55,7 @@ export default function GroupMap({ group, availableMaps }: any) {
 
     const handleDetach = (mapId: number) => {
         if (!confirm('Are you sure you want to detach this map?')) return;
-        router.delete(route('job-groups.detach-map', { group: group.id }), {
+        router.delete(route('groups.detach-map', { group: group.id }), {
             data: { map_id: mapId },
         });
     };
@@ -66,7 +66,7 @@ export default function GroupMap({ group, availableMaps }: any) {
                 {canAttachMap && (
                     <Form
                         method="post"
-                        action={route('job-groups.attach-map', { group: group.id })}
+                        action={route('groups.attach-map', { group: group.id })}
                         className="mb-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
                     >
                         {({ errors }) => (

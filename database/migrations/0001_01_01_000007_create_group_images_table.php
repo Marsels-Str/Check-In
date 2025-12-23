@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('group_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_group_id')->constrained()->onDelete('cascade');
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
             $table->longText('image_blob');
             $table->timestamps();
         });

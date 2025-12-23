@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class GroupMessage extends Model
 {
     protected $fillable = [
-        'job_group_id',
+        'group_id',
         'user_id',
         'message',
     ];

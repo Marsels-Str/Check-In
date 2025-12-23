@@ -29,9 +29,19 @@ export interface NavItem {
 }
 
 export interface TimeLog {
-  id: number;
-  clock_in: string;
-  clock_out: string | null;
+    id: number;
+    clock_in: string;
+    clock_out: string | null;
+}
+
+export interface DiagramState<T> {
+    data: T[];
+    range: 'week' | 'month';
+}
+
+export interface WorkedHoursPoint {
+    label: string;
+    hours: number;
 }
 
 export interface SharedData {
@@ -73,7 +83,7 @@ export interface BusinessProfile {
     updated_at?: string;
     logo?: string | null;
     description?: string;
-    jobGroups?: JobGroup[];
+    groups?: Group[];
     street_address?: string;
 }
 

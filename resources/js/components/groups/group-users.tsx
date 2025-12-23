@@ -19,7 +19,7 @@ export default function GroupUsers({ group, users }: any) {
                         <span>{user.name}</span>
                         {canRemoveUsers && (
                             <Link
-                                href={route('job-groups.remove-users', { group: group.id, user: user.id })}
+                                href={route('groups.remove-users', { group: group.id, user: user.id })}
                                 method="delete"
                                 as="button"
                                 className="ml-2 text-red-500 hover:text-red-700"

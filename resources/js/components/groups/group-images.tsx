@@ -20,7 +20,7 @@ export default function GroupImages({ group }: any) {
             {canAddImage && (
                 <Form
                     method="post"
-                    action={route('job-groups.images.store', { group: group.id })}
+                    action={route('groups.images.store', { group: group.id })}
                     className="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center"
                 >
                     {({ errors }) => (

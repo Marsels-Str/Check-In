@@ -6,22 +6,18 @@ use App\Models\GroupImage;
 use App\Models\GroupMessage;
 use Illuminate\Database\Eloquent\Model;
 
-class JobGroup extends Model
+class Group extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'business_id',
-        'name',
-        'description',
-    ];
+    protected $fillable = ['business_id', 'name', 'description'];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'job_group_users');
+        return $this->belongsToMany(User::class, 'group_users');
     }
 
     public function images()
@@ -36,11 +32,11 @@ class JobGroup extends Model
 
     public function map()
     {
-        return $this->hasOne(Map::class, 'job_group_id');
+        return $this->hasOne(Map::class, 'group_id');
     }
 
     public function messages()
     {
-        return $this->hasMany(GroupMessage::class, 'job_group_id');
+        return $this->hasMany(GroupMessage::class, 'group_id');
     }
 }

@@ -20,7 +20,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Groups',
-        href: '/job-groups',
+        href: '/groups',
         icon: MessagesSquare,
     },
     {

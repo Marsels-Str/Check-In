@@ -31,12 +31,38 @@ function AccordionItemComponent({
     }, [isOpen, content]);
 
     return (
-        <div className="mt-4 border border-gray-200 rounded-md transition-colors">
+        <div
+            className="
+                relative overflow-hidden group
+                mt-4 rounded-md
+                border border-gray-200 dark:border-gray-700
+                bg-white dark:bg-neutral-900
+            "
+        >
+            {/* Gradient hover overlay (TRUE left → right reveal) */}
+            <div
+                className="
+                    pointer-events-none
+                    absolute inset-0
+                    bg-gradient-to-r from-pink-400 via-pink-400/40 to-white
+                    scale-x-0 origin-left
+                    group-hover:scale-x-100
+                    transition-transform duration-700 ease-out
+                "
+            />
+
+            {/* Header */}
             <button
                 onClick={onToggle}
-                className="flex w-full items-center justify-between p-3 text-lg font-semibold cursor-pointer text-gray-900 dark:text-gray-100"
+                className="
+                    relative z-10
+                    flex w-full items-center justify-between
+                    p-3 text-lg font-semibold
+                    text-gray-900 dark:text-gray-100
+                "
             >
                 <span>{title}</span>
+
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className={`h-5 w-5 text-gray-600 dark:text-gray-300 transition-transform duration-300 ${
@@ -47,15 +73,25 @@ function AccordionItemComponent({
                     stroke="currentColor"
                     strokeWidth={2}
                 >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                    />
                 </svg>
             </button>
+
+            {/* Content */}
             <div
                 style={{ maxHeight: isOpen ? height : 0 }}
-                className="overflow-hidden transition-[max-height] duration-500 ease-in-out"
+                className="
+                    relative z-10
+                    overflow-hidden
+                    transition-[max-height] duration-500 ease-in-out
+                "
             >
                 <div ref={ref}>
-                    <div className="p-3 text-gray-800 dark:text-gray-200 rounded-md">
+                    <div className="p-3 text-gray-800 dark:text-gray-200">
                         {content}
                     </div>
                 </div>
@@ -64,7 +100,10 @@ function AccordionItemComponent({
     );
 }
 
-export default function Accordion({ items, defaultOpenIndex = null }: AccordionProps) {
+export default function Accordion({
+    items,
+    defaultOpenIndex = null,
+}: AccordionProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(defaultOpenIndex);
 
     return (
@@ -75,7 +114,9 @@ export default function Accordion({ items, defaultOpenIndex = null }: AccordionP
                     isOpen={openIndex === index}
                     title={item.title}
                     content={item.content}
-                    onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+                    onToggle={() =>
+                        setOpenIndex(openIndex === index ? null : index)
+                    }
                 />
             ))}
         </div>

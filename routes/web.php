@@ -1,26 +1,29 @@
 <?php
 
 use Inertia\Inertia;
-use App\Models\JobGroup;
+use App\Models\Group;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\JobGroupController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AutoClockController;
-use App\Http\Controllers\GroupImageController;
-use App\Http\Controllers\GroupMessageController;
+use App\Http\Controllers\Groups\GroupController;
 use App\Http\Controllers\BusinessEmployeeController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Groups\GroupImageController;
+use App\Http\Controllers\Groups\GroupMessageController;
 use App\Http\Controllers\Settings\BusinessProfileController;
 
 Route::get('/', fn () => Inertia::render('welcome'))->name('home');
 
 Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(function () {
     //Dashboard & static pages
-    Route::get('dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
     Route::get('about-us', fn () => Inertia::render('about-us'))->name('about-us');
     Route::get('contacts', fn () => Inertia::render('contacts'))->name('contacts');
+
+    // Dashboard
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     //Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('permission:users.view');
@@ -51,22 +54,22 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::put('/maps/{map}', [MapController::class, 'update'])->name('maps.update')->middleware('permission:maps.update');
     Route::delete('/maps/{map}', [MapController::class, 'destroy'])->name('maps.destroy')->middleware('permission:maps.delete');
     
-    //Job Groups
-    Route::get('/job-groups', [JobGroupController::class, 'index'])->name('job-groups.index')->middleware('permission:groups.view');
-    Route::get('/job-groups/create', [JobGroupController::class, 'create'])->name('job-groups.create')->middleware('permission:groups.create');
-    Route::post('/job-groups', [JobGroupController::class, 'store'])->name('job-groups.store')->middleware('permission:groups.create');
-    Route::get('/job-groups/{group}', [JobGroupController::class, 'show'])->name('job-groups.show')->middleware('permission:groups.show');
-    Route::put('/job-groups/{group}', [JobGroupController::class, 'update'])->name('job-groups.update')->middleware('permission:groups.update');
-    Route::get('/job-groups/{group}/edit', [JobGroupController::class, 'edit'])->name('job-groups.edit')->middleware('permission:groups.update');
-    Route::delete('/job-groups/{group}', [JobGroupController::class, 'destroy'])->name('job-groups.destroy')->middleware('permission:groups.delete');
-    Route::post('/job-groups/{group}/attach-map', [JobGroupController::class, 'attachMap'])->name('job-groups.attach-map')->middleware('permission:groups.attachMap');
-    Route::delete('/job-groups/{group}/detach-map', [JobGroupController::class, 'detachMap'])->name('job-groups.detach-map')->middleware('permission:groups.detachMap');
-    Route::post('/job-groups/{group}/users', [JobGroupController::class, 'updateUsers'])->name('job-groups.update-users')->middleware('permission:groups.addUsers');
-    Route::delete('/job-groups/{group}/users/{user}', [JobGroupController::class, 'removeUser'])->name('job-groups.remove-users')->middleware('permission:groups.removeUsers');
+    //Groups
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index')->middleware('permission:groups.view');
+    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create')->middleware('permission:groups.create');
+    Route::post('/groups', [GroupController::class, 'store'])->name('groups.store')->middleware('permission:groups.create');
+    Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show')->middleware('permission:groups.show');
+    Route::put('/groups/{group}', [GroupController::class, 'update'])->name('groups.update')->middleware('permission:groups.update');
+    Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit')->middleware('permission:groups.update');
+    Route::delete('/groups/{group}', [GroupController::class, 'destroy'])->name('groups.destroy')->middleware('permission:groups.delete');
+    Route::post('/groups/{group}/attach-map', [GroupController::class, 'attachMap'])->name('groups.attach-map')->middleware('permission:groups.attachMap');
+    Route::delete('/groups/{group}/detach-map', [GroupController::class, 'detachMap'])->name('groups.detach-map')->middleware('permission:groups.detachMap');
+    Route::post('/groups/{group}/users', [GroupController::class, 'updateUsers'])->name('groups.update-users')->middleware('permission:groups.addUsers');
+    Route::delete('/groups/{group}/users/{user}', [GroupController::class, 'removeUser'])->name('groups.remove-users')->middleware('permission:groups.removeUsers');
     
     //Group Images
     Route::delete('/group-images/{id}', [GroupImageController::class, 'destroy'])->name('groupImages.destroy')->middleware('permission:groups.removeImage');
-    Route::post('/job-groups/{group}/images', [GroupImageController::class, 'store'])->name('job-groups.images.store')->middleware('permission:groups.addImage');
+    Route::post('/groups/{group}/images', [GroupImageController::class, 'store'])->name('groups.images.store')->middleware('permission:groups.addImage');
 
     //Employees
     Route::get('/employees', [BusinessEmployeeController::class, 'index'])->name('employees.index')->middleware('permission:employees.view');
@@ -113,7 +116,7 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     // Group Messages
     Route::post('/groups/{group}/messages', [GroupMessageController::class, 'store']);
 
-    Route::get('/groups/{group}/messages', function (JobGroup $group) {
+    Route::get('/groups/{group}/messages', function (Group $group) {
         $user = auth()->user();
 
         $isAllowed =

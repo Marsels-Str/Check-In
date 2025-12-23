@@ -19,7 +19,7 @@ class BusinessEmployeeController extends Controller
         $selectedBusinessId = null;
 
         $withRelations = [
-            'timeLogs' => fn($q) => $q->whereNull('clock_out')->latest()->take(1),
+            'timeLogs' => fn($q) => $q->whereNull('clock_out')->orderByDesc('clock_in')->take(1),
         ];
 
         if ($authUser->hasRole('Owner')) {
@@ -106,13 +106,8 @@ class BusinessEmployeeController extends Controller
             return back()->with('error', 'You are not clocked in!');
         }
 
-        $clockIn = now();
-        $clockOut = now();
-        $workedTime = gmdate('H:i:s', $clockIn->diffInSeconds($clockOut));
-
         $existing->update([
-            'clock_out' => $clockOut,
-            'worked_time' => $workedTime,
+            'clock_out' => now(),
         ]);
 
         return back()->with('success', 'You clocked out successfully!');
@@ -192,18 +187,13 @@ class BusinessEmployeeController extends Controller
                 ->first();
 
             if ($activeLog) {
-                $clockOut = now();
-                $clockIn = Carbon::parse($activeLog->clock_in);
-                $workedTime = gmdate('H:i:s', $clockOut->diffInSeconds($clockIn));
-
                 $activeLog->update([
-                    'clock_out' => $clockOut,
-                    'worked_time' => $workedTime,
+                    'clock_out' => now(),
                 ]);
             }
 
             $business->employees()->detach($user->id);
-            $user->jobGroups()->where('business_id', $business->id)->detach();
+            $user->groups()->where('business_id', $business->id)->detach();
             $business->update(['employees' => $business->employees()->count()]);
         }
 

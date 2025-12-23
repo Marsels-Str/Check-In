@@ -20,7 +20,7 @@ export default function AutoClock() {
                 <div className="px-4 py-8">
                     <div className="mb-6">
                         <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Auto Clock Settings</h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Configure automatic work, lunch, and timezone preferences.</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Configure automatic work and lunch.</p>
                     </div>
 
                     <AutoClockForm settings={settings} />

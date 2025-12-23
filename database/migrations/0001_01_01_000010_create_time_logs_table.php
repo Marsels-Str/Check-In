@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('business_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamp('clock_in')->nullable();
             $table->timestamp('clock_out')->nullable();
-            $table->string('worked_time', 8)->nullable();
             $table->timestamps();
         });
     }

@@ -55,9 +55,9 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function jobGroups()
+    public function groups()
     {
-        return $this->belongsToMany(JobGroup::class, 'job_group_users');
+        return $this->belongsToMany(Group::class, 'group_users');
     }
 
     public function profile()
@@ -89,7 +89,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->timeLogs()
             ->whereNull('clock_out')
-            ->latest()
+            ->orderByDesc('clock_in')
             ->first();
     }
 
@@ -105,19 +105,9 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->timeLogs()->create([
             'business_id' => $businessId,
             'clock_in'    => now(),
-            'worked_time' => null,
         ]);
 
         return true;
-    }
-
-    private function secondsToHms(int $seconds): string
-    {
-        $seconds = abs($seconds);
-        $h = intdiv($seconds, 3600);
-        $m = intdiv($seconds % 3600, 60);
-        $s = $seconds % 60;
-        return sprintf('%02d:%02d:%02d', $h, $m, $s);
     }
 
     public function clockOutAutomatically()
@@ -125,14 +115,8 @@ class User extends Authenticatable implements MustVerifyEmail
         $activeLog = $this->activeTimeLog();
         if (! $activeLog) return false;
 
-        $clockIn  = Carbon::parse($activeLog->clock_in);
-        $clockOut = now();
-
-        $workedSeconds = abs($clockOut->diffInSeconds($clockIn));
-
         $activeLog->update([
-            'clock_out'   => $clockOut,
-            'worked_time' => $this->secondsToHms($workedSeconds),
+            'clock_out'   => now(),
         ]);
 
         return true;
@@ -143,14 +127,8 @@ class User extends Authenticatable implements MustVerifyEmail
         $activeLog = $this->activeTimeLog();
         if (! $activeLog) return false;
 
-        $clockIn  = Carbon::parse($activeLog->clock_in);
-        $clockOut = now();
-
-        $workedSeconds = abs($clockOut->diffInSeconds($clockIn));
-
         $activeLog->update([
-            'worked_time' => $this->secondsToHms($workedSeconds),
-            'clock_out'   => $clockOut,
+            'clock_out'   => now(),
         ]);
 
         return true;
@@ -164,7 +142,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->timeLogs()->create([
             'business_id' => $businessId,
             'clock_in'    => now(),
-            'worked_time' => null,
         ]);
 
         return true;

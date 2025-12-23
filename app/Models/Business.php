@@ -25,9 +25,9 @@ class Business extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function jobGroups()
+    public function groups()
     {
-        return $this->hasMany(JobGroup::class);
+        return $this->hasMany(Group::class);
     }
 
     public function maps()

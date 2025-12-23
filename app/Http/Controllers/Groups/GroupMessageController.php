@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Groups;
 
-use App\Models\JobGroup;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Events\GroupMessageSent;
+use App\Http\Controllers\Controller;
 
 class GroupMessageController extends Controller
 {
-    public function store(Request $request, JobGroup $group)
+    public function store(Request $request, Group $group)
     {
         $request->validate([
             'message' => 'required|string|max:1000',

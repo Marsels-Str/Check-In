@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('maps', function (Blueprint $table) {
             $table->id();
             $table->foreignId('business_id')->constrained('businesses')->onDelete('cascade');
-            $table->foreignId('job_group_id')->nullable()->unique()->constrained('job_groups')->onDelete('set null');
+            $table->foreignId('group_id')->nullable()->unique()->constrained('groups')->onDelete('set null');
             $table->string('name')->nullable();
             $table->decimal('lat', 10, 7)->nullable();
             $table->decimal('lng', 10, 7)->nullable();

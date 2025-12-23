@@ -12,7 +12,7 @@ class GroupMessageSent implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new PrivateChannel('group.' . $this->message->job_group_id);
+        return new PrivateChannel('group.' . $this->message->group_id);
     }
 
     public function broadcastWith()

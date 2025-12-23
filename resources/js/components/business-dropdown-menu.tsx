@@ -18,13 +18,7 @@ interface BusinessDropdownMenuProps {
     align?: 'start' | 'center' | 'end';
 }
 
-export default function BusinessDropdownMenu({
-    businesses,
-    selectedBusinessId,
-    onChange,
-    label,
-    align = 'end',
-}: BusinessDropdownMenuProps) {
+export default function BusinessDropdownMenu({ businesses, selectedBusinessId, onChange, label, align = 'end' }: BusinessDropdownMenuProps) {
     const [currentId, setCurrentId] = useState<number | string | null>(selectedBusinessId);
 
     useEffect(() => {
@@ -43,9 +37,7 @@ export default function BusinessDropdownMenu({
 
     return (
         <div className="space-y-1">
-            {label && (
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</p>
-            )}
+            {label && <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</p>}
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -58,13 +50,8 @@ export default function BusinessDropdownMenu({
                     </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent
-                    align={align}
-                    className="w-56 bg-white dark:bg-[#0d0d0d]/90 dark:text-gray-100"
-                >
-                    <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">
-                        Businesses
-                    </DropdownMenuLabel>
+                <DropdownMenuContent align={align} className="w-56 bg-white dark:bg-[#0d0d0d]/90 dark:text-gray-100">
+                    <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">Businesses</DropdownMenuLabel>
                     <DropdownMenuSeparator className="dark:bg-gray-700" />
 
                     {businesses.map((b) => (
@@ -75,9 +62,7 @@ export default function BusinessDropdownMenu({
                                 onChange(b.id);
                             }}
                             className={`cursor-pointer ${
-                                String(b.id) === String(currentId)
-                                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
-                                    : ''
+                                String(b.id) === String(currentId) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : ''
                             }`}
                         >
                             {b.name}

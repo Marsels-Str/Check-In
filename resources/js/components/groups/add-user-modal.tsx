@@ -11,7 +11,7 @@ export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
     return (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-md">
             <div className="relative z-[100000] w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-[#0f0f0f] dark:text-gray-100">
-                <Form method="post" action={route('job-groups.update-users', groupId)} className="space-y-4">
+                <Form method="post" action={route('groups.update-users', groupId)} className="space-y-4">
                     {({ errors }) => (
                         <>
                             <div className="space-y-2">

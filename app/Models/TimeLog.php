@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class TimeLog extends Model
 {
-    protected $fillable = ['user_id', 'business_id', 'clock_in', 'clock_out', 'worked_time'];
+    protected $fillable = ['user_id', 'business_id', 'clock_in', 'clock_out'];
+
+    protected function casts(): array
+    {
+        return [
+            'clock_in'  => 'datetime',
+            'clock_out' => 'datetime',
+        ];
+    }
 
     public function user()
     {

@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\JobGroup;
+use App\Models\Group;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('group.{groupId}', function ($user, $groupId) {
-    $group = JobGroup::with('business')->find($groupId);
+    $group = Group::with('business')->find($groupId);
 
     if (! $group) return false;
 

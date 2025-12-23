@@ -15,7 +15,6 @@ class AutoClockSetting extends Model
         'work_end',
         'lunch_start',
         'lunch_end',
-        'timezone',
         'extended_minutes',
     ];
 

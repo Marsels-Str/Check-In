@@ -24,7 +24,7 @@ export default function AboutUs() {
         {
             title: 'What do we value?',
             content:
-                'We value the time user spends using our application and we always look forward to improve the user experience, thats why we need your precious feedbcacks!',
+                'We value the time user spends using our application and we always look forward to improve the user experience, thats why we need your precious feedbacks!',
         },
     ];
 
