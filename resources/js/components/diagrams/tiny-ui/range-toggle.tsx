@@ -6,7 +6,8 @@ export default function WorkedHoursRangeToggle({ range }: { range: Range }) {
     function changeRange(newRange: Range) {
         router.get(
             route('dashboard'),
-            { range: newRange },
+            {   ...route().params,
+                range: newRange },
             {
                 preserveScroll: true,
                 preserveState: true,

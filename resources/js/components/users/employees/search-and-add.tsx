@@ -15,9 +15,9 @@ export default function EmployeeSearchAndAdd({
 }) {
     const { flash, searchResult = null } = usePage<{ flash?: any; searchResult?: User | null }>().props;
     const [uniqueId, setUniqueId] = useState('');
-    const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? businesses[0]?.id ?? null);
+    const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? null);
     const canAdd = useCan('employees.add');
-    const canView = useCan('business.access');
+    const canAccess = useCan('business.access');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -68,7 +68,7 @@ export default function EmployeeSearchAndAdd({
                     </div>
 
                     <div className="sm:self-start">
-                        {canView && (
+                        {canAccess && (
                             <BusinessDropdownMenu
                                 businesses={businesses}
                                 selectedBusinessId={businessId}

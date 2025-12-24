@@ -1,13 +1,13 @@
 import { DiagramState, WorkedHoursPoint } from '@/types';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import WorkedHoursRangeToggle from '@/components/diagrams/range-toggle';
+import WorkedHoursRangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
 
 type Props = DiagramState<WorkedHoursPoint>;
 
 export default function WorkedHoursDiagram({ data, range }: Props) {
     return (
-        <div className="h-64 rounded-xl border p-4">
+        <div className="h-64 rounded-xl p-4">
             <p className="mb-2 font-semibold">Worked hours</p>
 
             <WorkedHoursRangeToggle range={range} />

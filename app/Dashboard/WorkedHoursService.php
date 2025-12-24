@@ -12,20 +12,13 @@ class WorkedHoursService
     public static function make(Request $request): array
     {
         $user = $request->user();
+        $isOwner = $user->hasRole('Owner');
 
-        $businessId = match (true) {
-            $user->hasRole('Owner') =>
-                $request->input('business_id'),
+        $businessId = $request->input('business_id');
 
-            $user->ownedBusiness =>
-                $user->ownedBusiness->id,
-
-            default =>
-                $user->businesses()->value('businesses.id'),
-        };
-
-        if (! $businessId) {
-            return ['data' => []];
+        if (! $isOwner && ! $businessId) {
+            $businessId = $user->ownedBusiness?->id
+                ?? $user->businesses()->value('businesses.id');
         }
 
         $range = $request->input('range', 'week');
@@ -41,15 +34,20 @@ class WorkedHoursService
             ],
         };
 
-        $logs = TimeLog::where('business_id', $businessId)
-            ->whereNotNull('clock_out')
-            ->where(function ($q) use ($from, $to) {
-                $q->where('clock_in', '<', $to)
-                  ->where('clock_out', '>', $from);
-            })
-            ->get();
+        $logsQuery = TimeLog::whereNotNull('clock_out');
 
-        $data = collect(CarbonPeriod::create($from, $to))->map(function (Carbon $day) use ($logs) {
+        if ($businessId) {
+            $logsQuery->where('business_id', $businessId);
+        }
+
+        $logsQuery->where(function ($q) use ($from, $to) {
+            $q->where('clock_in', '<', $to)
+            ->where('clock_out', '>', $from);
+        });
+
+        $logs = $logsQuery->get();
+
+        $data = collect(CarbonPeriod::create($from, $to))->map(function (Carbon $day) use ($logs, $range) {
 
                 $dayStart = $day->copy()->startOfDay()->getTimestamp();
                 $dayEnd   = $day->copy()->endOfDay()->getTimestamp();
@@ -63,7 +61,10 @@ class WorkedHoursService
                 });
 
                 return [
-                    'label' => $day->format('D'),
+                    'label' => isset($range) && $range === 'month'
+                        ? $day->format('j')
+                        : $day->format('D'),
+
                     'hours' => round($seconds / 3600, 2),
                 ];
             })

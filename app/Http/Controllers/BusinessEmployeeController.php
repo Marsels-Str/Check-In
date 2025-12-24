@@ -24,7 +24,7 @@ class BusinessEmployeeController extends Controller
 
         if ($authUser->hasRole('Owner')) {
             $businesses = Business::select('id', 'name')->orderBy('name')->get();
-            $selectedBusinessId = $request->query('business_id') ?? $businesses->first()?->id;
+            $selectedBusinessId = $request->query('business_id');
 
             $employees = $selectedBusinessId
                 ? Business::find($selectedBusinessId)?->employees()->with($withRelations)->get()

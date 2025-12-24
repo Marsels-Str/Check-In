@@ -5,8 +5,8 @@ import BusinessForm from '@/components/profile-settings/business-form';
 import CreateBusinessForm from '@/components/profile-settings/create-business-form';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, router, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Business settings', href: '/settings/business' }];
 
@@ -19,9 +19,7 @@ export default function Business({
     businesses?: any[];
     selectedBusinessId?: number | string | null;
 }) {
-    const { auth } = usePage<SharedData>().props;
-
-    function handleBusinessChange(id: number | string) {
+    function handleBusinessChange(id: number | string | null) {
         router.visit(route('business.edit'), {
             method: 'get',
             data: { business_id: id },

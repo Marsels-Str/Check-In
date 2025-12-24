@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/react';
 import WorkedHoursDiagram from '@/components/diagrams/worked-hours';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 import { router } from '@inertiajs/react';
+import { useCan } from '@/lib/can';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,13 +21,13 @@ interface DashboardProps {
 }
 
 export default function Dashboard({workedHours, businesses, selectedBusinessId,}: DashboardProps) {
-    const isOwner = businesses.length > 0;
+    const canAccess = useCan('business.access');
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
-                {isOwner && (
+                {canAccess && (
                     <BusinessDropdownMenu
                         businesses={businesses}
                         selectedBusinessId={selectedBusinessId ?? null}
@@ -37,7 +38,7 @@ export default function Dashboard({workedHours, businesses, selectedBusinessId,}
                 )}
 
                 <div className="grid gap-4 md:grid-cols-3">
-                    <div className="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
+                    <div className="relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border dark:bg-[#D4A017]/40">
                         <WorkedHoursDiagram {...workedHours} />
                     </div>
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
