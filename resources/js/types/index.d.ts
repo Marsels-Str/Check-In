@@ -44,6 +44,11 @@ export interface WorkedHoursPoint {
     hours: number;
 }
 
+export interface EmployeeActivityPoint {
+    label: string;
+    count: number;
+}
+
 export interface SharedData {
     name: string;
     auth: {

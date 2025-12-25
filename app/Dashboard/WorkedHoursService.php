@@ -21,7 +21,7 @@ class WorkedHoursService
                 ?? $user->businesses()->value('businesses.id');
         }
 
-        $range = $request->input('range', 'week');
+        $range = $request->input('range_hours', 'week');
 
         [$from, $to] = match ($range) {
             'month' => [

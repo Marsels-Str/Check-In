@@ -2,12 +2,19 @@ import { router } from '@inertiajs/react';
 
 type Range = 'week' | 'month';
 
-export default function WorkedHoursRangeToggle({ range }: { range: Range }) {
+type Props = {
+    range: Range;
+    param: string;
+};
+
+export default function RangeToggle({ range, param }: Props) {
     function changeRange(newRange: Range) {
         router.get(
             route('dashboard'),
-            {   ...route().params,
-                range: newRange },
+            {
+                ...route().params,
+                [param]: newRange,
+            },
             {
                 preserveScroll: true,
                 preserveState: true,

@@ -1,11 +1,12 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type DiagramState, type WorkedHoursPoint, type BusinessProfile } from '@/types';
+import type { BreadcrumbItem, DiagramState, WorkedHoursPoint, BusinessProfile, EmployeeActivityPoint } from '@/types';
 import { Head } from '@inertiajs/react';
 import WorkedHoursDiagram from '@/components/diagrams/worked-hours';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 import { router } from '@inertiajs/react';
 import { useCan } from '@/lib/can';
+import EmployeeActivityDiagram from '@/components/diagrams/active-employees';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,11 +17,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface DashboardProps {
     workedHours: DiagramState<WorkedHoursPoint>;
+    activity: DiagramState<EmployeeActivityPoint>;
     businesses: BusinessProfile[];
     selectedBusinessId?: number | null;
 }
 
-export default function Dashboard({workedHours, businesses, selectedBusinessId,}: DashboardProps) {
+export default function Dashboard({workedHours, activity, businesses, selectedBusinessId,}: DashboardProps) {
     const canAccess = useCan('business.access');
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -42,7 +44,7 @@ export default function Dashboard({workedHours, businesses, selectedBusinessId,}
                         <WorkedHoursDiagram {...workedHours} />
                     </div>
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                        <EmployeeActivityDiagram {...activity} />
                     </div>
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                         <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
