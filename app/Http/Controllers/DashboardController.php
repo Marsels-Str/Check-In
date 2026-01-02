@@ -7,6 +7,7 @@ use App\Models\Business;
 use Illuminate\Http\Request;
 use App\Dashboard\WorkedHoursService;
 use App\Dashboard\EmployeeActivityService;
+use App\Dashboard\DashboardOverviewService;
 
 class DashboardController extends Controller
 {
@@ -21,6 +22,7 @@ class DashboardController extends Controller
         return Inertia::render('dashboard', [
             'workedHours' => WorkedHoursService::make($request),
             'activity' => EmployeeActivityService::make($request),
+            'overview' => DashboardOverviewService::make($request),
             'businesses'         => $businesses,
             'selectedBusinessId' => $request->input('business_id'),
         ]);

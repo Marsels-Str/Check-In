@@ -34,7 +34,11 @@ export interface TimeLog {
     clock_out: string | null;
 }
 
-export interface DiagramState<T> {
+export interface EmptyState {
+    empty?: 'nothing-to-show';
+}
+
+export interface DiagramState<T> extends EmptyState {
     data: T[];
     range: 'week' | 'month';
 }
@@ -47,6 +51,31 @@ export interface WorkedHoursPoint {
 export interface EmployeeActivityPoint {
     label: string;
     count: number;
+}
+
+export interface OverviewUser {
+    id: number;
+    name: string;
+    profile?: {
+        portrait?: string | null;
+    };
+    is_clocked_in: boolean;
+    offline_for?: string | null;
+}
+
+export interface OverviewSelf {
+    id: number;
+    name: string;
+    profile?: {
+        portrait?: string | null;
+    };
+    is_clocked_in: boolean;
+    time_logs: TimeLog[];
+}
+
+export interface OverviewData extends EmptyState {
+    users?: OverviewUser[];
+    self?: OverviewSelf;
 }
 
 export interface SharedData {

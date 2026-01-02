@@ -179,22 +179,23 @@ class BusinessEmployeeController extends Controller
             : collect([$authUser->ownedBusiness]);
 
         foreach ($businesses as $business) {
-            if (! $business) continue;
-
-            $activeLog = TimeLog::where('user_id', $user->id)
-                ->where('business_id', $business->id)
-                ->whereNull('clock_out')
-                ->first();
-
-            if ($activeLog) {
-                $activeLog->update([
-                    'clock_out' => now(),
-                ]);
+            if (! $business) {
+                continue;
             }
 
+            TimeLog::where('user_id', $user->id)
+                ->where('business_id', $business->id)
+                ->delete();
+
             $business->employees()->detach($user->id);
-            $user->groups()->where('business_id', $business->id)->detach();
-            $business->update(['employees' => $business->employees()->count()]);
+
+            $user->groups()
+                ->where('business_id', $business->id)
+                ->detach();
+
+            $business->update([
+                'employees' => $business->employees()->count(),
+            ]);
         }
 
         return back()->with('success', 'Employee removed successfully!');

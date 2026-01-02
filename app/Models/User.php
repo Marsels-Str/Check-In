@@ -72,7 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function businesses()
     {
-        return $this->belongsToMany(Business::class, 'business_users');
+        return $this->belongsToMany(Business::class, 'business_users')->withTimestamps();
     }
 
     public function business()

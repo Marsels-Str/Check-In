@@ -3,8 +3,8 @@
 namespace App\Dashboard;
 
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use App\Models\TimeLog;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class WorkedHoursService
@@ -13,15 +13,18 @@ class WorkedHoursService
     {
         $user = $request->user();
         $isOwner = $user->hasRole('Owner');
-
         $businessId = $request->input('business_id');
-
-        if (! $isOwner && ! $businessId) {
-            $businessId = $user->ownedBusiness?->id
-                ?? $user->businesses()->value('businesses.id');
-        }
-
         $range = $request->input('range_hours', 'week');
+        $isBusinessOwner = $user->ownedBusiness()->exists();
+        $belongsToBusiness = $user->ownedBusiness()->exists() || $user->businesses()->exists();
+
+        if (! $belongsToBusiness) {
+            return [
+                'data' => [],
+                'range' => $request->input('range_hours', 'week'),
+                'empty' => 'nothing-to-show',
+            ];
+        }
 
         [$from, $to] = match ($range) {
             'month' => [
@@ -36,8 +39,14 @@ class WorkedHoursService
 
         $logsQuery = TimeLog::whereNotNull('clock_out');
 
-        if ($businessId) {
-            $logsQuery->where('business_id', $businessId);
+        if ($isOwner) {
+            if ($businessId) {
+                $logsQuery->where('business_id', $businessId);
+            }
+        } elseif ($isBusinessOwner) {
+            $logsQuery->where('business_id', $user->ownedBusiness->id);
+        } else {
+            $logsQuery->where('user_id', $user->id);
         }
 
         $logsQuery->where(function ($q) use ($from, $to) {
@@ -61,11 +70,10 @@ class WorkedHoursService
                 });
 
                 return [
-                    'label' => isset($range) && $range === 'month'
+                    'label' => $range === 'month'
                         ? $day->format('j')
                         : $day->format('D'),
-
-                    'hours' => round($seconds / 3600, 2),
+                    'hours' => round($seconds / 3600),
                 ];
             })
             ->values();
