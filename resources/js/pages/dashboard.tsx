@@ -1,4 +1,3 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, DiagramState, WorkedHoursPoint, BusinessProfile, EmployeeActivityPoint, OverviewData } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -8,6 +7,7 @@ import { router } from '@inertiajs/react';
 import { useCan } from '@/lib/can';
 import EmployeeActivityDiagram from '@/components/diagrams/active-employees';
 import OverviewCard from '@/components/diagrams/overview';
+import MessageReminderDiagram from '@/components/diagrams/message-reminder';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,11 +20,20 @@ interface DashboardProps {
     workedHours: DiagramState<WorkedHoursPoint>;
     activity: DiagramState<EmployeeActivityPoint>;
     overview: OverviewData;
+    messageReminders: {
+        data: {
+            group_id: number;
+            group_name: string;
+            unread_count: number;
+            has_unread: boolean;
+        }[];
+        empty?: string;
+    };
     businesses: BusinessProfile[];
     selectedBusinessId?: number | null;
 }
 
-export default function Dashboard({workedHours, activity, overview, businesses, selectedBusinessId,}: DashboardProps) {
+export default function Dashboard({workedHours, activity, overview, messageReminders, businesses, selectedBusinessId,}: DashboardProps) {
     const canAccess = useCan('business.access');
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -53,7 +62,7 @@ export default function Dashboard({workedHours, activity, overview, businesses, 
                     </div>
                 </div>
                 <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                    <MessageReminderDiagram messageReminders={messageReminders} />
                 </div>
             </div>
         </AppLayout>

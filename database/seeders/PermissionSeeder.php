@@ -77,10 +77,6 @@ class PermissionSeeder extends Seeder
             'business.access',
             'business.create',
         ],
-
-        'diagrams' => [
-            'diagrams.view',
-        ],
     ];
 
         foreach ($groups as $groupName => $permissions) {

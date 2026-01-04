@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Group;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class GroupController extends Controller
@@ -95,6 +96,18 @@ class GroupController extends Controller
         if (! $this->ensureAuthorizedForGroup($user, $group, 'groups.show')) {
             return back();
         }
+
+        DB::table('group_user_reads')->updateOrInsert(
+            [
+                'group_id' => $group->id,
+                'user_id'  => $user->id,
+            ],
+            [
+                'last_read_at' => now(),
+                'updated_at'   => now(),
+                'created_at'   => now(),
+            ]
+        );
 
         $availableUsers = User::whereHas('businesses', fn($q) => 
                 $q->where('businesses.id', $group->business_id)
