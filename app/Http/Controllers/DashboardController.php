@@ -24,7 +24,7 @@ class DashboardController extends Controller
             'workedHours' => WorkedHoursService::make($request),
             'activity' => EmployeeActivityService::make($request),
             'overview' => DashboardOverviewService::make($request),
-            'messageReminders' => MessageReminderService::make($request),
+            'message' => MessageReminderService::make($request),
             'businesses'         => $businesses,
             'selectedBusinessId' => $request->input('business_id'),
         ]);

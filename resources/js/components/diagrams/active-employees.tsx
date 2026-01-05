@@ -1,5 +1,4 @@
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-
 import RangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
 import type { DiagramState, EmployeeActivityPoint } from '@/types';
 

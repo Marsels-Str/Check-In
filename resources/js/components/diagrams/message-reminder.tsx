@@ -1,54 +1,33 @@
 import { router } from '@inertiajs/react';
+import type { MessageReminderState } from '@/types';
 
-type ReminderRow = {
-    group_id: number;
-    group_name: string;
-    unread_count: number;
-    has_unread: boolean;
-    first_unread_at?: string | null;
-};
+type Props = MessageReminderState;
 
-export default function MessageReminder({
-    messageReminders,
-}: {
-    messageReminders: { data: ReminderRow[]; empty?: string };
-}) {
-    const rows = messageReminders?.data ?? [];
-    const isEmpty = !rows.length;
-
-    if (isEmpty) {
+export default function MessageReminder({ data, empty }: Props) {
+    if (empty === 'nothing-to-show') {
         return (
-            <div className="p-4 text-sm text-gray-500 dark:text-gray-400">
-                No new messages
+            <div className="h-64 rounded-xl flex items-center justify-center text-muted-foreground text-sm">
+                Get a job, to view personal group messages.
             </div>
         );
     }
 
     return (
         <div className="space-y-2">
-            {rows.map((g) => (
+            {data.map((groups) => (
                 <button
-                    key={g.group_id}
-                    onClick={() => router.visit(`/groups/${g.group_id}`)}
-                    className="
-                        w-full text-left p-3 rounded-md
-                        border border-gray-200 dark:border-gray-700
-                        hover:bg-gray-50 dark:hover:bg-gray-800
-                        transition
-                    "
+                    key={groups.group_id}
+                    onClick={() => router.visit(`/groups/${groups.group_id}`)}
+                    className="w-full rounded-md border border-gray-200 p-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
                 >
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <span className={g.has_unread ? "text-purple-600" : "text-gray-400"}>
-                                {g.has_unread ? "🟣" : "⚪"}
-                            </span>
-                            <span className="font-medium">{g.group_name}</span>
+                            <span className={groups.has_unread ? 'text-purple-600' : 'text-gray-400'}>{groups.has_unread ? '🟣' : '⚪'}</span>
+                            <span className="font-medium">{groups.group_name}</span>
                         </div>
 
-                        {g.has_unread ? (
-                            <span className="text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full">
-                                {g.unread_count}
-                            </span>
+                        {groups.has_unread ? (
+                            <span className="rounded-full bg-purple-600 px-2 py-0.5 text-xs text-white">{groups.unread_count}</span>
                         ) : (
                             <span className="text-xs text-gray-400">0</span>
                         )}

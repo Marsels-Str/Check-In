@@ -78,6 +78,18 @@ export interface OverviewData extends EmptyState {
     self?: OverviewSelf;
 }
 
+export interface MessageReminder {
+    group_id: number;
+    group_name: string;
+    unread_count: number;
+    has_unread: boolean;
+    first_unread_at?: string | null;
+};
+
+export interface MessageReminderState extends EmptyState {
+    data: MessageReminder[];
+}
+
 export interface SharedData {
     name: string;
     auth: {

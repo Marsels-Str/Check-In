@@ -8,7 +8,7 @@ export default function OverviewCard({ users, self, empty }: Props) {
     if (empty === 'nothing-to-show') {
         return (
             <div className="h-64 rounded-xl flex items-center justify-center text-muted-foreground text-sm">
-                Get a job, to view personal statistics.
+                Get a job, to view this panel.
             </div>
         );
     }
