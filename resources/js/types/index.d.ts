@@ -39,38 +39,38 @@ export interface EmptyState {
 }
 
 export interface DiagramState<T> extends EmptyState {
-    data: T[];
-    range: 'week' | 'month';
+    data?: T[];
+    range?: 'week' | 'month';
 }
 
 export interface WorkedHoursPoint {
-    label: string;
-    hours: number;
+    label?: string;
+    hours?: number;
 }
 
 export interface EmployeeActivityPoint {
-    label: string;
-    count: number;
+    label?: string;
+    count?: number;
 }
 
 export interface OverviewUser {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
     profile?: {
         portrait?: string | null;
     };
-    is_clocked_in: boolean;
+    is_clocked_in?: boolean;
     offline_for?: string | null;
 }
 
 export interface OverviewSelf {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
     profile?: {
         portrait?: string | null;
     };
-    is_clocked_in: boolean;
-    time_logs: TimeLog[];
+    is_clocked_in?: boolean;
+    time_logs?: TimeLog[];
 }
 
 export interface OverviewData extends EmptyState {
@@ -79,15 +79,15 @@ export interface OverviewData extends EmptyState {
 }
 
 export interface MessageReminder {
-    group_id: number;
-    group_name: string;
-    unread_count: number;
-    has_unread: boolean;
+    group_id?: number;
+    group_name?: string;
+    unread_count?: number;
+    has_unread?: boolean;
     first_unread_at?: string | null;
 };
 
 export interface MessageReminderState extends EmptyState {
-    data: MessageReminder[];
+    data?: MessageReminder[];
 }
 
 export interface SharedData {

@@ -1,39 +1,50 @@
+import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
 import { router } from '@inertiajs/react';
-import type { MessageReminderState } from '@/types';
 
-type Props = MessageReminderState;
+export default function MessageReminder() {
+    const { message } = useDashboardData();
 
-export default function MessageReminder({ data, empty }: Props) {
+    const data = message?.data ?? [];
+    const empty = message?.empty;
+
     if (empty === 'nothing-to-show') {
         return (
-            <div className="h-64 rounded-xl flex items-center justify-center text-muted-foreground text-sm">
+            <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
                 Get a job, to view personal group messages.
             </div>
         );
     }
 
+    if (!data.length) {
+        return <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">No new group messages.</div>;
+    }
+
     return (
-        <div className="space-y-2">
-            {data.map((groups) => (
-                <button
-                    key={groups.group_id}
-                    onClick={() => router.visit(`/groups/${groups.group_id}`)}
-                    className="w-full rounded-md border border-gray-200 p-3 text-left transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
-                >
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className={groups.has_unread ? 'text-purple-600' : 'text-gray-400'}>{groups.has_unread ? '🟣' : '⚪'}</span>
-                            <span className="font-medium">{groups.group_name}</span>
+        <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-800">
+            {data.map((group) => {
+                const isUnread = group.has_unread;
+
+                return (
+                    <button
+                        key={group.group_id}
+                        onClick={() => router.visit(`/groups/${group.group_id}`)}
+                        className={`group relative flex cursor-pointer items-center justify-between px-4 py-3 text-left transition ${
+                            isUnread ? 'hover:bg-[#D4A017]/40 dark:hover:bg-[#D4A017]/40' : 'hover:bg-gray-100 dark:hover:bg-gray-800/60'
+                        } `}
+                    >
+                        <span className={`absolute top-0 left-0 h-full w-1 ${isUnread ? 'bg-[#D4A017]' : 'bg-transparent'} `} />
+
+                        <div className="flex flex-col">
+                            <span className="text-sm font-medium">{group.group_name}</span>
+                            <span className="text-xs text-muted-foreground">{isUnread ? 'New activity' : 'No unread messages'}</span>
                         </div>
 
-                        {groups.has_unread ? (
-                            <span className="rounded-full bg-purple-600 px-2 py-0.5 text-xs text-white">{groups.unread_count}</span>
-                        ) : (
-                            <span className="text-xs text-gray-400">0</span>
+                        {isUnread && (
+                            <span className="ml-4 rounded-full bg-[#D4A017] px-2 py-0.5 text-xs font-medium text-black">{group.unread_count}</span>
                         )}
-                    </div>
-                </button>
-            ))}
+                    </button>
+                );
+            })}
         </div>
     );
 }

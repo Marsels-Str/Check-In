@@ -1,10 +1,14 @@
-import type { OverviewData } from '@/types';
 import BusinessPanel from './tiny-ui/BusinessPanel';
 import PersonalPanel from './tiny-ui/PersonalPanel';
+import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
 
-type Props = OverviewData;
+export default function OverviewCard() {
+    const { overview } = useDashboardData();
 
-export default function OverviewCard({ users, self, empty }: Props) {
+    const users = overview?.users ?? [];
+    const self = overview?.self;
+    const empty = overview?.empty;
+
     if (empty === 'nothing-to-show') {
         return (
             <div className="h-64 rounded-xl flex items-center justify-center text-muted-foreground text-sm">
@@ -14,8 +18,8 @@ export default function OverviewCard({ users, self, empty }: Props) {
     }
 
     if (self) {
-        return <PersonalPanel self={self} />;
+        return <PersonalPanel self={self} />
     }
 
-    return <BusinessPanel users={users ?? []} />;
+    return <BusinessPanel users={users ?? []} />
 }

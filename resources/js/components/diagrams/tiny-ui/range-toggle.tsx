@@ -19,7 +19,7 @@ export default function RangeToggle({ range, param }: Props) {
                 preserveScroll: true,
                 preserveState: true,
                 replace: true,
-            }
+            },
         );
     }
 
@@ -30,9 +30,7 @@ export default function RangeToggle({ range, param }: Props) {
                     key={r}
                     onClick={() => changeRange(r)}
                     className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-                        range === r
-                            ? 'bg-background shadow'
-                            : 'text-muted-foreground hover:text-foreground'
+                        range === r ? 'bg-background shadow' : 'text-muted-foreground hover:text-foreground'
                     }`}
                 >
                     {r === 'week' ? 'Week' : 'Month'}

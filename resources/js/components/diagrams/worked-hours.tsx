@@ -1,13 +1,17 @@
 import RangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
-import { DiagramState, WorkedHoursPoint } from '@/types';
+import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-type Props = DiagramState<WorkedHoursPoint>;
+export default function WorkedHoursDiagram() {
+    const { workedHours } = useDashboardData();
 
-export default function WorkedHoursDiagram({ data, range, empty }: Props) {
+    const data = workedHours?.data ?? [];
+    const range = workedHours?.range ?? 'week';
+    const empty = workedHours?.empty;
+
     if (empty === 'nothing-to-show') {
         return (
-            <div className="h-64 rounded-xl flex items-center justify-center text-muted-foreground text-sm">
+            <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
                 Get a job, to view personal statistics.
             </div>
         );
@@ -23,10 +27,10 @@ export default function WorkedHoursDiagram({ data, range, empty }: Props) {
 
             <ResponsiveContainer width="100%" height="90%">
                 <BarChart data={data}>
-                    <XAxis dataKey="label" />
-                    <YAxis unit="h" />
+                    <XAxis dataKey="label" stroke='#f0e4e8ff' />
+                    <YAxis unit="h" stroke='#f0e4e8ff' />
                     <Tooltip />
-                    <Bar dataKey="hours" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="hours" radius={[4, 4, 0, 0]} stroke='#f0e4e8ff' />
                 </BarChart>
             </ResponsiveContainer>
         </div>
