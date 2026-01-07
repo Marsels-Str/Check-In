@@ -25,7 +25,7 @@ export default function EmployeeActivityDiagram() {
                 <RangeToggle range={range} param="range_activity" />
             </div>
 
-            <ResponsiveContainer width="100%" height="90%">
+            <ResponsiveContainer width="100%" height="90%" initialDimension={{ width: 1, height: 1 }}>
                 <BarChart data={data}>
                     <XAxis dataKey="label" stroke='#FF4081' />
                     <YAxis allowDecimals={false} stroke='#FF4081' />

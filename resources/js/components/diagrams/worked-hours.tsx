@@ -25,7 +25,7 @@ export default function WorkedHoursDiagram() {
                 <RangeToggle range={range} param="range_hours" />
             </div>
 
-            <ResponsiveContainer width="100%" height="90%">
+            <ResponsiveContainer width="100%" height="90%" initialDimension={{ width: 1, height: 1 }}>
                 <BarChart data={data}>
                     <XAxis dataKey="label" stroke='#FF4081' />
                     <YAxis unit="h" stroke='#FF4081' />
