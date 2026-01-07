@@ -70,6 +70,7 @@ class RoleSeeder extends Seeder
         
         $worker->givePermissionTo([
             'groups.view',
+            'groups.show',
             'business.create',
         ]);
     }

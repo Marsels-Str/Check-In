@@ -5,7 +5,7 @@ import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Users', href: '/users' },
-    { title: 'Assign Role', href: '/users' },
+    { title: 'Assign role', href: '/users' },
 ];
 
 export default function Assign({
@@ -21,12 +21,12 @@ export default function Assign({
 }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Assign Role" />
+            <Head title="Assign role" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold">Assign a Role</h1>
+                        <h1 className="text-2xl font-semibold">Assign a role</h1>
                         <p className="text-sm text-gray-500">Assigning a role will allow the user to perform certain actions.</p>
                     </div>
 

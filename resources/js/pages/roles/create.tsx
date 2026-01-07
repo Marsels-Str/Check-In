@@ -16,7 +16,7 @@ export default function Create({ permissions, businesses, auth }: { permissions:
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Create Role</h1>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Create role</h1>
                         <p className="text-sm text-gray-500">Define a new role and assign its permissions.</p>
                     </div>
 

@@ -42,7 +42,7 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'About Us',
+        title: 'About us',
         href: '/about-us',
         icon: Book,
     },

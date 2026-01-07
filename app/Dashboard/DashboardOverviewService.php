@@ -19,17 +19,12 @@ class DashboardOverviewService
             return ['empty' => 'nothing-to-show'];
         }
         if ($user->hasRole('Business')) {
-            $businessId = Business::where('user_id', $user->id)->value('id');
-
-            return $businessId
-                ? self::business($businessId)
-                : ['empty' => 'nothing-to-show'];
+            return self::business(Business::where('user_id', $user->id)->value('id'))
+                ?? ['empty' => 'nothing-to-show'];
         }
         if ($user->hasRole('Owner')) {
-            $businessId = $request->input('business_id');
-
-            return $businessId
-                ? self::business($businessId)
+            return $request->input('business_id')
+                ? self::business($request->input('business_id'))
                 : ['empty' => 'nothing-to-show'];
         }
         return self::personal($user);
@@ -80,7 +75,7 @@ class DashboardOverviewService
         $users = [];
 
         foreach ($employees as $user) {
-            $pivot    = $user->businesses->first()?->pivot;
+            $pivot = $user->businesses->first()?->pivot;
             $joinedAt = $pivot?->created_at;
 
             $validLog = $logsByUser[$user->id] ?? collect();
@@ -95,9 +90,9 @@ class DashboardOverviewService
             $isClockedIn = $validLog && is_null($validLog->clock_out);
 
             $users[] = [
-                'id'            => $user->id,
-                'name'          => $user->name,
-                'profile'       => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'profile' => [
                     'portrait' => $user->profile?->portrait,
                 ],
                 'is_clocked_in' => $isClockedIn,

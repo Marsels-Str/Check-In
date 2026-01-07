@@ -15,7 +15,7 @@ export default function EmployeeTable({ employees }: { employees: any[]; selecte
                     <tr className="bg-gray-100/60 text-xs text-gray-600 uppercase dark:bg-[#111111]/90 dark:text-gray-300">
                         <th className="border-b px-3 py-3 text-left">ID</th>
                         <th className="border-b px-3 py-3 text-left">Name</th>
-                        <th className="border-b px-3 py-3 text-left">Clocked In</th>
+                        <th className="border-b px-3 py-3 text-left">Clocked in</th>
                         <th className="border-b px-3 py-3 text-left">Actions</th>
                     </tr>
                 </thead>
@@ -54,7 +54,7 @@ export default function EmployeeTable({ employees }: { employees: any[]; selecte
                                                     type="submit"
                                                     className="rounded-md bg-green-100/20 px-2.5 py-1 text-xs font-medium text-green-700 ring-1 ring-green-400/30 transition-all hover:bg-green-200/30 hover:text-green-800 dark:bg-green-900/40 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-900/30 dark:hover:text-green-200"
                                                 >
-                                                    Clock-In
+                                                    Clock-in
                                                 </Button>
                                             </Form>
                                         )}
@@ -65,7 +65,7 @@ export default function EmployeeTable({ employees }: { employees: any[]; selecte
                                                     type="submit"
                                                     className="rounded-md bg-blue-100/20 px-2.5 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-400/30 transition-all hover:bg-blue-200/30 hover:text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 dark:ring-blue-500/30 dark:hover:bg-blue-900/30 dark:hover:text-blue-200"
                                                 >
-                                                    Clock-Out
+                                                    Clock-out
                                                 </Button>
                                             </Form>
                                         )}

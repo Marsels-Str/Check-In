@@ -14,7 +14,7 @@ export default function RolesEditFields({ role, rolePermissions, permissions }: 
             {({ errors }) => (
                 <>
                     <div className="space-y-2">
-                        <Label htmlFor="name">Role Name</Label>
+                        <Label htmlFor="name">Role name</Label>
                         <Input id="name" name="name" defaultValue={role.name} placeholder="Enter role name" />
                         <InputError message={errors.name} />
                     </div>

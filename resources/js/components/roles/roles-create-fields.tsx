@@ -14,7 +14,7 @@ interface RolesCreateFieldsProps {
 interface RoleFormData {
     name: string;
     permissions: string[];
-    business_id: number | string;
+    business_id: number | string | null;
 }
 
 export default function RolesCreateFields({ permissions, businesses, auth }: RolesCreateFieldsProps) {

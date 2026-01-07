@@ -5,18 +5,18 @@ import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles', href: '/roles' },
-    { title: 'Edit Role', href: '/roles' },
+    { title: 'Edit role', href: '/roles' },
 ];
 
 export default function Edit({ role, rolePermissions, permissions }: { role: any; rolePermissions: string[]; permissions: string[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Edit Role: ${role.name}`} />
+            <Head title={`Edit role: ${role.name}`} />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Edit Role</h1>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Edit role</h1>
                         <p className="text-sm text-gray-500">Modify the role name and adjust its assigned permissions.</p>
                     </div>
 

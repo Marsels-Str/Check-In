@@ -38,7 +38,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Create Group</h1>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Create group</h1>
                         <p className="text-sm text-gray-600 dark:text-gray-400">Add a new group and assign it to a business.</p>
                     </div>
 

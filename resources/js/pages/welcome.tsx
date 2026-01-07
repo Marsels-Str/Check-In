@@ -64,7 +64,7 @@ export default function Welcome() {
                                             <span className="h-1.5 w-1.5 rounded-full bg-[#FF4081] dark:bg-[#FFD54F]" />
                                         </span>
                                     </span>
-                                    <span>Then get to know the App and all its features.</span>
+                                    <span>Then get to know the app and all its features.</span>
                                 </li>
                             </ul>
                         </div>

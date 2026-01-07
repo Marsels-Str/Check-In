@@ -63,7 +63,7 @@ export default function EmployeeSearchAndAdd({
             <div className="borde mb-8 rounded-xl border p-6 shadow-sm backdrop-blur-sm transition">
                 <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Add New Employee</h2>
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Add new employee</h2>
                         <p className="text-gray-500 dark:text-gray-400">Add or remove employees, check their activity.</p>
                     </div>
 
@@ -112,7 +112,7 @@ export default function EmployeeSearchAndAdd({
                             onClick={handleAddEmployee}
                             className="mt-3 inline-flex items-center rounded-lg bg-green-100/20 px-4 py-2 text-sm font-medium text-green-700 ring-1 ring-green-400/30 transition-all hover:bg-green-200/30 hover:text-green-800 dark:bg-green-900/40 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-900/30 dark:hover:text-green-200"
                         >
-                            Add Employee
+                            Add employee
                         </Button>
                     </div>
                 )}

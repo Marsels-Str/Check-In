@@ -17,7 +17,7 @@ export default function ExtendWorkTimeForm({ initialMinutes }: { initialMinutes:
             >
                 {({ errors }) => (
                     <>
-                        <Label>Extend Work Time</Label>
+                        <Label>Extend work time</Label>
                         <p className="text-gray-500">If you plan to work longer, you can extend your work time (up to 12 hours max).</p>
 
                         <Input
@@ -35,7 +35,7 @@ export default function ExtendWorkTimeForm({ initialMinutes }: { initialMinutes:
                                 type="submit"
                                 className="rounded-lg bg-green-200/20 px-4 py-2 text-sm font-medium text-green-700 ring-1 ring-green-400/30 transition-all duration-300 ring-inset hover:bg-green-200/40 hover:text-green-800 hover:ring-green-400/40 dark:bg-green-900/30 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-800/40 dark:hover:text-green-200 dark:hover:ring-green-500/30"
                             >
-                                Save Extension
+                                Save
                             </Button>
                         </div>
                     </>

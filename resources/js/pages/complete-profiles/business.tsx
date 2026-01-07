@@ -20,7 +20,6 @@ export default function CompleteBusiness() {
         e.preventDefault();
         post(route('business.store'), {
             forceFormData: true,
-            onError: (errs) => console.log('business errors', errs),
         });
     }
 

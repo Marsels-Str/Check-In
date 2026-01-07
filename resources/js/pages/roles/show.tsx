@@ -4,7 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles', href: '/roles' },
-    { title: 'Show Role', href: '/roles' },
+    { title: 'Show role', href: '/roles' },
 ];
 
 export default function Show({ role, permissions }: { role: any; permissions: string[] }) {
@@ -15,7 +15,7 @@ export default function Show({ role, permissions }: { role: any; permissions: st
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Role Details</h1>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Role details</h1>
                         <p className="text-sm text-gray-500">View detailed information and assigned permissions for this role.</p>
                     </div>
 

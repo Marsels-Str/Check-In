@@ -39,7 +39,6 @@ function AccordionItemComponent({
                 bg-white dark:bg-neutral-900
             "
         >
-            {/* Gradient hover overlay (TRUE left → right reveal) */}
             <div
                 className="
                     pointer-events-none
@@ -51,7 +50,6 @@ function AccordionItemComponent({
                 "
             />
 
-            {/* Header */}
             <button
                 onClick={onToggle}
                 className="
@@ -81,7 +79,6 @@ function AccordionItemComponent({
                 </svg>
             </button>
 
-            {/* Content */}
             <div
                 style={{ maxHeight: isOpen ? height : 0 }}
                 className="

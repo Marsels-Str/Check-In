@@ -8,7 +8,7 @@ import GroupChat from '../../components/groups/group-chat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Groups', href: '/groups' },
-    { title: 'Show Group', href: '/groups' },
+    { title: 'Show group', href: '/groups' },
 ];
 
 export default function Show({ group, users, errors, availableMaps }: any) {
@@ -52,7 +52,7 @@ export default function Show({ group, users, errors, availableMaps }: any) {
                 </section>
 
                 <section className="mb-8 rounded-xl border p-6">
-                    <h2 className="mb-4 text-lg font-semibold">Live Chat</h2>
+                    <h2 className="mb-4 text-lg font-semibold">Live chat</h2>
 
                     <GroupChat
                         groupId={group.id}

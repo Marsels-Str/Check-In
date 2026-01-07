@@ -21,7 +21,7 @@ export default function RoleAssignFields({
                 <>
                     <div className="space-y-4">
                         <div className="mx-auto w-full max-w-md space-y-3 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm">
-                            <h3 className="mb-2 text-sm font-semibold text-gray-500">Global Roles</h3>
+                            <h3 className="mb-2 text-sm font-semibold text-gray-500">Global roles</h3>
 
                             {globalRoles.map((role) => (
                                 <Label
@@ -43,7 +43,7 @@ export default function RoleAssignFields({
                         </div>
 
                         <div className="mx-auto w-full max-w-md space-y-3 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm">
-                            <h3 className="mb-2 text-sm font-semibold text-gray-500">Roles for this Business</h3>
+                            <h3 className="mb-2 text-sm font-semibold text-gray-500">Business specific roles</h3>
 
                             {businessRoles.map((role) => (
                                 <Label

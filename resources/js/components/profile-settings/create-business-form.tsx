@@ -13,7 +13,7 @@ export default function CreateBusinessForm() {
                     <>
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div>
-                                <Label htmlFor="name">Business Name</Label>
+                                <Label htmlFor="name">Business name</Label>
                                 <Input id="name" name="name" placeholder="Business name" />
                                 <InputError message={errors.name} />
                             </div>
@@ -25,19 +25,19 @@ export default function CreateBusinessForm() {
                             </div>
 
                             <div>
-                                <Label htmlFor="email">Business Email</Label>
+                                <Label htmlFor="email">Business email</Label>
                                 <Input id="email" type="email" name="email" placeholder="Contact email" />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div>
-                                <Label htmlFor="phone">Business Phone</Label>
+                                <Label htmlFor="phone">Business phone</Label>
                                 <Input id="phone" name="phone" placeholder="Contact phone" />
                                 <InputError message={errors.phone} />
                             </div>
 
                             <div className="md:col-span-2">
-                                <Label htmlFor="street_address">Street Address</Label>
+                                <Label htmlFor="street_address">Street address</Label>
                                 <Input id="street_address" name="street_address" placeholder="Street address" />
                                 <InputError message={errors.street_address} />
                             </div>
@@ -66,7 +66,7 @@ export default function CreateBusinessForm() {
                                 disabled={processing}
                                 className="inline-flex w-full items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
-                                Create Business
+                                Create business
                             </Button>
                             <Transition show={recentlySuccessful}>
                                 <p className="text-sm text-neutral-600">Created!</p>

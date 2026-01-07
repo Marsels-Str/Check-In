@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/react';
 export default function BusinessLocked() {
     return (
         <AppLayout>
-            <Head title="Business Creation Locked" />
+            <Head title="Business creation locked" />
             <LockedBusiness />
         </AppLayout>
     );

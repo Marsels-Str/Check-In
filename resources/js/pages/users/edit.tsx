@@ -6,13 +6,13 @@ import UserProfileFields from '@/components/users/user-profile-edit-fields';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Users', href: '/users' },
-    { title: 'Edit User', href: '/users' },
+    { title: 'Edit user', href: '/users' },
 ];
 
 export default function Edit({ user }: { user: User }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Edit User" />
+            <Head title="Edit user" />
             <div className="px-2">
                 <div className="flex items-center justify-between">
                     <div>
@@ -28,12 +28,12 @@ export default function Edit({ user }: { user: User }) {
                 </div>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="mb-4">
-                        <h2 className="text-center text-lg font-semibold">Account Information</h2>
+                        <h2 className="text-center text-lg font-semibold">Account information</h2>
                         <UserForm user={user} />
                     </div>
 
                     <div className="mb-4">
-                        <h2 className="text-center text-lg font-semibold">Profile Information</h2>
+                        <h2 className="text-center text-lg font-semibold">Profile information</h2>
 
                         <UserProfileFields user_profile={{ ...user.profile, user_id: user.id }} />
                     </div>

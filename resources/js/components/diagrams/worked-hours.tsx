@@ -20,15 +20,15 @@ export default function WorkedHoursDiagram() {
     return (
         <div className="h-64 rounded-xl p-4">
             <div className="mb-2 flex items-center justify-between">
-                <p className="font-semibold">Worked Hours</p>
+                <p className="font-semibold">Worked hours</p>
 
                 <RangeToggle range={range} param="range_hours" />
             </div>
 
             <ResponsiveContainer width="100%" height="90%">
                 <BarChart data={data}>
-                    <XAxis dataKey="label" stroke='#f0e4e8ff' />
-                    <YAxis unit="h" stroke='#f0e4e8ff' />
+                    <XAxis dataKey="label" stroke='#FF4081' />
+                    <YAxis unit="h" stroke='#FF4081' />
                     <Tooltip />
                     <Bar dataKey="hours" radius={[4, 4, 0, 0]} stroke='#f0e4e8ff' />
                 </BarChart>

@@ -16,8 +16,8 @@ export default function LockedAutoClock() {
 
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 <DialogPanel className="mx-auto max-w-md rounded-2xl bg-white p-6 text-center shadow-xl dark:bg-[#121212]">
-                    <h2 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">Access Restricted</h2>
-                    <p className="mb-6 text-gray-600 dark:text-gray-400">You must belong to a business before using Auto Clock.</p>
+                    <h2 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">Access restricted</h2>
+                    <p className="mb-6 text-gray-600 dark:text-gray-400">You must belong to a business if you wish to use these settings.</p>
                     <p className="text-sm text-gray-500 dark:text-gray-500">Get a job!</p>
                     <Button
                         onClick={handleBack}

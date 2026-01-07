@@ -15,26 +15,26 @@ export default function AutoClockForm({ settings }: { settings: any }) {
                 {({ errors }) => (
                     <>
                         <div>
-                            <Label htmlFor="work_start">Work Start</Label>
+                            <Label htmlFor="work_start">Work start</Label>
                             <Input type="time" name="work_start" defaultValue={settings.work_start || ''} />
                             <InputError message={errors.work_start} />
                         </div>
 
                         <div>
-                            <Label htmlFor="work_end">Work End</Label>
+                            <Label htmlFor="work_end">Work end</Label>
                             <Input type="time" name="work_end" defaultValue={settings.work_end || ''} />
                             <InputError message={errors.work_end} />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="lunch_start">Lunch Start</Label>
+                                <Label htmlFor="lunch_start">Lunch start</Label>
                                 <Input type="time" name="lunch_start" defaultValue={settings.lunch_start || ''} />
                                 <InputError message={errors.lunch_start} />
                             </div>
 
                             <div>
-                                <Label htmlFor="lunch_end">Lunch End</Label>
+                                <Label htmlFor="lunch_end">Lunch end</Label>
                                 <Input type="time" name="lunch_end" defaultValue={settings.lunch_end || ''} />
                                 <InputError message={errors.lunch_end} />
                             </div>
@@ -45,14 +45,14 @@ export default function AutoClockForm({ settings }: { settings: any }) {
                                 type="reset"
                                 className="rounded-lg bg-gray-200/50 px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-400/30 transition-all hover:bg-gray-300/60 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
                             >
-                                Clear Lunch
+                                Clear lunch
                             </Button>
 
                             <Button
                                 type="submit"
                                 className="rounded-lg bg-pink-200/20 px-4 py-2 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
-                                Save Settings
+                                Save settings
                             </Button>
                         </div>
                     </>

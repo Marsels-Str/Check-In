@@ -8,18 +8,18 @@ import { Form, Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Groups', href: '/groups' },
-    { title: 'Edit Group', href: '/groups' },
+    { title: 'Edit group', href: '/groups' },
 ];
 
 export default function Edit({ group }: { group: any }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Edit Group: ${group.name}`} />
+            <Head title={`Edit group: ${group.name}`} />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Edit Group</h1>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Edit group</h1>
                         <p className="text-sm text-gray-600 dark:text-gray-400">Update the groups name and description.</p>
                     </div>
 

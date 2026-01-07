@@ -18,12 +18,12 @@ export default function Contacts() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Contacts" />
-            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">Contacts Page</h1>
+            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">Contacts page</h1>
 
             <div className="flex justify-center">
                 <div className="flex max-h-[300px] w-full flex-col gap-4 p-8 md:flex-row">
                     <div className="flex flex-1 flex-col items-center">
-                        <p className="mb-2 hidden text-2xl md:block">Customer Support</p>
+                        <p className="mb-2 hidden text-2xl md:block">Customer support</p>
 
                         <div
                             className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border border-gray-300"
@@ -77,7 +77,7 @@ export default function Contacts() {
                     </div>
 
                     <div className="flex flex-1 flex-col items-center">
-                        <p className="mb-2 hidden text-2xl md:block">Official Emails</p>
+                        <p className="mb-2 hidden text-2xl md:block">Official emails</p>
 
                         <div
                             className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border border-gray-300"
@@ -145,7 +145,7 @@ export default function Contacts() {
                     </div>
 
                     <div className="flex flex-1 flex-col items-center">
-                        <p className="mb-2 hidden text-2xl md:block">Data Protection Specialist</p>
+                        <p className="mb-2 hidden text-2xl md:block">Data protection specialist</p>
 
                         <div
                             className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border border-gray-300"

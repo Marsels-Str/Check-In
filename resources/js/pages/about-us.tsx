@@ -31,7 +31,7 @@ export default function AboutUs() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="About us" />
-            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">About Us</h1>
+            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">About us</h1>
 
             <div className="mx-auto">
                 <Accordion items={sections} defaultOpenIndex={null} />

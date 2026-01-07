@@ -27,8 +27,8 @@ export default function EmployeeActivityDiagram() {
 
             <ResponsiveContainer width="100%" height="90%">
                 <BarChart data={data}>
-                    <XAxis dataKey="label" stroke='#f0e4e8ff' />
-                    <YAxis allowDecimals={false} stroke='#f0e4e8ff' />
+                    <XAxis dataKey="label" stroke='#FF4081' />
+                    <YAxis allowDecimals={false} stroke='#FF4081' />
                     <Tooltip
                         formatter={(value) => {
                             const count = typeof value === 'number' ? value : 0;

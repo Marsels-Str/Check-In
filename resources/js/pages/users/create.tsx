@@ -15,7 +15,7 @@ export default function Create() {
             <div className="px-4 py-8">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold">Create User</h1>
+                        <h1 className="text-2xl font-semibold">Create user</h1>
                         <p className="text-sm">
                             Create a new account, then go to edit to complete it.
                         </p>
@@ -31,7 +31,7 @@ export default function Create() {
 
                 <div className="mx-auto w-full max-w-lg rounded-2xl border border p-6 shadow-sm transition-all duration-300">
                     <h2 className="mb-4 text-center text-lg font-semibold">
-                        Account Information
+                        Account information
                     </h2>
 
                     <UserCreateFields />

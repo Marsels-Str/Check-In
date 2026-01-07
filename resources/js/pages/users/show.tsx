@@ -5,7 +5,7 @@ import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Users', href: '/users' },
-    { title: 'User Details', href: '/users' },
+    { title: 'User details', href: '/users' },
 ];
 
 export default function Show({ user }: { user: any }) {
@@ -21,7 +21,7 @@ export default function Show({ user }: { user: any }) {
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">User Details</h1>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">User details</h1>
                         <p className="text-sm text-gray-600 dark:text-gray-400">Detailed information about this user.</p>
                     </div>
                     <Link
