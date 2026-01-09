@@ -131,13 +131,6 @@ class BusinessProfileController extends Controller
                 'logo'
             )->orderBy('name')->get();
 
-        // Biznesa rediģēšanas gadijumā ar Owner lomu šis ļauj izveidot jauno biznesu tadejādi nomainot īpašnieka lomu un saplēšot funkcionalitati!!
-        // Bet šim ir potenciāls, lai Owner loma varetu tikai izveleties no eksistējošiem biznesiem nevis izveidot jaunus caur savu lomu
-        // jo biznes bez parasta lietotaja profila nedrīkst pastāvēt, bet ar šī koda sakotnējo versiju tas ir iespejams tātad tas ir lauņs kods >:)!!!
-        //-----------------------------------------------------
-        // $selectedBusinessId = $request->query('business_id');
-        // $business = $selectedBusinessId ? $businesses->firstWhere('id', $selectedBusinessId): null;
-
             $selectedBusinessId = $request->query('business_id') ?? $businesses->first()?->id;
             $business = $businesses->firstWhere('id', $selectedBusinessId);
         } else {
