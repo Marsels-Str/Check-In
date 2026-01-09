@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { router } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 interface Business {
     id: number;
@@ -31,28 +31,22 @@ export default function BusinessCard({ business }: { business?: Business | null 
     }
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [preview, setPreview] = useState<string | null>(null);
-    const [processing, setProcessing] = useState(false);
 
-    const handleAvatarClick = () => fileInputRef.current?.click();
+    const handleAvatarClick = () => {
+        fileInputRef.current?.click();
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = () => setPreview(reader.result as string);
-            reader.readAsDataURL(file);
+        if (!e.target.files?.[0]) return;
 
-            const formData = new FormData();
-            formData.append('logo', file);
+        const formData = new FormData();
+        formData.append('logo', e.target.files[0]);
 
-            setProcessing(true);
-            router.post(route('business.updateLogo'), formData, {
-                forceFormData: true,
-                preserveScroll: true,
-                onFinish: () => setProcessing(false),
-            });
-        }
+        router.post(route('business.updateLogo'), formData, {
+            forceFormData: true,
+            preserveScroll: true,
+            onError: (errors) => console.error(errors),
+        });
     };
 
     const handleRemoveLogo = () => {
@@ -63,29 +57,28 @@ export default function BusinessCard({ business }: { business?: Business | null 
         }
     };
 
-    const logoSrc = preview || business.logo || undefined;
-
     return (
         <Card className="mx-auto w-full max-w-sm rounded-xl shadow-lg">
             <CardContent className="flex flex-col items-center space-y-4 p-6">
                 <div className="cursor-pointer" onClick={handleAvatarClick}>
                     <Avatar className="h-24 w-24 rounded-full border">
-                        <AvatarImage src={logoSrc} alt={business.name} />
+                        <AvatarImage src={typeof business.logo === 'string' ? business.logo : undefined} alt={business.name} />
                         <AvatarFallback className="text-xl">{business.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </div>
 
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-                {(business.logo || preview) && (
-                    <Button type="button" variant="destructive" className="mt-2" onClick={handleRemoveLogo} disabled={processing}>
-                        Remove Logo
+                {business.logo && (
+                    <Button type="button" variant="destructive" onClick={handleRemoveLogo}>
+                        Remove
                     </Button>
                 )}
 
                 <div className="space-y-1 text-center">
                     <h2 className="text-lg font-semibold">{business.name}</h2>
                     <p className="text-sm text-muted-foreground">{business.email}</p>
+
                     {business.owner && (
                         <p className="text-sm text-muted-foreground">
                             <span className="font-medium">Owner:</span> {business.owner.name}
@@ -96,8 +89,7 @@ export default function BusinessCard({ business }: { business?: Business | null 
                 <div className="w-full space-y-1 border-t pt-4 text-sm">
                     {business.phone && (
                         <p>
-                            <span className="font-medium">Phone: </span>
-                            {business.phone}
+                            <span className="font-medium">Phone:</span> {business.phone}
                         </p>
                     )}
                     <p>

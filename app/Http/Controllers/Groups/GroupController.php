@@ -84,7 +84,7 @@ class GroupController extends Controller
             'business_id' => $businessId,
         ]);
 
-        return redirect()->route('groups.index');
+        return redirect()->route('groups.index')->with('success', 'Group created successfully.');
     }
 
     public function show(Request $request, string $id)
@@ -152,7 +152,7 @@ class GroupController extends Controller
 
         $group->update($validated);
 
-        return redirect()->route('groups.index');
+        return redirect()->route('groups.index')->with('success', 'Group updated successfully.');
     }
 
     public function destroy(Request $request, string $id)
@@ -166,7 +166,7 @@ class GroupController extends Controller
 
         $group->delete();
 
-        return redirect()->route('groups.index');
+        return redirect()->route('groups.index')->with('success', 'Group deleted successfully.');
     }
 
     public function attachMap(Request $request, Group $group)

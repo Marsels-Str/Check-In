@@ -247,7 +247,7 @@ class BusinessProfileController extends Controller
             $this->handleLogoUpload($business, $request->file('logo'));
         }
 
-        return back();
+        return redirect()->route('business.update', ['business_id' => $business->id])->with('success', 'Business updated successfully.');
     }
 
     public function updateLogo(Request $request): RedirectResponse
@@ -263,7 +263,7 @@ class BusinessProfileController extends Controller
 
         $this->handleLogoUpload($business, $request->file('logo'));
 
-        return back();
+        return redirect()->route('business.update')->with('success', 'Logo updated successfully.');
     }
 
     public function removeLogo(Request $request): RedirectResponse
@@ -275,7 +275,7 @@ class BusinessProfileController extends Controller
             $business->update(['logo' => null]);
         }
 
-        return back();
+        return redirect()->route('business.update')->with('success', 'Logo removed successfully.');
     }
 
     private function handleLogoUpload(Business $business, $file): void

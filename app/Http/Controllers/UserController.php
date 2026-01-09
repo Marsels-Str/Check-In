@@ -138,7 +138,7 @@ class UserController extends Controller
 
         \Artisan::call('permission:cache-reset');
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'Role assigned successfully.');
     }
 
     public function create()
@@ -160,7 +160,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
     public function show(string $id)
@@ -200,7 +200,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return back();
+        return redirect()->route('users.edit', $user->id)->with('success', 'User updated successfully.');
     }
 
     public function destroy(string $id)
@@ -210,6 +210,6 @@ class UserController extends Controller
         }
 
         User::destroy($id);
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

@@ -68,7 +68,7 @@ class MapController extends Controller
 
         Map::create($data);
 
-        return redirect()->route('maps.index', ['business_id' => $data['business_id']]);
+        return redirect()->route('maps.index', ['business_id' => $data['business_id']])->with('success', 'Map created successfully.');
     }
 
     public function show(Map $map)
@@ -128,7 +128,7 @@ class MapController extends Controller
 
         $map->update($data);
 
-        return redirect()->route('maps.index', ['business_id' => $map->business_id]);
+        return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', 'Map updated successfully.');
     }
 
     public function destroy(Map $map)
@@ -141,7 +141,7 @@ class MapController extends Controller
 
         $map->delete();
 
-        return redirect()->route('maps.index', ['business_id' => $map->business_id]);
+        return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', 'Map deleted successfully.');
     }
 
     private function resolveBusinessId($user, $inputId = null): ?int

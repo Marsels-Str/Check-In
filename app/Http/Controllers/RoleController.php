@@ -43,8 +43,20 @@ class RoleController extends Controller
             default => collect(),
         };
 
+        $excludedForBusiness = [
+            'users.create',
+            'users.update',
+            'users.delete',
+            'business.access',
+            'business.create',
+        ];
+
+        $permissions = Permission::query()->when($user->hasRole('Business'), function ($q) use ($excludedForBusiness) {
+                $q->whereNotIn('name', $excludedForBusiness);
+            })->orderBy('name')->pluck('name');
+
         return Inertia::render('roles/create', [
-            'permissions' => Permission::pluck('name'),
+            'permissions' => $permissions,
             'businesses' => $businesses,
             'auth' => [
                 'user' => $user->load('roles', 'ownedBusiness', 'businesses'),
@@ -82,7 +94,7 @@ class RoleController extends Controller
             });
 
         if ($existsQuery->exists()) {
-            return back()->withErrors(['name' => 'Role name already exists in this scope.'])->withInput();
+            return back()->withErrors(['name' => 'Role name already exists!'])->withInput();
         }
 
         $role = Role::create([
@@ -95,7 +107,7 @@ class RoleController extends Controller
 
         \Artisan::call('permission:cache-reset');
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
     public function show(Role $role)
@@ -157,7 +169,7 @@ class RoleController extends Controller
 
         \Artisan::call('permission:cache-reset');
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role)
@@ -180,6 +192,6 @@ class RoleController extends Controller
 
         \Artisan::call('permission:cache-reset');
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

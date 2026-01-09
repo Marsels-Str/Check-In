@@ -64,8 +64,10 @@ export default function MapDrawShapes({ canEdit = false, canCreate = false, auth
             }
 
             try {
-                await axios.post('/maps', payload);
-                router.reload({ only: ['maps'] });
+                router.post('/maps', payload, {
+                    preserveScroll: true,
+                });
+
             } catch (error: any) {
                 const errors = error.response?.data?.errors;
                 const message = errors ? Object.values(errors).flat().join('\n') : 'Error saving shape. Please check your input.';

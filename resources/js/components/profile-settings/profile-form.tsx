@@ -1,14 +1,13 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Transition } from '@headlessui/react';
 import { Form, Link } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function ProfileForm({ user, mustVerifyEmail, status }: { user: any; mustVerifyEmail: boolean; status?: string }) {
     return (
         <Form method="patch" action={route('profile.update')} options={{ preserveScroll: true }} className="space-y-6">
-            {({ processing, recentlySuccessful, errors }) => (
+            {({ errors }) => (
                 <>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div>
@@ -82,14 +81,10 @@ export default function ProfileForm({ user, mustVerifyEmail, status }: { user: a
 
                     <div className="flex items-center gap-4">
                         <Button
-                            disabled={processing}
                             className="inline-flex w-full items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
-                            Save profile
+                            Save
                         </Button>
-                        <Transition show={recentlySuccessful}>
-                            <p className="text-sm text-neutral-600">Saved!</p>
-                        </Transition>
                     </div>
                 </>
             )}

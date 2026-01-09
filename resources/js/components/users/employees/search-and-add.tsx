@@ -13,7 +13,7 @@ export default function EmployeeSearchAndAdd({
     businesses: BusinessProfile[];
     selectedBusinessId: number | null;
 }) {
-    const { flash, searchResult = null } = usePage<{ flash?: any; searchResult?: User | null }>().props;
+    const { searchResult = null } = usePage<{ searchResult?: User | null }>().props;
     const [uniqueId, setUniqueId] = useState('');
     const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? null);
     const canAdd = useCan('employees.add');
@@ -55,11 +55,6 @@ export default function EmployeeSearchAndAdd({
 
     return (
         <div>
-            {flash?.success && (
-                <div className="mb-4 rounded-md bg-green-100 px-4 py-2 text-green-800 dark:bg-green-900 dark:text-green-300">{flash.success}</div>
-            )}
-            {flash?.error && <div className="mb-4 rounded-md bg-red-100 px-4 py-2 text-red-800 dark:bg-red-900 dark:text-red-300">{flash.error}</div>}
-
             <div className="borde mb-8 rounded-xl border p-6 shadow-sm backdrop-blur-sm transition">
                 <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
