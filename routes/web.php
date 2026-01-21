@@ -148,15 +148,5 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complet
     Route::put('languages/{language}/translations/{original}', [TranslationController::class, 'update'])->name('translations.update');
 });
 
-Route::get('/debug-job', function () {
-    $path = app_path('Jobs/TranslateOriginalJob.php');
-
-    return [
-        'file_exists' => file_exists($path),
-        'class_exists' => class_exists(\App\Jobs\TranslateOriginalJob::class),
-        'path' => $path,
-    ];
-});
-
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
