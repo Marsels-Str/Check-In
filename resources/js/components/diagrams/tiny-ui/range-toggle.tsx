@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import { router } from '@inertiajs/react';
 
 type Range = 'week' | 'month';
@@ -8,6 +9,8 @@ type Props = {
 };
 
 export default function RangeToggle({ range, param }: Props) {
+    const t = useT();
+    
     function changeRange(newRange: Range) {
         router.get(
             route('dashboard'),
@@ -33,7 +36,7 @@ export default function RangeToggle({ range, param }: Props) {
                         range === r ? 'bg-background shadow' : 'text-muted-foreground hover:text-foreground'
                     }`}
                 >
-                    {r === 'week' ? 'Week' : 'Month'}
+                    {r === 'week' ? t('dashboard.diagrams.range.week') : t('dashboard.diagrams.range.month')}
                 </button>
             ))}
         </div>

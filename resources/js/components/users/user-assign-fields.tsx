@@ -1,8 +1,9 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import { useT } from '@/lib/t';
+import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function RoleAssignFields({
     userId,
@@ -15,13 +16,15 @@ export default function RoleAssignFields({
     businessRoles: { id: number; name: string }[];
     selectedRoles: number[];
 }) {
+    const t = useT();
+    
     return (
         <Form method="post" action={route('users.roles.assign', userId)}>
             {({ errors }) => (
                 <>
                     <div className="space-y-4">
                         <div className="mx-auto w-full max-w-md space-y-3 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm">
-                            <h3 className="mb-2 text-sm font-semibold text-gray-500">Global roles</h3>
+                            <h3 className="mb-2 text-sm font-semibold text-gray-500">{t('users.roles.global')}</h3>
 
                             {globalRoles.map((role) => (
                                 <Label
@@ -43,7 +46,7 @@ export default function RoleAssignFields({
                         </div>
 
                         <div className="mx-auto w-full max-w-md space-y-3 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm">
-                            <h3 className="mb-2 text-sm font-semibold text-gray-500">Business specific roles</h3>
+                            <h3 className="mb-2 text-sm font-semibold text-gray-500">{t('users.roles.business')}</h3>
 
                             {businessRoles.map((role) => (
                                 <Label
@@ -68,7 +71,7 @@ export default function RoleAssignFields({
                     </div>
 
                     <div className="pt-4 text-center">
-                        <Button type="submit">Assign</Button>
+                        <Button type="submit">{t('users.roles.assign')}</Button>
                     </div>
                 </>
             )}

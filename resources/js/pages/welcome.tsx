@@ -1,9 +1,12 @@
+import { useT } from '@/lib/t';
 import { type SharedData } from '@/types';
 import WelcomeLogo from '@/components/welcome-logo';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
+
+    const t = useT();
 
     return (
         <>
@@ -19,7 +22,7 @@ export default function Welcome() {
                                 href={route('dashboard')}
                                 className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
-                                Dashboard
+                                {t('welcome.dashboard.link')}
                             </Link>
                         ) : (
                             <>
@@ -27,13 +30,13 @@ export default function Welcome() {
                                     href={route('login')}
                                     className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                                 >
-                                    Log in
+                                {t('welcome.login.link')}
                                 </Link>
                                 <Link
                                     href={route('register')}
                                     className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                                 >
-                                    Register
+                                    {t('welcome.register.link')}
                                 </Link>
                             </>
                         )}
@@ -43,11 +46,11 @@ export default function Welcome() {
                 <div className="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
                     <main className="flex w-full max-w-[335px] flex-col-reverse lg:max-w-4xl lg:flex-row">
                         <div className="flex-1 rounded-br-lg rounded-bl-lg p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-black dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]">
-                            <h1 className="mb-1 font-medium">Let's get started</h1>
+                            <h1 className="mb-1 font-medium">{t('welcome.view.welcome')}</h1>
                             <p className="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
-                                Check-In was made to make managing workers and projects easier.
+                                {t('welcome.view.text')}
                                 <br />
-                                We suggest starting with the following.
+                                {t('welcome.view.list')}
                             </p>
                             <ul className="mb-4 flex flex-col lg:mb-6">
                                 <li className="relative flex items-center gap-4 py-2 before:absolute before:top-1/2 before:bottom-0 before:left-[0.4rem] before:border-l before:border-[#FFD54F] dark:before:border-[#FFD54F]">
@@ -56,7 +59,7 @@ export default function Welcome() {
                                             <span className="h-1.5 w-1.5 rounded-full bg-[#FFD54F] dark:bg-[#FF4081]" />
                                         </span>
                                     </span>
-                                    <span>Fill in all the information about youreself.</span>
+                                    <span>{t('welcome.view.list.1')}</span>
                                 </li>
                                 <li className="relative flex items-center gap-4 py-2 before:absolute before:top-0 before:bottom-1/2 before:left-[0.4rem] before:border-l before:border-[#FF4081] dark:before:border-[#FF4081]">
                                     <span className="relative bg-white py-1 dark:bg-black">
@@ -64,7 +67,7 @@ export default function Welcome() {
                                             <span className="h-1.5 w-1.5 rounded-full bg-[#FF4081] dark:bg-[#FFD54F]" />
                                         </span>
                                     </span>
-                                    <span>Then get to know the app and all its features.</span>
+                                    <span>{t('welcome.view.list.2')}</span>
                                 </li>
                             </ul>
                         </div>

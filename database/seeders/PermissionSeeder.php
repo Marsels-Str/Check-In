@@ -77,6 +77,11 @@ class PermissionSeeder extends Seeder
             'business.access',
             'business.create',
         ],
+
+        // Valodu privilēģijas
+        'languages' => [
+            'languages.access',
+        ],
     ];
 
         foreach ($groups as $groupName => $permissions) {

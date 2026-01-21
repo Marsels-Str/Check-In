@@ -1,11 +1,17 @@
+import clsx from 'clsx';
+import { useT } from '@/lib/t';
 import LiveTimer from '@/components/live-timer';
 import UserAvatar from '@/components/users/tiny-ui/user-avatar';
-import clsx from 'clsx';
 
 export default function BusinessPanel({ users }: { users: any[] }) {
+    const t = useT();
+    
+    const title = t('dashboard.diagrams.overview.business.title');
+    const status = t('dashboard.diagrams.overview.business.status');
+
     return (
         <div className="flex h-64 flex-col overflow-y-auto rounded-xl p-4">
-            <p className="mb-3 font-semibold">Employees</p>
+            <p className="mb-3 font-semibold">{title}</p>
 
             <ul className="space-y-2">
                 {users.map((user) => {
@@ -34,7 +40,11 @@ export default function BusinessPanel({ users }: { users: any[] }) {
                                         <LiveTimer key={clockIn} startTime={clockIn} />
                                     </div>
                                 ) : (
-                                    user.offline_for && <div className="text-xs text-[#FF4081]/80">last seen {user.offline_for}</div>
+                                    user.offline_for && (
+                                        <div className="text-xs text-[#FF4081]/80">
+                                            {status} {user.offline_for}
+                                        </div>
+                                    )
                                 )}
                             </div>
                         </li>

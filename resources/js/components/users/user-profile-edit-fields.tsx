@@ -1,11 +1,14 @@
-import InputError from '@/components/input-error';
-import type { UserProfile } from '@/types';
+import { useT } from '@/lib/t';
 import { Form } from '@inertiajs/react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
+import type { UserProfile } from '@/types';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function UserProfileFields({ user_profile }: { user_profile: UserProfile }) {
+    const t = useT();
+
     return (
         <div className="mx-auto w-full max-w-md">
             <Form
@@ -17,31 +20,31 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                     <>
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="age">Age</Label>
+                                <Label htmlFor="age">{t('users.profile.age')}</Label>
                                 <Input id="age" type="number" name="age" defaultValue={user_profile.age} placeholder="14-100" />
                                 <InputError message={errors.age} />
                             </div>
 
                             <div>
-                                <Label htmlFor="height">Height (cm)</Label>
+                                <Label htmlFor="height">{t('users.profile.height')}</Label>
                                 <Input id="height" type="number" name="height" defaultValue={user_profile.height} placeholder="100-300" />
                                 <InputError message={errors.height} />
                             </div>
 
                             <div>
-                                <Label htmlFor="weight">Weight (kg)</Label>
+                                <Label htmlFor="weight">{t('users.profile.weight')}</Label>
                                 <Input id="weight" type="number" name="weight" defaultValue={user_profile.weight} placeholder="40-700" />
                                 <InputError message={errors.weight} />
                             </div>
 
                             <div>
-                                <Label htmlFor="phone">Phone</Label>
+                                <Label htmlFor="phone">{t('users.profile.phone')}</Label>
                                 <Input id="phone" type="text" name="phone" defaultValue={user_profile.phone} placeholder="8-15" />
                                 <InputError message={errors.phone} />
                             </div>
 
                             <div>
-                                <Label htmlFor="personal_code">Personal Code</Label>
+                                <Label htmlFor="personal_code">{t('users.profile.code')}</Label>
                                 <Input
                                     id="personal_code"
                                     type="text"
@@ -53,14 +56,14 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                             </div>
 
                             <div>
-                                <Label htmlFor="country">Country</Label>
-                                <Input id="country" type="text" name="country" defaultValue={user_profile.country} placeholder="4-60 characters" />
+                                <Label htmlFor="country">{t('users.profile.country')}</Label>
+                                <Input id="country" type="text" name="country" defaultValue={user_profile.country} placeholder="4-60" />
                                 <InputError message={errors.country} />
                             </div>
 
                             <div>
-                                <Label htmlFor="city">City</Label>
-                                <Input id="city" type="text" name="city" defaultValue={user_profile.city} placeholder="1-170 characters" />
+                                <Label htmlFor="city">{t('users.profile.city')}</Label>
+                                <Input id="city" type="text" name="city" defaultValue={user_profile.city} placeholder="1-170" />
                                 <InputError message={errors.city} />
                             </div>
                         </div>
@@ -70,7 +73,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                                 type="submit"
                                 className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
-                                Save
+                                {t('users.profile.save')}
                             </Button>
                         </div>
                     </>

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->longtext('portrait')->nullable();
             $table->bigInteger('unique_id')->unique();
+            $table->boolean('status')->nullable();
             
             $table->timestamps();
         });

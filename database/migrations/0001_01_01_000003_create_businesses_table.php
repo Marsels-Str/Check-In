@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();
-            $table->string('street_address')->nullable();
+            $table->string('address')->nullable();
             $table->longText('logo')->nullable();
             $table->text('description')->nullable();
             $table->unsignedInteger('employees')->default(0);

@@ -1,5 +1,6 @@
-import RangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
 import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
+import RangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
+import { useT } from '@/lib/t';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function WorkedHoursDiagram() {
@@ -9,10 +10,12 @@ export default function WorkedHoursDiagram() {
     const range = workedHours?.range ?? 'week';
     const empty = workedHours?.empty;
 
+    const t = useT();
+
     if (empty === 'nothing-to-show') {
         return (
             <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
-                Get a job, to view personal statistics.
+                {t('dashboard.diagrams.hours.empty')}
             </div>
         );
     }
@@ -20,17 +23,17 @@ export default function WorkedHoursDiagram() {
     return (
         <div className="h-64 rounded-xl p-4">
             <div className="mb-2 flex items-center justify-between">
-                <p className="font-semibold">Worked hours</p>
+                <p className="font-semibold">{t('dashboard.diagrams.hours.title')}</p>
 
                 <RangeToggle range={range} param="range_hours" />
             </div>
 
             <ResponsiveContainer width="100%" height="90%" initialDimension={{ width: 1, height: 1 }}>
                 <BarChart data={data}>
-                    <XAxis dataKey="label" stroke='#FF4081' />
-                    <YAxis unit="h" stroke='#FF4081' />
+                    <XAxis dataKey="label" stroke="#FF4081" />
+                    <YAxis unit="h" stroke="#FF4081" />
                     <Tooltip />
-                    <Bar dataKey="hours" radius={[4, 4, 0, 0]} stroke='#f0e4e8ff' />
+                    <Bar dataKey="hours" name={t('dashboard.diagrams.hours.name')} radius={[4, 4, 0, 0]} stroke="#f0e4e8ff" />
                 </BarChart>
             </ResponsiveContainer>
         </div>

@@ -1,30 +1,33 @@
+import { useT } from '@/lib/t';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import Accordion from '@/components/ui/accordion';
 
 export default function AboutUs() {
+    const t = useT();
+    
     const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'About us',
-            href: '/about-us',
-        },
+        { 
+            title: t('breadcrumb.about'),
+            href: '/about-us'
+        }
     ];
 
     const sections = [
         {
-            title: 'Why Choose Us?',
-            content: 'Because we are trying to be the best at what we do and we keeps progressing towards the future.',
+            title: t('about.why'),
+            content: t('about.why.text'),
         },
         {
-            title: 'What is our mission?',
+            title: t('about.mission'),
             content:
-                'Our mission is to provide small and even large bussineses with the best worker management application you can find on the internet that is totally for free.',
+                t('about.mission.text'),
         },
         {
-            title: 'What do we value?',
+            title: t('about.value'),
             content:
-                'We value the time user spends using our application and we always look forward to improve the user experience, thats why we need your precious feedbacks!',
+                t('about.value.text'),
         },
     ];
 

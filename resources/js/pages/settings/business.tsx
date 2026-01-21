@@ -1,14 +1,13 @@
-import BusinessCard from '@/components/business-card';
-import BusinessDropdownMenu from '@/components/business-dropdown-menu';
-import HeadingSmall from '@/components/heading-small';
-import BusinessForm from '@/components/profile-settings/business-form';
-import CreateBusinessForm from '@/components/profile-settings/create-business-form';
+import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Business settings', href: '/settings/business' }];
+import BusinessCard from '@/components/business-card';
+import HeadingSmall from '@/components/heading-small';
+import SettingsLayout from '@/layouts/settings/layout';
+import BusinessDropdownMenu from '@/components/business-dropdown-menu';
+import BusinessForm from '@/components/profile-settings/business-form';
+import CreateBusinessForm from '@/components/profile-settings/create-business-form';
 
 export default function Business({
     business,
@@ -28,9 +27,18 @@ export default function Business({
         });
     }
 
+    const t = useT();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('breadcrumb.settings.business'),
+            href: '/settings/business'
+        }
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Business settings" />
+            <Head title={t('settings.business.title')} />
 
             <div className="relative">
                 <div className="relative">
@@ -47,7 +55,7 @@ export default function Business({
                         <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#0f0f0f]/70">
                             <div className="mb-4 flex items-center justify-between">
                                 <div>
-                                    <HeadingSmall title="Business information" description="Update your business details, contact info, and logo." />
+                                    <HeadingSmall title={t('settings.business.small.title')} description={t('settings.business.small.description')} />
                                 </div>
                                 {businesses.length > 1 && (
                                     <BusinessDropdownMenu
@@ -59,7 +67,7 @@ export default function Business({
                             </div>
 
                             {business ? (
-                                <BusinessForm key={business.id} business={business} action={route('business.update')} />
+                                <BusinessForm key={business.id} business={business} />
                             ) : (
                                 <CreateBusinessForm />
                             )}

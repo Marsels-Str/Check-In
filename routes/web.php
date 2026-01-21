@@ -1,8 +1,12 @@
 <?php
 
 use Inertia\Inertia;
-use App\Models\Group;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Models\Group;
+
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -13,11 +17,13 @@ use App\Http\Controllers\BusinessEmployeeController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Groups\GroupImageController;
 use App\Http\Controllers\Groups\GroupMessageController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Settings\BusinessProfileController;
 
 Route::get('/', fn () => Inertia::render('welcome'))->name('home');
 
-Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(function () {
+Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complete.access'])->group(function () {
     //Dashboard & static pages
     Route::get('about-us', fn () => Inertia::render('about-us'))->name('about-us');
     Route::get('contacts', fn () => Inertia::render('contacts'))->name('contacts');
@@ -68,7 +74,7 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::delete('/groups/{group}/users/{user}', [GroupController::class, 'removeUser'])->name('groups.remove-users')->middleware('permission:groups.removeUsers');
     
     //Group Images
-    Route::delete('/group-images/{id}', [GroupImageController::class, 'destroy'])->name('groupImages.destroy')->middleware('permission:groups.removeImage');
+    Route::delete('/groups/images/{id}', [GroupImageController::class, 'destroy'])->name('groupImages.destroy')->middleware('permission:groups.removeImage');
     Route::post('/groups/{group}/images', [GroupImageController::class, 'store'])->name('groups.images.store')->middleware('permission:groups.addImage');
 
     //Employees
@@ -84,7 +90,8 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
     Route::post('/complete-profile', [ProfileController::class, 'store'])->name('profile.complete.store');
 
     //After Profile Complete choice
-    Route::get('/profile/after-complete', fn () => Inertia::render('complete-profiles/after-complete'))->name('profile.afterComplete')->middleware('after.profile.complete.access');
+    Route::get('/profile/after-complete', fn () => Inertia::render('complete-profiles/after-complete'))->name('profile.afterComplete');
+    Route::post('/profile/after-complete', [ProfileController::class, 'status'])->name('profile.status.store');
 
     //Business Complete
     Route::get('/complete-business', [BusinessProfileController::class, 'create'])->name('business.complete')->middleware('after.business.complete.access');
@@ -131,6 +138,14 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete'])->group(functi
             ->orderBy('created_at')
             ->get();
     });
+
+    // Languages
+    Route::post('/languages/{language}/sync', [LanguageController::class, 'start'])->name('languages.sync');
+    Route::resource('languages', LanguageController::class)->middleware('permission:languages.access');
+    Route::post('/languages/change', [LanguageController::class, 'switch'])->name('language.change');
+    Route::get('languages/{language}/translations', [TranslationController::class, 'index'])->name('translations.index')->middleware('permission:languages.access');
+    Route::get('languages/{language}/translations/{original}/edit', [TranslationController::class, 'edit'])->name('translations.edit')->middleware('permission:languages.access');
+    Route::put('languages/{language}/translations/{original}', [TranslationController::class, 'update'])->name('translations.update');
 });
 
 require __DIR__.'/settings.php';

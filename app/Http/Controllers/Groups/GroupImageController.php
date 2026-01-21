@@ -13,10 +13,6 @@ class GroupImageController extends Controller
     {
         $request->validate([
             'image' => 'required|file|mimes:jpg,jpeg,png|max:5120',
-        ], [
-            'image.required' => 'An image is required.',
-            'image.mimes' => 'The image must be a file of type: jpg, jpeg, png.',
-            'image.max' => 'The image may not be greater than 5MB.',
         ]);
 
         $path = $request->file('image')->getRealPath();

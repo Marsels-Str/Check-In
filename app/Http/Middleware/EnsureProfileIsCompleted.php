@@ -11,15 +11,23 @@ class EnsureProfileIsCompleted
     {
         $user = $request->user();
 
-        if (!$user || $request->routeIs('profile.complete', 'profile.complete.store', 'logout')) {
-            return $next($request);
+        if (! $user) {
+            return redirect()->route('login');
         }
 
         $profile = $user->profile;
-        $isComplete = $profile && !empty($profile->unique_id);
+        $isComplete = $profile && ! empty($profile->unique_id);
 
-        if (!$isComplete) {
-            return redirect()->route('profile.complete');
+        if (! $isComplete) {
+            if (! $request->routeIs('profile.complete', 'profile.complete.store')) {
+                return redirect()->route('profile.complete');
+            }
+
+            return $next($request);
+        }
+
+        if ($request->routeIs('profile.complete', 'profile.complete.store')) {
+            return redirect()->route('dashboard');
         }
 
         return $next($request);

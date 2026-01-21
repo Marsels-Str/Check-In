@@ -1,6 +1,7 @@
+import { useT } from '@/lib/t';
+import type { EditableMap } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { EditableMap } from '@/types';
 
 export default function MapEditorInputs({
     data,
@@ -11,26 +12,28 @@ export default function MapEditorInputs({
     setData: (key: keyof EditableMap, value: any) => void;
     errors?: Partial<Record<keyof EditableMap, string>>;
 }) {
+    const t = useT();
+
     return (
         <div className="space-y-4">
             {data.type === 'marker' && (
                 <>
-                    <MapInput label="Latitude" value={data.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
-                    <MapInput label="Longitude" value={data.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
+                    <MapInput label={t('maps.edit.lat')} value={data.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
+                    <MapInput label={t('maps.edit.lng')} value={data.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
                 </>
             )}
 
             {data.type === 'circle' && (
                 <>
-                    <MapInput label="Latitude" value={data.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
-                    <MapInput label="Longitude" value={data.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
-                    <MapInput label="Radius" value={data.radius} onChange={(v) => setData('radius', v)} error={errors?.radius} />
+                    <MapInput label={t('maps.edit.lat')} value={data.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
+                    <MapInput label={t('maps.edit.lng')} value={data.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
+                    <MapInput label={t('maps.edit.radius')} value={data.radius} onChange={(v) => setData('radius', v)} error={errors?.radius} />
                 </>
             )}
 
             {data.type === 'polygon' && (
                 <div>
-                    <Label>Polygon (JSON)</Label>
+                    <Label>{t('maps.edit.polygon')}</Label>
                     <textarea
                         value={data.polygon}
                         onChange={(e) => setData('polygon', e.target.value)}

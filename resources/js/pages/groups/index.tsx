@@ -1,9 +1,8 @@
+import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Groups', href: '/groups' }];
 
 export default function Index({ groups }: { groups: any[] }) {
     const canCreate = useCan('groups.create');
@@ -11,21 +10,19 @@ export default function Index({ groups }: { groups: any[] }) {
     const canDelete = useCan('groups.delete');
     const canShow = useCan('groups.show');
 
-    function handleDelete(id: number) {
-        if (confirm('Are you sure you want to delete this group?')) {
-            router.delete(route('groups.destroy', id));
-        }
-    }
+    const t = useT();
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('breadcrumb.groups'), href: '/groups' }];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Groups" />
+            <Head title={t('groups.index.title')} />
 
             <div className="px-4">
                 <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Groups</h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Manage and organize your groups efficiently.</p>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('groups.index.label')}</h1>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('groups.index.text')}</p>
                     </div>
 
                     {canCreate && (
@@ -33,7 +30,7 @@ export default function Index({ groups }: { groups: any[] }) {
                             href={route('groups.create')}
                             className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
-                            Create
+                            {t('groups.index.create')}
                         </Link>
                     )}
                 </div>
@@ -43,10 +40,10 @@ export default function Index({ groups }: { groups: any[] }) {
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                             <thead className="sticky top-0 z-10 bg-gray-50 backdrop-blur-sm dark:bg-[#0f0f0f]/95">
                                 <tr>
-                                    <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">ID</th>
-                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">Name</th>
-                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">Description</th>
-                                    <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">Actions</th>
+                                    <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.id')}</th>
+                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.name')}</th>
+                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.description')}</th>
+                                    <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.actions')}</th>
                                 </tr>
                             </thead>
 
@@ -64,7 +61,7 @@ export default function Index({ groups }: { groups: any[] }) {
                                                             href={route('groups.show', group.id)}
                                                             className="hover:text-green-600 dark:hover:text-green-300"
                                                         >
-                                                            Show
+                                                            {t('groups.index.show')}
                                                         </Link>
                                                     )}
 
@@ -73,16 +70,16 @@ export default function Index({ groups }: { groups: any[] }) {
                                                             href={route('groups.edit', group.id)}
                                                             className="hover:text-green-600 dark:hover:text-green-300"
                                                         >
-                                                            Edit
+                                                            {t('groups.index.edit')}
                                                         </Link>
                                                     )}
 
                                                     {canDelete && (
                                                         <button
-                                                            onClick={() => handleDelete(group.id)}
+                                                            onClick={() => router.delete(`/groups/${group.id}`)}
                                                             className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
                                                         >
-                                                            Delete
+                                                            {t('groups.index.delete')}
                                                         </button>
                                                     )}
                                                 </div>
@@ -92,7 +89,7 @@ export default function Index({ groups }: { groups: any[] }) {
                                 ) : (
                                     <tr>
                                         <td colSpan={4} className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                                            No groups found.
+                                            {t('groups.index.empty')}
                                         </td>
                                     </tr>
                                 )}

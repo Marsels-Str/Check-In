@@ -130,7 +130,7 @@ export interface BusinessProfile {
     logo?: string | null;
     description?: string;
     groups?: Group[];
-    street_address?: string;
+    address?: string;
 }
 
 export interface Map {

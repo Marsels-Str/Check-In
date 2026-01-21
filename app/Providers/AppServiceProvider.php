@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+
 use Inertia\Inertia;
+use App\Models\Languages;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,5 +29,9 @@ class AppServiceProvider extends ServiceProvider
             ],
             'searchResult' => fn () => session('searchResult'),
         ]);
+
+        view()->composer('*', function ($view) {
+            $view->with('allLanguages', Languages::all());
+        });
     }
 }

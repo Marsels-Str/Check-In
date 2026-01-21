@@ -41,3 +41,9 @@ Lai aktivizētu automātisko e-pastu izsūtīšanu izmantot - php artisan schedu
 
 Lai live-chat strādātu ir jāizmanto - php artisan reverb:start
 (šai komandai nepieciešams atsevišķs terminālis, jo tā pēc palaišanas darbosies līdz tiks apturēta) ("CTRL + C", lai apturētu)
+
+Lai iztūlkotu visus originālos tekstus pēc sinhronizēšanas pogas nospiešanas izmantot - php artisan queue=text-translation
+(šai komandai nepieciešams atsevišķs terminālis, jo tā pēc palaišanas darbosies līdz tiks apturēta) ("CTRL + C", lai apturētu)
+
+Lai sagatavotu "Laravel" lokalizācijas failus priekš tūlkošanas izmantot - php artisan lang:prepare (un attiecīgās valodas kods)
+Lai iztūlkotu šos failus izmantot - php artisan lang:translate (un attiecīgās valodas kods)

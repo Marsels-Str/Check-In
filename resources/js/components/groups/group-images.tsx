@@ -1,19 +1,16 @@
-import InputError from '@/components/input-error';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import { Button } from '@headlessui/react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Form, router } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 
 export default function GroupImages({ group }: any) {
     const canAddImage = useCan('groups.addImage');
     const canRemoveImage = useCan('groups.removeImage');
 
-    const handleDelete = (id: number) => {
-        if (confirm('Are you sure you want to delete this image?')) {
-            router.delete(route('groupImages.destroy', id));
-        }
-    };
+    const t = useT();
 
     return (
         <div className="mt-8">
@@ -26,7 +23,7 @@ export default function GroupImages({ group }: any) {
                     {({ errors }) => (
                         <>
                             <Label className="flex flex-col text-sm font-medium text-gray-700 dark:text-gray-300">
-                                <span className="mb-1">Upload new image:</span>
+                                <span className="mb-1">{t('groups.show.images.label')}:</span>
                                 <Input
                                     type="file"
                                     name="image"
@@ -40,7 +37,7 @@ export default function GroupImages({ group }: any) {
                                 type="submit"
                                 className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
-                                Upload
+                                {t('groups.show.images.upload')}
                             </Button>
                         </>
                     )}
@@ -55,17 +52,17 @@ export default function GroupImages({ group }: any) {
 
                             {canRemoveImage && (
                                 <Button
-                                    onClick={() => handleDelete(img.id)}
+                                    onClick={() => router.delete(`/groups/images/${img.id}`)}
                                     className="absolute top-2 right-2 rounded-md bg-red-600/90 px-2 py-1 text-sm text-white opacity-90 transition hover:bg-red-700 hover:opacity-100"
                                 >
-                                    Delete
+                                    {t('groups.show.images.delete')}
                                 </Button>
                             )}
                         </div>
                     ))}
                 </div>
             ) : (
-                <p className="text-gray-500 dark:text-gray-400">No images uploaded yet.</p>
+                <p className="text-gray-500 dark:text-gray-400">{t('groups.show.images.empty')}</p>
             )}
         </div>
     );

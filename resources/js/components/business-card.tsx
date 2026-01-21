@@ -1,8 +1,9 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useT } from '@/lib/t';
+import { useRef } from 'react';
+import { router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { router } from '@inertiajs/react';
-import { useRef } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface Business {
     id: number;
@@ -12,19 +13,21 @@ interface Business {
     logo?: string | null;
     country?: string;
     city?: string;
-    street_address?: string;
+    address?: string;
     owner?: {
         name: string;
     };
 }
 
 export default function BusinessCard({ business }: { business?: Business | null }) {
+    const t = useT();
+    
     if (!business) {
         return (
             <Card className="mx-auto w-full max-w-sm rounded-xl shadow-lg">
                 <CardContent className="flex flex-col items-center space-y-4 p-6 text-center text-gray-500">
-                    <p>No business profile found.</p>
-                    <p className="text-sm">Create one to view details here.</p>
+                    <p>{t('settings.business.empty')}</p>
+                    <p className="text-sm">{t('settings.business.empty.text')}</p>
                 </CardContent>
             </Card>
         );
@@ -50,7 +53,7 @@ export default function BusinessCard({ business }: { business?: Business | null 
     };
 
     const handleRemoveLogo = () => {
-        if (confirm('Remove business logo?')) {
+        if (confirm(t('settings.business.remove'))) {
             router.delete(route('business.removeLogo'), {
                 preserveScroll: true,
             });
@@ -71,35 +74,29 @@ export default function BusinessCard({ business }: { business?: Business | null 
 
                 {business.logo && (
                     <Button type="button" variant="destructive" onClick={handleRemoveLogo}>
-                        Remove
+                        {t('settings.business.remove.confirm')}
                     </Button>
                 )}
 
                 <div className="space-y-1 text-center">
                     <h2 className="text-lg font-semibold">{business.name}</h2>
                     <p className="text-sm text-muted-foreground">{business.email}</p>
-
-                    {business.owner && (
-                        <p className="text-sm text-muted-foreground">
-                            <span className="font-medium">Owner:</span> {business.owner.name}
-                        </p>
-                    )}
                 </div>
 
                 <div className="w-full space-y-1 border-t pt-4 text-sm">
                     {business.phone && (
                         <p>
-                            <span className="font-medium">Phone:</span> {business.phone}
+                            <span className="font-medium">{t('settings.business.phone')}:</span> {business.phone}
                         </p>
                     )}
                     <p>
-                        <span className="font-medium">Address:</span> {business.street_address || '—'}
+                        <span className="font-medium">{t('settings.business.adress')}:</span> {business.address || '—'}
                     </p>
                     <p>
-                        <span className="font-medium">City:</span> {business.city || '—'}
+                        <span className="font-medium">{t('settings.business.city')}:</span> {business.city || '—'}
                     </p>
                     <p>
-                        <span className="font-medium">Country:</span> {business.country || '—'}
+                        <span className="font-medium">{t('settings.business.country')}:</span> {business.country || '—'}
                     </p>
                 </div>
             </CardContent>

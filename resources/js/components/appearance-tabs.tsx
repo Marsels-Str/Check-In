@@ -1,15 +1,18 @@
-import { Appearance, useAppearance } from '@/hooks/use-appearance';
+import { useT } from '@/lib/t';
 import { cn } from '@/lib/utils';
-import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
+import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
+import { Appearance, useAppearance } from '@/hooks/use-appearance';
 
 export default function AppearanceToggleTab({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
     const { appearance, updateAppearance } = useAppearance();
+    
+    const t = useT();
 
-    const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
-        { value: 'light', icon: Sun, label: 'Light' },
-        { value: 'dark', icon: Moon, label: 'Dark' },
-        { value: 'system', icon: Monitor, label: 'System' },
+    const tabs: { value: Appearance | string; icon: LucideIcon; label: string }[] = [
+        { value: 'light', icon: Sun, label: t('settings.appearance.light') },
+        { value: 'dark', icon: Moon, label: t('settings.appearance.dark') },
+        { value: 'system', icon: Monitor, label: t('settings.appearance.system') },
     ];
 
     return (
@@ -17,7 +20,7 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
             {tabs.map(({ value, icon: Icon, label }) => (
                 <button
                     key={value}
-                    onClick={() => updateAppearance(value)}
+                    onClick={() => updateAppearance(value as any)}
                     className={cn(
                         'flex items-center rounded-md px-3.5 py-1.5 transition-colors',
                         appearance === value

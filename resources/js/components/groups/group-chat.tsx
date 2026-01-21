@@ -49,7 +49,6 @@ export default function GroupChat({ groupId }: { groupId: number }) {
 
             <input
                 className="rounded border px-3 py-2 text-sm"
-                placeholder="Type a message and press Enter…"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}

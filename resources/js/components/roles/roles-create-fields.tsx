@@ -1,9 +1,10 @@
-import BusinessDropdownMenu from '@/components/business-dropdown-menu';
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import { useT } from '@/lib/t';
+import { useForm } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
+import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
 interface RolesCreateFieldsProps {
     permissions: string[];
@@ -20,7 +21,7 @@ interface RoleFormData {
 export default function RolesCreateFields({ permissions, businesses, auth }: RolesCreateFieldsProps) {
     const isOwner = auth.user.roles.some((r: any) => r.name === 'Owner');
 
-    const { data, setData, post, processing, errors } = useForm<RoleFormData>({
+    const { data, setData, post, errors } = useForm<RoleFormData>({
         name: '',
         permissions: [] as string[],
         business_id: isOwner ? '' : (auth.user.ownedBusiness?.id ?? ''),
@@ -42,14 +43,16 @@ export default function RolesCreateFields({ permissions, businesses, auth }: Rol
         post(route('roles.store'));
     }
 
+    const t = useT();
+    
     return (
         <form
             onSubmit={submit}
             className="mx-auto w-full max-w-md space-y-6 rounded-lg border border-gray-200 bg-white px-6 py-6 shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm"
         >
             <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input type="text" id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Enter role name" />
+                <Label htmlFor="name">{t('roles.create.name')}</Label>
+                <Input type="text" id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
                 <InputError message={errors.name} />
             </div>
 
@@ -64,7 +67,7 @@ export default function RolesCreateFields({ permissions, businesses, auth }: Rol
             )}
 
             <div className="space-y-3">
-                <Label>Permissions</Label>
+                <Label>{t('roles.create.permissions')}</Label>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {permissions.map((permission, id) => (
                         <Label
@@ -88,10 +91,9 @@ export default function RolesCreateFields({ permissions, businesses, auth }: Rol
             <div className="pt-4 text-center">
                 <Button
                     type="submit"
-                    disabled={processing}
                     className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 disabled:opacity-50 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                 >
-                    {processing ? 'Saving...' : 'Create'}
+                    {t('roles.create.save')}
                 </Button>
             </div>
         </form>

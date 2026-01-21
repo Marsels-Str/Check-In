@@ -1,12 +1,15 @@
-import InputError from '@/components/input-error';
+import { useT } from '@/lib/t';
+import { Form } from '@inertiajs/react';
+import { Button } from '@headlessui/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@headlessui/react';
-import { Form } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 
 export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
 
     if (!isOpen) return null;
+
+    const t = useT();
 
     return (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-md">
@@ -17,7 +20,7 @@ export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
                             <div className="space-y-2">
 
                                 <div className="space-y-2">
-                                    <h1 className="text-lg font-bold">Select users:</h1>
+                                    <h1 className="text-lg font-bold">{t('groups.show.users.add.label')}:</h1>
                                     <div className="grid max-h-64 grid-cols-1 gap-2 overflow-y-auto">
                                         {users.map((user: any) => (
                                             <Label
@@ -45,13 +48,13 @@ export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
                                     type="button"
                                     onClick={onClose}
                                     className="rounded-lg bg-gray-300/40 px-3.5 py-1.5 text-sm font-medium dark:bg-gray-700/40">
-                                    Cancel
+                                    {t('groups.show.users.add.cancel')}
                                 </Button>
 
                                 <Button
                                     type="submit"
                                     className="rounded-lg bg-pink-200/30 px-3.5 py-1.5 text-sm font-medium text-pink-700 dark:bg-pink-900/40 dark:text-pink-300">
-                                    Add
+                                    {t('groups.show.users.add.add')}
                                 </Button>
                             </div>
                         </>

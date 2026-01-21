@@ -14,7 +14,7 @@ class Business extends Model
         'phone',
         'country',
         'city',
-        'street_address',
+        'address',
         'logo',
         'description',
         'employees',

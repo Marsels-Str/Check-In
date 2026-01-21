@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useCan } from '@/lib/can';
@@ -9,8 +10,6 @@ import { defaultLayout, type DashboardLayout } from '@/dashboard/registry';
 import { DashboardDataProvider } from '@/components/dashboard/dashboard-data-context';
 import { DashboardRenderModule } from '@/components/dashboard/dashboard-render-module';
 import type { BreadcrumbItem, BusinessProfile, DiagramState, EmployeeActivityPoint, MessageReminderState, OverviewData, WorkedHoursPoint } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
 
 interface DashboardProps {
     workedHours: DiagramState<WorkedHoursPoint>;
@@ -36,6 +35,10 @@ export default function Dashboard(props: DashboardProps) {
         localStorage.setItem('dashboard-layout', JSON.stringify(layout));
     }, [layout]);
 
+    const t = useT();
+
+    const breadcrumbs: BreadcrumbItem[] = [{ title: t('breadcrumb.dashboard'), href: '/dashboard' }];
+
     return (
         <DashboardDataProvider
             value={{
@@ -46,7 +49,7 @@ export default function Dashboard(props: DashboardProps) {
             }}
         >
             <AppLayout breadcrumbs={breadcrumbs}>
-                <Head title="Dashboard" />
+                <Head title={t('dashboard.view.title')} />
 
                 <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                     {canAccess && (

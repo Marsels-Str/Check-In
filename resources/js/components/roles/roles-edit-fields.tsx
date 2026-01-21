@@ -1,10 +1,13 @@
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import { useT } from '@/lib/t';
+import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function RolesEditFields({ role, rolePermissions, permissions }: { role: any; rolePermissions: string[]; permissions: string[] }) {
+    const t = useT();
+    
     return (
         <Form
             method="put"
@@ -14,13 +17,13 @@ export default function RolesEditFields({ role, rolePermissions, permissions }: 
             {({ errors }) => (
                 <>
                     <div className="space-y-2">
-                        <Label htmlFor="name">Role name</Label>
-                        <Input id="name" name="name" defaultValue={role.name} placeholder="Enter role name" />
+                        <Label htmlFor="name">{t('roles.edit.name')}</Label>
+                        <Input id="name" name="name" defaultValue={role.name} />
                         <InputError message={errors.name} />
                     </div>
 
                     <div className="space-y-3">
-                        <Label>Permissions</Label>
+                        <Label>{t('roles.edit.permissions')}</Label>
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                             {permissions.map((permission, id) => (
                                 <Label
@@ -46,7 +49,7 @@ export default function RolesEditFields({ role, rolePermissions, permissions }: 
                             type="submit"
                             className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
-                            Save
+                            {t('roles.edit.save')}
                         </Button>
                     </div>
                 </>

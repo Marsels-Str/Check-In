@@ -29,7 +29,7 @@ class BusinessProfileController extends Controller
             'name'           => 'required|string|min:1|max:50',
             'industry'       => 'required|string|min:2|max:50',
             'email'          => 'required|email|max:100|unique:businesses,email',
-            'street_address' => 'nullable|string|max:100',
+            'address' => 'nullable|string|max:100',
             'logo'           => 'nullable|image|max:2048',
             'description'    => 'nullable|string|max:1000',
             'employees'      => 'nullable|integer|min:0',
@@ -55,28 +55,6 @@ class BusinessProfileController extends Controller
                 'regex:/^\+?[0-9]+$/',
                 'unique:businesses,phone',
             ],
-        ], [
-            'name.required' => 'A company with no name, really?',
-            'name.max' => 'Now thats too much.',
-            'industry.required' => 'if you cant name the industry the cancel button is at the bottom ↓',
-            'industry.min' => 'Did you mean "IT"?',
-            'industry.max' => 'Must be a big business.',
-            'email.required' => 'You must have an email, right?',
-            'email.unique' => 'Oh no someone stole youre business email!',
-            'street_address.max' => 'Havent heard of that street.',
-            'description.max' => 'Stop, we get it!',
-            'country.required' => 'Where are you from?',
-            'country.regex' => 'Say "No" to numbers and special characters!',
-            'country.min' => 'Did you create a new country?',
-            'country.max' => 'Impossible!',
-            'city.required' => 'Be more specific.',
-            'city.regex' => 'Say "No" to numbers and special characters!',
-            'city.max' => 'Impossible!',
-            'phone.required' => 'Nothing bad is gonna happen if you add it.',
-            'phone.regex' => 'No no no, this is not good.',
-            'phone.unique' => 'Trying to assign a friend?',
-            'phone.min' => 'You do have a phone number, right?',
-            'phone.max' => 'Where on earth did you get this?',
         ]);
 
         $business = Business::create([
@@ -98,9 +76,7 @@ class BusinessProfileController extends Controller
     {
         $user = $request->user();
 
-        $user->syncRoles(['Worker']);
-
-        session()->forget('can_access_business_complete');
+        $user->syncRoles(['Unemployed']);
 
         return redirect()->route('dashboard');
     }
@@ -125,7 +101,7 @@ class BusinessProfileController extends Controller
                 'phone',
                 'country',
                 'city',
-                'street_address',
+                'address',
                 'industry',
                 'description',
                 'logo'
@@ -179,7 +155,7 @@ class BusinessProfileController extends Controller
         $validated = $request->validate([
             'name'           => 'required|string|min:1|max:50',
             'industry'       => 'required|string|min:2|max:50',
-            'street_address' => 'nullable|string|max:100',
+            'address' => 'nullable|string|max:100',
             'logo'           => 'nullable|image|max:2048',
             'description'    => 'nullable|string|max:1000',
             'employees'      => 'nullable|integer|min:0',
@@ -211,27 +187,6 @@ class BusinessProfileController extends Controller
                 'regex:/^\+?[0-9]+$/',
                 Rule::unique('businesses', 'phone')->ignore($business->id),
             ],
-        ], [
-            'name.required' => 'A company with no name, really?',
-            'name.max' => 'Now thats too much.',
-            'email.required' => 'You must have an email, right?',
-            'email.unique' => 'Oh no someone stole youre business email!',
-            'industry.required' => 'Why did you remove it?',
-            'industry.min' => 'Did you mean "IT"?',
-            'industry.max' => 'Must be a big business.',
-            'street_address.max' => 'Havent heard of that street.',
-            'country.required' => 'Where are you from?',
-            'country.regex' => 'Say "No" to numbers and special characters!',
-            'country.min' => 'Did you create a new country?',
-            'country.max' => 'Impossible!',
-            'city.required' => 'Be more specific.',
-            'city.regex' => 'Say "No" to numbers and special characters!',
-            'city.max' => 'Impossible!',
-            'phone.required' => 'Nothing bad is gonna happen if you add it.',
-            'phone.regex' => 'No no no, this is not good.',
-            'phone.unique' => 'Trying to assign a friend?',
-            'phone.min' => 'You do have a phone number, right?',
-            'phone.max' => 'Where on earth did you get this?',
         ]);
 
         $business->update($validated);

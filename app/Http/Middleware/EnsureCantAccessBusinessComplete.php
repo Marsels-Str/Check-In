@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\Business;
 
 class EnsureCantAccessBusinessComplete
 {
@@ -12,23 +11,28 @@ class EnsureCantAccessBusinessComplete
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
         $profile = $user->profile;
-        $hasCompletedProfile = $profile && !empty($profile->unique_id);
 
-        if (!$hasCompletedProfile) {
-            return redirect()->route('profile.complete');
+        // If no profile yet, let other middleware handle it
+        if (! $profile || empty($profile->unique_id)) {
+            return $next($request);
         }
 
-        $hasBusiness = Business::where('user_id', $user->id)->exists();
-
-        if ($hasBusiness) {
+        // Block if user answered "no" on after-complete
+        if (! (bool) $profile->status) {
             return redirect()->route('dashboard');
         }
 
+        // Block if user already owns a business
+        if ($user->ownedBusiness()->exists()) {
+            return redirect()->route('dashboard');
+        }
+
+        // Otherwise, allow access
         return $next($request);
     }
 }

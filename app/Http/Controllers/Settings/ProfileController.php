@@ -61,31 +61,6 @@ class ProfileController extends Controller
                         'regex:/^\d{6}-\d{5}$/',
                         'unique:user_profiles,personal_code',
                     ],
-                ], [
-                    'age.required' => 'We need to know your age.',
-                    'age.min' => 'You still are too young.',
-                    'age.max' => 'How is this possible?',
-                    'height.required' => 'Dont be shy.',
-                    'height.min' => 'Sorry, short king, might wanna lie on this one.',
-                    'height.max' => 'Okey, Robert Wadlow, when did you come back from the dead?',
-                    'weight.required' => 'We dont judge.',
-                    'weight.min' => 'Are you healthy?',
-                    'weight.max' => 'Tring to break Jon Brower Minnochs world record?',
-                    'country.required' => 'Where are you from?',
-                    'country.regex' => 'Say "No" to numbers and special characters!',
-                    'country.min' => 'Did you create a new country?',
-                    'country.max' => 'Impossible!',
-                    'city.required' => 'Be more specific.',
-                    'city.regex' => 'Say "No" to numbers and special characters!',
-                    'city.max' => 'Impossible!',
-                    'phone.required' => 'Nothing bad is gonna happen if you add it.',
-                    'phone.regex' => 'No no no, this is not good.',
-                    'phone.unique' => 'Trying to assign a friend?',
-                    'phone.min' => 'You do have a phone number, right?',
-                    'phone.max' => 'Where on earth did you get this?',
-                    'personal_code.required' => 'Nothing bad is gonna happen if you add it.',
-                    'personal_code.regex' => 'Clear the input field and look again!',
-                    'personal_code.unique' => 'Lucky guess or did you steal it?',
                 ]);
 
         $profile = $request->user()->profile()->create($validated);
@@ -112,7 +87,7 @@ class ProfileController extends Controller
                 'phone',
                 'country',
                 'city',
-                'street_address',
+                'address',
                 'industry',
                 'description'
             )->orderBy('name')->get();
@@ -173,37 +148,6 @@ class ProfileController extends Controller
                 'required','string','regex:/^\d{6}-\d{5}$/',
                 Rule::unique('user_profiles','personal_code')->ignore($profile?->id),
             ],
-        ], [
-            'name.required' => 'You already know how this goes.',
-            'name.regex' => 'Say "No" to numbers and special characters!',
-            'name.max' => 'Dont start it again!',
-            'email.required' => 'Nothing has changed from the previous time we did this.',
-            'email.unique' => 'Use youre own email please.',
-            'age.required' => 'We still need this.',
-            'age.min' => 'You still are too young.',
-            'age.max' => 'How is this possible?',
-            'height.required' => 'Dont be shy.',
-            'height.min' => 'Sorry, short king, might wanna lie for this one.',
-            'height.max' => 'Okey, Robert Wadlow, when did you come back from the dead?',
-            'weight.required' => 'We dont judge.',
-            'weight.min' => 'Are you healthy?',
-            'weight.max' => 'Tring to break Jon Brower Minnochs world record?',
-            'country.required' => 'Where are you from?',
-            'country.regex' => 'Say "No" to numbers and special characters!',
-            'country.min' => 'Did you create a new country?',
-            'country.max' => 'Impossible!',
-            'city.required' => 'Be more specific.',
-            'city.regex' => 'Say "No" to numbers and special characters!',
-            'city.min' => 'Did you create a new city?',
-            'city.max' => 'Impossible!',
-            'phone.required' => 'Nothing bad is gonna happen if you do it.',
-            'phone.regex' => 'No no no. this is not good.',
-            'phone.unique' => 'Trying to assign a friend?',
-            'phone.min' => 'You do have a phone number, right?',
-            'phone.max' => 'Where on earth did you get this?',
-            'personal_code.required' => 'Nothing bad is gonna happen if you do it.',
-            'personal_code.regex' => 'Its right there, just look!',
-            'personal_code.unique' => 'Lucky guess or did you steal it?',
         ]);
 
         if (!empty($validated['name']) || !empty($validated['email'])) {
@@ -225,7 +169,7 @@ class ProfileController extends Controller
         ]);
         $profile->save();
 
-        return redirect()->route('profile.update')->with('success', 'Profile updated successfully.');
+        return redirect()->back()->with('success', 'Profile updated successfully.');
     }
 
     public function updatePortrait(Request $request): RedirectResponse
@@ -267,5 +211,24 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function status(Request $request)
+    {
+        $request->validate([
+            'status' => 'required|boolean',
+        ]);
+
+        $user = $request->user();
+        $profile = $user->profile;
+
+        $profile->status = $request->boolean('status');
+        $profile->save();
+
+        if ($profile->status === true && ! $user->business()->exists()) {
+            return redirect()->route('business.complete');
+        }
+
+        return redirect()->route('dashboard');
     }
 }

@@ -1,11 +1,14 @@
-import InputError from '@/components/input-error';
+import { useT } from '@/lib/t';
 import { type User } from '@/types';
 import { Form } from '@inertiajs/react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
 
 export default function UserEditFields({ user }: { user: User }) {
+    const t = useT();
+    
     return (
         <div className="mx-auto w-full max-w-md">
             <Form
@@ -17,19 +20,19 @@ export default function UserEditFields({ user }: { user: User }) {
                     <>
                         <div className="space-y-4">
                             <div>
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('users.edit.name')}</Label>
                                 <Input id="name" type="name" name="name" defaultValue={user.name} />
                                 <InputError message={errors.name} />
                             </div>
 
                             <div>
-                                <Label htmlFor="email">Email</Label>
+                                <Label htmlFor="email">{t('users.edit.email')}</Label>
                                 <Input id="email" type="email" name="email" defaultValue={user.email} />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div>
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">{t('users.edit.password')}</Label>
                                 <Input id="password" type="password" name="password" />
                                 <InputError message={errors.password} />
                             </div>
@@ -40,7 +43,7 @@ export default function UserEditFields({ user }: { user: User }) {
                                 type="submit"
                                 className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                             >
-                                Save
+                                {t('users.edit.save')}
                             </Button>
                         </div>
                     </>

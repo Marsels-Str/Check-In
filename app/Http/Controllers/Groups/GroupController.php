@@ -207,7 +207,7 @@ class GroupController extends Controller
 
         $map->update(['group_id' => null]);
 
-        return redirect()->back();
+        return redirect()->route('groups.show', $group)->with('success', 'Map detached succesfully!');
     }
 
     public function updateUsers(Request $request, Group $group)

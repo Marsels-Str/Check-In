@@ -1,5 +1,4 @@
 import { router } from '@inertiajs/react';
-import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
@@ -67,7 +66,6 @@ export default function MapDrawShapes({ canEdit = false, canCreate = false, auth
                 router.post('/maps', payload, {
                     preserveScroll: true,
                 });
-
             } catch (error: any) {
                 const errors = error.response?.data?.errors;
                 const message = errors ? Object.values(errors).flat().join('\n') : 'Error saving shape. Please check your input.';

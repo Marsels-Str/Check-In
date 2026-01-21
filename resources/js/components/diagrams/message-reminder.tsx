@@ -1,5 +1,6 @@
-import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
+import { useT } from '@/lib/t';
 import { router } from '@inertiajs/react';
+import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
 
 export default function MessageReminder() {
     const { message } = useDashboardData();
@@ -7,16 +8,14 @@ export default function MessageReminder() {
     const data = message?.data ?? [];
     const empty = message?.empty;
 
+    const t = useT();
+
     if (empty === 'nothing-to-show') {
         return (
-            <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
-                Get a job, to view personal group messages.
+            <div className="flex h-64 items-center justify-center text-center rounded-xl text-sm text-muted-foreground">
+                {t('dashboard.diagrams.messages.empty')}
             </div>
         );
-    }
-
-    if (!data.length) {
-        return <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">No new group messages.</div>;
     }
 
     return (
@@ -30,13 +29,16 @@ export default function MessageReminder() {
                         onClick={() => router.visit(`/groups/${group.group_id}`)}
                         className={`group relative flex cursor-pointer items-center justify-between px-4 py-3 text-left transition ${
                             isUnread ? 'hover:bg-[#D4A017]/40 dark:hover:bg-[#D4A017]/40' : 'hover:bg-gray-100 dark:hover:bg-gray-800/60'
-                        } `}
+                        }`}
                     >
-                        <span className={`absolute top-0 left-0 h-full w-1 ${isUnread ? 'bg-[#D4A017]' : 'bg-transparent'} `} />
+                        <span className={`absolute top-0 left-0 h-full w-1 ${isUnread ? 'bg-[#D4A017]' : 'bg-transparent'}`} />
 
                         <div className="flex flex-col">
                             <span className="text-sm font-medium">{group.group_name}</span>
-                            <span className="text-xs text-muted-foreground">{isUnread ? 'New activity' : 'No unread messages'}</span>
+
+                            <span className="text-xs text-muted-foreground">
+                                {isUnread ? t('dashboard.diagrams.messages.status.new') : t('dashboard.diagrams.messages.status.none')}
+                            </span>
                         </div>
 
                         {isUnread && (

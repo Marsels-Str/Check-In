@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import { useRef } from 'react';
 import { type User } from '@/types';
 import { router } from '@inertiajs/react';
@@ -26,6 +27,8 @@ export default function ProfileCard({ user }: { user: User }) {
         });
     };
 
+    const t = useT();
+
     return (
         <Card className="mx-auto w-full max-w-sm rounded-xl shadow-lg">
             <CardContent className="flex flex-col items-center space-y-4 p-6">
@@ -43,31 +46,31 @@ export default function ProfileCard({ user }: { user: User }) {
                         type="button"
                         variant="destructive"
                         onClick={() => {
-                            if (confirm('Are you sure you want to remove your portrait?')) {
+                            if (confirm(t('settings.profile.remove.confirm'))) {
                                 router.delete(route('profile.portrait.remove'), {
                                     preserveScroll: true,
                                 });
                             }
                         }}
                     >
-                        Remove
+                        {t('settings.profile.remove')}
                     </Button>
                 )}
 
                 <div className="space-y-1 text-center">
                     <h2 className="text-lg font-semibold">{user.name}</h2>
-                    <p className="text-sm text-muted-foreground">ID: {user.profile?.unique_id}</p>
+                    <p className="text-sm text-muted-foreground">{t('settings.profile.id')}: {user.profile?.unique_id}</p>
                 </div>
 
                 <div className="w-full space-y-1 border-t pt-4 text-sm">
                     <p>
-                        <span className="font-medium">Age:</span> {user.profile?.age ?? '—'}
+                        <span className="font-medium">{t('settings.profile.age')}:</span> {user.profile?.age ?? '—'}
                     </p>
                     <p>
-                        <span className="font-medium">Personal code:</span> {user.profile?.personal_code ?? '—'}
+                        <span className="font-medium">{t('settings.profile.code')}:</span> {user.profile?.personal_code ?? '—'}
                     </p>
                     <p>
-                        <span className="font-medium">Phone:</span> {user.profile?.phone ?? '—'}
+                        <span className="font-medium">{t('settings.profile.phone')}:</span> {user.profile?.phone ?? '—'}
                     </p>
                 </div>
             </CardContent>

@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
 import { Head, usePage } from '@inertiajs/react';
 import DeleteUser from '@/components/delete-user';
@@ -7,14 +8,21 @@ import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import ProfileForm from '@/components/profile-settings/profile-form';
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Profile settings', href: '/settings/profile' }];
-
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
+    const t = useT();
+    
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('breadcrumb.settings.profile'),
+            href: '/settings/profile'
+        }
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Profile settings" />
+            <Head title={t('settings.profile.title')} />
 
             <div className="relative">
                 <div className="mb-4 px-3 py-2 md:hidden">
@@ -28,9 +36,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                 <SettingsLayout>
                     <div className="space-y-12">
                         <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#0f0f0f]/70">
-                            <HeadingSmall title="Profile information" description="Update your personal details and contact information." />
+                            <HeadingSmall title={t('settings.profile.small.title')} description={t('settings.profile.small.description')} />
                             <div className="mt-6">
-                                <ProfileForm user={auth.user} mustVerifyEmail={mustVerifyEmail} status={status} />
+                                <ProfileForm user={auth.user} />
                             </div>
                         </div>
 

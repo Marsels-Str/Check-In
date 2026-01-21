@@ -1,34 +1,36 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Users', href: '/users' },
-    { title: 'User details', href: '/users' },
-];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Show({ user }: { user: any }) {
     const profile = user.profile || {};
     const roles = Array.isArray(user.roles) ? user.roles.map((r: any) => r.name).join(', ') : '—';
     const ownedBusiness = user.owned_business ? user.owned_business.name : null;
-    const businesses =
-        ownedBusiness || (Array.isArray(user.businesses) && user.businesses.length > 0 ? user.businesses.map((b: any) => b.name).join(', ') : '—');
+    const businesses = ownedBusiness || (Array.isArray(user.businesses) && user.businesses.length > 0 ? user.businesses.map((b: any) => b.name).join(', ') : '—');
+
+    const t = useT();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: t('breadcrumb.users'), href: '/users' },
+        { title: t('breadcrumb.users.show'), href: '/users' },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`User: ${user.name}`} />
+            <Head title={`${t('users.show.title')}: ${user.name}`} />
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">User details</h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Detailed information about this user.</p>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('users.show.label')}</h1>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('users.show.text')}</p>
                     </div>
                     <Link
                         href={route('users.index')}
                         className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                     >
-                        Back
+                        {t('users.show.back')}
                     </Link>
                 </div>
 
@@ -53,15 +55,15 @@ export default function Show({ user }: { user: any }) {
 
                     <CardContent>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                            <InfoItem label="Business" value={businesses} />
-                            <InfoItem label="Roles" value={roles} />
-                            <InfoItem label="Phone" value={profile.phone} />
-                            <InfoItem label="Personal Code" value={profile.personal_code} />
-                            <InfoItem label="Age" value={profile.age} />
-                            <InfoItem label="Height (cm)" value={profile.height} />
-                            <InfoItem label="Weight (kg)" value={profile.weight} />
-                            <InfoItem label="Country" value={profile.country} />
-                            <InfoItem label="City" value={profile.city} />
+                            <InfoItem label={t('users.show.business')} value={businesses} />
+                            <InfoItem label={t('users.show.role')} value={roles} />
+                            <InfoItem label={t('users.show.phone')} value={profile.phone} />
+                            <InfoItem label={t('users.show.code')} value={profile.personal_code} />
+                            <InfoItem label={t('users.show.age')} value={profile.age} />
+                            <InfoItem label={t('users.show.height')} value={profile.height} />
+                            <InfoItem label={t('users.show.height')} value={profile.weight} />
+                            <InfoItem label={t('users.show.country')} value={profile.country} />
+                            <InfoItem label={t('users.show.city')} value={profile.city} />
                         </div>
                     </CardContent>
                 </Card>

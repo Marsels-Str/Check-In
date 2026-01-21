@@ -4,13 +4,12 @@ import NameCell from '@/components/maps/name-cell';
 import useMapCenter from '@/hooks/use-map-center';
 import AppLayout from '@/layouts/app-layout';
 import { useCan } from '@/lib/can';
+import { useT } from '@/lib/t';
 import { type BreadcrumbItem, type BusinessProfile, type Map, type PageProps } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Maps', href: '/maps' }];
 
 interface IndexProps extends PageProps {
     maps: Map[];
@@ -27,10 +26,8 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
     const canUpdate = useCan('maps.update');
     const canDelete = useCan('maps.delete');
     const canShow = useCan('maps.show');
-
-    function handleDelete(id: number) {
-        if (confirm('Are you sure you want to delete this entry?')) router.delete(route('maps.destroy', id));
-    }
+    
+    const t = useT();
 
     function handleBusinessChange(id: number | any) {
         setCurrentBusinessId(id);
@@ -41,15 +38,22 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
         });
     }
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('breadcrumb.maps'),
+            href: '/maps',
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Maps" />
+            <Head title={t('maps.index.title')} />
 
             <div className="px-4">
                 <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Maps</h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">View, edit, and manage youre maps.</p>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('maps.index.label')}</h1>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('maps.index.text')}</p>
                     </div>
 
                     {auth.user.roles.includes('Owner') && (
@@ -64,7 +68,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                             <MapDrawShapes canCreate={canCreate} canUpdate={canUpdate} auth={auth} selectedBusinessId={currentBusinessId} />
                         </MapContainer>
                     ) : (
-                        <div className="p-6 text-center text-gray-600 dark:text-gray-400">Loading map...</div>
+                        <div className="p-6 text-center text-gray-600 dark:text-gray-400">{t('maps.index.empty')}...</div>
                     )}
                 </div>
 
@@ -73,10 +77,10 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                             <thead className="sticky top-0 z-10 bg-gray-50 backdrop-blur-sm dark:bg-[#0f0f0f]/95">
                                 <tr>
-                                    <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">ID</th>
-                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">Name</th>
-                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">Created at</th>
-                                    <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">Actions</th>
+                                    <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.id')}</th>
+                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.name')}</th>
+                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.created')}</th>
+                                    <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.actions')}</th>
                                 </tr>
                             </thead>
 
@@ -97,7 +101,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                                                         href={route('maps.show', map.id)}
                                                         className="hover:text-green-600 dark:hover:text-green-300"
                                                     >
-                                                        Show
+                                                        {t('maps.index.show')}
                                                     </Link>
                                                 )}
                                                 {canUpdate && (
@@ -105,15 +109,14 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                                                         href={route('maps.edit', map.id)}
                                                         className="hover:text-green-600 dark:hover:text-green-300"
                                                     >
-                                                        Edit
+                                                        {t('maps.index.edit')}
                                                     </Link>
                                                 )}
-                                                <button
-                                                    onClick={() => handleDelete(map.id)}
-                                                    className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
-                                                >
-                                                    Delete
-                                                </button>
+                                                {canDelete && (
+                                                    <button className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400">
+                                                        {t('maps.index.delete')}
+                                                    </button>
+                                                )}
                                             </div>
                                         </td>
                                     </tr>

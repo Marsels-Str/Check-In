@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
                 'country'       => 'Latvijā',
                 'city'          => 'Rigā',
                 'portrait'      => null,
+                'status'        => 1,
             ]
         );
 
@@ -50,7 +51,7 @@ class DatabaseSeeder extends Seeder
                 'country'     => 'Latvijā',
                 'phone'       => '37100000000',
                 'city'        => 'Rigā',
-                'street_address' => 'Owner Street',
+                'address' => 'Owner Street',
                 'description' => 'Main business for App Owner',
                 'employees'   => 0,
                 'logo'        => null,

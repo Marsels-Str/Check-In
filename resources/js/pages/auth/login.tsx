@@ -1,12 +1,13 @@
-import InputError from '@/components/input-error';
+import { useT } from '@/lib/t';
+import { LoaderCircle } from 'lucide-react';
 import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Form, Head } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-import { Form, Head } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import InputError from '@/components/input-error';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface LoginProps {
     status?: string;
@@ -14,35 +15,35 @@ interface LoginProps {
 }
 
 export default function Login({ status, canResetPassword }: LoginProps) {
+    const t = useT();
+    
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <AuthLayout title={t('auth.login.small.title')} description={t('auth.login.small.description')}>
+            <Head title={t('auth.login.title')} />
 
             <Form method="post" action={route('login')} resetOnSuccess={['password']} className="flex flex-col gap-6">
                 {({ processing, errors }) => (
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">{t('auth.login.email')}</Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     name="email"
-                                    required
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">{t('auth.login.password')}</Label>
                                     {canResetPassword && (
                                         <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                            Forgot password?
+                                            {`${t('auth.login.forgot')}`}
                                         </TextLink>
                                     )}
                                 </div>
@@ -50,17 +51,15 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     id="password"
                                     type="password"
                                     name="password"
-                                    required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder="Password"
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="flex items-center space-x-3">
                                 <Checkbox id="remember" name="remember" tabIndex={3} />
-                                <Label htmlFor="remember">Remember me</Label>
+                                <Label htmlFor="remember">{t('auth.login.remember')}</Label>
                             </div>
 
                             <Button
@@ -70,14 +69,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 disabled={processing}
                             >
                                 {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                                Log in
+                                {t('auth.login.login')}
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Don't have an account?{' '}
+                            {t('auth.login.dont')} {' '}
                             <TextLink href={route('register')} tabIndex={5}>
-                                Sign up
+                                {t('auth.login.signup')}
                             </TextLink>
                         </div>
                     </>

@@ -1,11 +1,12 @@
-import BusinessName from '@/components/users/tiny-ui/business-name';
-import RoleName from '@/components/users/tiny-ui/role-name';
-import StatusBadge from '@/components/users/tiny-ui/status-badge';
-import UserAvatar from '@/components/users/tiny-ui/user-avatar';
-import { useCan } from '@/lib/can';
+import { useT } from '@/lib/t';
 import { User } from '@/types';
+import { useCan } from '@/lib/can';
 import { Button } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
+import RoleName from '@/components/users/tiny-ui/role-name';
+import UserAvatar from '@/components/users/tiny-ui/user-avatar';
+import StatusBadge from '@/components/users/tiny-ui/status-badge';
+import BusinessName from '@/components/users/tiny-ui/business-name';
 
 export default function UserIndexCards({ users, currentUser }: { users: User[]; currentUser: User }) {
     const canAssign = useCan('roles.assign');
@@ -13,11 +14,7 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
     const canDelete = useCan('users.delete');
     const canShow = useCan('users.show');
 
-    function handleDelete(id: number) {
-        if (confirm('Are you sure you want to delete this user?')) {
-            router.delete(route('users.destroy', id));
-        }
-    }
+    const t = useT();
 
     const visibleUsers = users.filter((user) => user.id !== currentUser.id);
 
@@ -40,11 +37,11 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
                     </div>
 
                     <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
-                        <div className="text-gray-500 dark:text-gray-400">Business</div>
+                        <div className="text-gray-500 dark:text-gray-400">{t('users.index.business')}</div>
                         <div className="text-gray-800 dark:text-gray-200">
                             <BusinessName user={user} />
                         </div>
-                        <div className="text-gray-500 dark:text-gray-400">Role</div>
+                        <div className="text-gray-500 dark:text-gray-400">{t('users.index.role')}</div>
                         <div className="text-gray-800 dark:text-gray-200">
                             <RoleName user={user} />
                         </div>
@@ -56,7 +53,7 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
                                 href={route('users.roles.assign', user.id)}
                                 className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
                             >
-                                Assign
+                                {t('users.index.assign')}
                             </Link>
                         )}
                         {canShow && (        
@@ -64,7 +61,7 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
                                 href={route('users.show', user.id)}
                                 className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
                             >
-                                Show
+                                {t('users.index.show')}
                             </Link>
                         )}
                         {canUpdate && (
@@ -72,15 +69,15 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
                                 href={route('users.edit', user.id)}
                                 className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
                             >
-                                Edit
+                                {t('users.index.edit')}
                             </Link>
                         )}
                         {canDelete && (
                             <Button
-                                onClick={() => handleDelete(user.id)}
+                                onClick={() => router.delete(`/users/${user.id}`)}
                                 className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
                             >
-                                Delete
+                                {t('users.index.delete')}
                             </Button>
                         )}
                     </div>

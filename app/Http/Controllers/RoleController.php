@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use App\Models\Business;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -49,6 +49,7 @@ class RoleController extends Controller
             'users.delete',
             'business.access',
             'business.create',
+            'languages.access',
         ];
 
         $permissions = Permission::query()->when($user->hasRole('Business'), function ($q) use ($excludedForBusiness) {

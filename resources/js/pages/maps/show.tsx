@@ -1,11 +1,14 @@
 import FitToBounds from '@/components/fit-to-bounds';
 import AppLayout from '@/layouts/app-layout';
+import { useT } from '@/lib/t';
+import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { Circle, MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 
 export default function Show({ map }: { map: any }) {
     const toNum = (v: any): number | null => (v == null || v === '' ? null : Number(v));
+    const t = useT();
 
     let marker: [number, number] | null = null;
     let circle: [number, number] | null = null;
@@ -45,34 +48,41 @@ export default function Show({ map }: { map: any }) {
     const points: [number, number][] = [...(marker ? [marker] : []), ...(circle ? [circle] : []), ...polygon];
     const center: [number, number] = points[0] || [56.9496, 24.1052];
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('breadcrumb.maps'),
+            href: '/maps',
+        },
+    ];
+
     return (
-        <AppLayout breadcrumbs={[{ title: 'Maps', href: '/maps' }]}>
-            <Head title={`Map #${map.id}`} />
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title={`${t('maps.show.title')} #${map.id}`} />
 
             <div className="px-4">
                 <div className="mx-auto mt-8 max-w-3xl space-y-6 rounded-xl border border-gray-200 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-md">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Map #{map.id}</h1>
-                            <p className="text-sm text-gray-500">Examine what you have placed.</p>
+                            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('maps.show.label')} #{map.id}</h1>
+                            <p className="text-sm text-gray-500">{t('maps.show.text')}</p>
                         </div>
                         <Link
-                            href={route("maps.index", { business_id: map.business_id })}
+                            href={route('maps.index', { business_id: map.business_id })}
                             className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                         >
-                            Back
+                            {t('maps.show.back')}
                         </Link>
                     </div>
 
                     <div className="grid gap-2 text-sm text-gray-700 dark:text-gray-300">
                         <p>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">Name:</span> {map.name || 'No name provided'}
+                            <span className="font-medium text-gray-900 dark:text-gray-100">{t('maps.show.name')}:</span> {map.name || t('maps.show.empty')}
                         </p>
                         <p>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">Type:</span> {map.type}
+                            <span className="font-medium text-gray-900 dark:text-gray-100">{t('maps.show.type')}:</span> {map.type}
                         </p>
                         <p>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">Created:</span> {new Date(map.created_at).toLocaleString()}
+                            <span className="font-medium text-gray-900 dark:text-gray-100">{t('maps.show.created')}:</span> {new Date(map.created_at).toLocaleString()}
                         </p>
                     </div>
 

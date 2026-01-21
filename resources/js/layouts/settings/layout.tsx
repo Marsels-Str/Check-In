@@ -1,38 +1,11 @@
-import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { useT } from '@/lib/t';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import Heading from '@/components/heading';
 import { type PropsWithChildren } from 'react';
-
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: '/settings/profile',
-        icon: null,
-    },
-    {
-        title: 'Business',
-        href: '/settings/business',
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: '/settings/password',
-        icon: null,
-    },
-    {
-        title: 'Auto clocking',
-        href: '/settings/auto-clock',
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: '/settings/appearance',
-        icon: null,
-    },
-];
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
     // When server-side rendering, we only render the layout on the client...
@@ -40,11 +13,46 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         return null;
     }
 
+    const t = useT();
+    
     const currentPath = window.location.pathname;
+
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: t('sidebar.settings.profile'),
+            href: '/settings/profile',
+            icon: null,
+        },
+        {
+            title: t('sidebar.settings.business'),
+            href: '/settings/business',
+            icon: null,
+        },
+        {
+            title: t('sidebar.settings.password'),
+            href: '/settings/password',
+            icon: null,
+        },
+        {
+            title: t('sidebar.settings.clocking'),
+            href: '/settings/auto-clock',
+            icon: null,
+        },
+        {
+            title: t('sidebar.settings.appearance'),
+            href: '/settings/appearance',
+            icon: null,
+        },
+        {
+            title: t('sidebar.settings.language'),
+            href: '/settings/language',
+            icon: null,
+        },
+    ];
 
     return (
         <div className="px-4 py-6">
-            <Heading title="Settings" description="Manage your profile and account settings" />
+            <Heading title={t('sidebar.settings.title')} description={t('sidebar.settings.description')} />
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">

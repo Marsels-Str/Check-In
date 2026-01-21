@@ -1,27 +1,33 @@
-import AutoClockForm from '@/components/profile-settings/auto-clock-form';
-import ExtendWorkTimeForm from '@/components/profile-settings/extend-work-time-form';
-import LockedAutoClock from '@/components/profile-settings/locked-auto-clock';
+import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Auto clock', href: '/settings/auto-clock' }];
+import HeadingSmall from '@/components/heading-small';
+import SettingsLayout from '@/layouts/settings/layout';
+import AutoClockForm from '@/components/profile-settings/auto-clock-form';
+import LockedAutoClock from '@/components/profile-settings/locked-auto-clock';
+import ExtendWorkTimeForm from '@/components/profile-settings/extend-work-time-form';
 
 export default function AutoClock() {
     const { props }: any = usePage();
     const { settings = {}, hasBusiness } = props;
 
+    const t = useT();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('breadcrumb.settings.clocking'),
+            href: '/settings/auto-clock'
+        }
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <SettingsLayout>
-                <Head title="Auto clock Settings" />
+                <Head title={t('settings.clocking.title')} />
 
-                <div className="px-4 py-8">
-                    <div className="mb-6">
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Auto clock settings</h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Configure automatic work and lunch.</p>
-                    </div>
+                <div className="space-y-8">
+                <HeadingSmall title={t('settings.clocking.small.title')} description={t('settings.clocking.small.description')} />
 
                     <AutoClockForm settings={settings} />
 

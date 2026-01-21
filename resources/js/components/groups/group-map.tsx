@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import FitToBounds from '@/components/fit-to-bounds';
 import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
@@ -12,6 +13,8 @@ export default function GroupMap({ group, availableMaps }: any) {
     const canAttachMap = useCan('groups.attachMap');
     const canDetachMap = useCan('groups.detachMap');
     const map = group.map;
+
+    const t = useT();
 
     const toNum = (v: any): number | null => {
         const n = Number(v);
@@ -53,13 +56,6 @@ export default function GroupMap({ group, availableMaps }: any) {
     const boundsPoints = [...(markerPos ? [markerPos] : []), ...(circleCenter ? [circleCenter] : []), ...polygonCoords];
     const initialCenter: [number, number] = boundsPoints[0] || [56.9496, 24.1052];
 
-    const handleDetach = (mapId: number) => {
-        if (!confirm('Are you sure you want to detach this map?')) return;
-        router.delete(route('groups.detach-map', { group: group.id }), {
-            data: { map_id: mapId },
-        });
-    };
-
     return (
         <div className="mt-8">
             <div className="mx-auto max-w-5xl p-4">
@@ -72,7 +68,7 @@ export default function GroupMap({ group, availableMaps }: any) {
                         {({ errors }) => (
                             <>
                                 <div className="flex h-[150px] flex-1 flex-col gap-2 overflow-y-auto">
-                                    <Label>Select a map:</Label>
+                                    <Label>{t('groups.show.maps.label')}:</Label>
                                     <div className="grid max-h-64 gap-2 overflow-y-auto pr-1">
                                         {availableMaps.map((m: any) => (
                                             <div
@@ -93,10 +89,15 @@ export default function GroupMap({ group, availableMaps }: any) {
                                                 {canDetachMap && map?.id === m.id && (
                                                     <Button
                                                         type="button"
-                                                        onClick={() => handleDetach(m.id)}
+                                                        onClick={() =>
+                                                            router.delete(route('groups.detach-map', group.id), {
+                                                                data: { map_id: m.id },
+                                                                preserveScroll: true,
+                                                            })
+                                                        }
                                                         className="text-sm text-red-500 hover:underline"
                                                     >
-                                                        Detach
+                                                        {t('groups.show.maps.detach')}
                                                     </Button>
                                                 )}
                                             </div>
@@ -109,7 +110,7 @@ export default function GroupMap({ group, availableMaps }: any) {
                                     type="submit"
                                     className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                                 >
-                                    Add
+                                    {t('groups.show.maps.add')}
                                 </Button>
                             </>
                         )}
@@ -140,7 +141,7 @@ export default function GroupMap({ group, availableMaps }: any) {
                         </MapContainer>
                     </div>
                 ) : (
-                    <p className="mt-3 text-gray-500">No map attached to this group.</p>
+                    <p className="mt-3 text-gray-500">{t('groups.show.maps.empty')}</p>
                 )}
             </div>
         </div>

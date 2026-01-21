@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import { Button } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
@@ -7,11 +8,7 @@ export default function RolesMobileView({ roles }: { roles: any[] }) {
     const canDelete = useCan('roles.delete');
     const canShow = useCan('roles.show');
 
-    function handleDelete(roleId: number) {
-        if (confirm('Are you sure you want to delete this role?')) {
-            router.delete(route('roles.destroy', roleId));
-        }
-    }
+    const t = useT();
 
     return (
         <div className="space-y-3 md:hidden">
@@ -23,7 +20,7 @@ export default function RolesMobileView({ roles }: { roles: any[] }) {
                     <div className="flex items-center justify-between">
                         <div>
                             <div className="font-medium text-gray-900 dark:text-gray-100">{role.name}</div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">ID: {role.id}</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">{t('roles.index.id')}: {role.id}</div>
                         </div>
 
                         <div className="flex gap-3 text-sm">
@@ -32,7 +29,7 @@ export default function RolesMobileView({ roles }: { roles: any[] }) {
                                     href={route('roles.show', role.id)}
                                     className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
                                 >
-                                    Show
+                                    {t('roles.index.show')}
                                 </Link>
                             )}
                             {canEdit && (
@@ -40,15 +37,15 @@ export default function RolesMobileView({ roles }: { roles: any[] }) {
                                     href={route('roles.edit', role.id)}
                                     className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
                                 >
-                                    Edit
+                                    {t('roles.index.edit')}
                                 </Link>
                             )}
                             {canDelete && (
                                 <Button
-                                    onClick={() => handleDelete(role.id)}
+                                    onClick={() => router.delete(`/roles/${role.id}`)}
                                     className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
                                 >
-                                    Delete
+                                    {t('roles.index.delete')}
                                 </Button>
                             )}
                         </div>

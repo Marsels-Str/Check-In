@@ -1,3 +1,4 @@
+import { useT } from '@/lib/t';
 import { useRef } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -9,24 +10,26 @@ import InputError from '@/components/input-error';
 import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: '/settings/password',
-    },
-];
-
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
+    const t = useT();
+    
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('breadcrumb.settings.password'),
+            href: '/settings/password',
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Password settings" />
+            <Head title={t('settings.password.title')} />
 
             <SettingsLayout>
                 <div className="space-y-8">
-                    <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure." />
+                    <HeadingSmall title={t('settings.password.small.title')} description={t('settings.password.small.description')} />
 
                     <Form
                         method="put"
@@ -43,39 +46,33 @@ export default function Password() {
                         {({ errors }) => (
                             <div className="space-y-5">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="current_password">Current password</Label>
+                                    <Label htmlFor="current_password">{t('settings.password.current')}</Label>
                                     <Input
                                         id="current_password"
                                         ref={currentPasswordInput}
                                         name="current_password"
                                         type="password"
-                                        placeholder="Current password"
-                                        autoComplete="current-password"
                                     />
                                     <InputError message={errors.current_password} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="password">New password</Label>
+                                    <Label htmlFor="password">{t('settings.password.new')}</Label>
                                     <Input
                                         id="password"
                                         ref={passwordInput}
                                         name="password"
                                         type="password"
-                                        placeholder="New password"
-                                        autoComplete="new-password"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="password_confirmation">Confirm new password</Label>
+                                    <Label htmlFor="password_confirmation">{t('settings.password.confirm')}</Label>
                                     <Input
                                         id="password_confirmation"
                                         name="password_confirmation"
                                         type="password"
-                                        placeholder="Confirm password"
-                                        autoComplete="new-password"
                                     />
                                     <InputError message={errors.password_confirmation} />
                                 </div>
@@ -84,7 +81,7 @@ export default function Password() {
                                     <Button
                                         className="inline-flex w-full items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
                                     >
-                                        Save
+                                        {t('settings.password.save')}
                                     </Button>
                                 </div>
                             </div>
