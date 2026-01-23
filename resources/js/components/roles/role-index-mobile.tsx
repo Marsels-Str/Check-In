@@ -1,14 +1,31 @@
 import { useT } from '@/lib/t';
+import { Role } from '@/types';
 import { useCan } from '@/lib/can';
-import { Button } from '@headlessui/react';
-import { Link, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 
-export default function RolesMobileView({ roles }: { roles: any[] }) {
+interface Props {
+    roles: Role[];
+}
+
+export default function RolesMobileView({ roles }: Props) {
     const canEdit = useCan('roles.update');
     const canDelete = useCan('roles.delete');
     const canShow = useCan('roles.show');
 
     const t = useT();
+
+    const showRole = (role: Role) => {
+        router.get(route('roles.show', role.id));
+    };
+    
+    const editRole = (role: Role) => {
+        router.get(route('roles.edit', role.id));
+    };
+    
+    const deleteRole = (role: Role) => {
+        router.delete(route('roles.destroy', role.id));
+    };
 
     return (
         <div className="space-y-3 md:hidden">
@@ -25,26 +42,17 @@ export default function RolesMobileView({ roles }: { roles: any[] }) {
 
                         <div className="flex gap-3 text-sm">
                             {canShow && (
-                                <Link
-                                    href={route('roles.show', role.id)}
-                                    className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                                >
+                                <Button variant="link" className="px-0" onClick={() => showRole(role)}>
                                     {t('roles.index.show')}
-                                </Link>
+                                </Button>
                             )}
                             {canEdit && (
-                                <Link
-                                    href={route('roles.edit', role.id)}
-                                    className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                                >
+                                <Button variant="link" className="px-0" onClick={() => editRole(role)}>
                                     {t('roles.index.edit')}
-                                </Link>
+                                </Button>
                             )}
                             {canDelete && (
-                                <Button
-                                    onClick={() => router.delete(`/roles/${role.id}`)}
-                                    className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
-                                >
+                                <Button variant="link" className="px-0 text-destructive" onClick={() => deleteRole(role)}>
                                     {t('roles.index.delete')}
                                 </Button>
                             )}

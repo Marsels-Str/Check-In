@@ -1,8 +1,8 @@
 import { useT } from '@/lib/t';
 import { User } from '@/types';
 import { useCan } from '@/lib/can';
-import { Button } from '@headlessui/react';
-import { Link, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 import RoleName from '@/components/users/tiny-ui/role-name';
 import UserAvatar from '@/components/users/tiny-ui/user-avatar';
 import StatusBadge from '@/components/users/tiny-ui/status-badge';
@@ -17,6 +17,22 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
     const t = useT();
 
     const visibleUsers = users.filter((user) => user.id !== currentUser.id);
+
+    const assignRole = (user: User) => {
+        router.get(route('users.roles.assign', user.id));
+    };
+    
+    const showUser = (user: User) => {
+        router.get(route('users.show', user.id));
+    };
+
+    const editUser = (user: User) => {
+        router.get(route('users.edit', user.id));
+    };
+
+    const deleteUser = (user: User) => {
+        router.delete(route('users.destroy', user.id));
+    };
 
     return (
         <div className="space-y-3 md:hidden">
@@ -49,33 +65,25 @@ export default function UserIndexCards({ users, currentUser }: { users: User[]; 
 
                     <div className="mt-4 flex flex-wrap justify-end gap-3 text-sm">
                         {canAssign && (
-                            <Link
-                                href={route('users.roles.assign', user.id)}
-                                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                            >
+                            <Button variant="link" className="px-0" onClick={() => assignRole(user)}>
                                 {t('users.index.assign')}
-                            </Link>
+                            </Button>
                         )}
-                        {canShow && (        
-                            <Link
-                                href={route('users.show', user.id)}
-                                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                            >
-                                {t('users.index.show')}
-                            </Link>
+                        {canShow && (
+                            <Button variant="link" className="px-0" onClick={() => showUser(user)}>
+                                    {t('users.index.show')}
+                            </Button>
                         )}
                         {canUpdate && (
-                            <Link
-                                href={route('users.edit', user.id)}
-                                className="text-gray-700 hover:text-green-600 dark:text-gray-300 dark:hover:text-green-300"
-                            >
+                            <Button variant="link" className="px-0" onClick={() => editUser(user)}>
                                 {t('users.index.edit')}
-                            </Link>
+                            </Button>
                         )}
                         {canDelete && (
                             <Button
-                                onClick={() => router.delete(`/users/${user.id}`)}
-                                className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400"
+                                variant="link"
+                                onClick={() => deleteUser(user)}
+                                className="px-0 text-destructive"
                             >
                                 {t('users.index.delete')}
                             </Button>

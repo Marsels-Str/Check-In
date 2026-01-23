@@ -1,25 +1,28 @@
 import { useT } from '@/lib/t';
+import { useState } from 'react';
+import { Role, User } from '@/types';
 import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
-export default function RoleAssignFields({
-    userId,
-    globalRoles = [],
-    businessRoles = [],
-    selectedRoles = [],
-}: {
-    userId: number;
-    globalRoles: { id: number; name: string }[];
-    businessRoles: { id: number; name: string }[];
-    selectedRoles: number[];
-}) {
+interface Props {
+    user: User;
+    globalRoles: Role[];
+    businessRoles: Role[];
+    userRole: number[];
+}
+
+export default function RoleAssignFields({ user, globalRoles, businessRoles, userRole}: Props) {
     const t = useT();
-    
+
+    const [currentRole, setCurrentRole] = useState<number | null>(
+        userRole.length > 0 ? userRole[0] : null
+    );
+
     return (
-        <Form method="post" action={route('users.roles.assign', userId)}>
+        <Form method="post" action={route('users.roles.assign', user.id)}>
             {({ errors }) => (
                 <>
                     <div className="space-y-4">
@@ -38,7 +41,8 @@ export default function RoleAssignFields({
                                         name="role_ids[]"
                                         id={`role-${role.id}`}
                                         value={role.id}
-                                        defaultChecked={selectedRoles.includes(role.id)}
+                                        checked={currentRole === role.id}
+                                        onChange={() => setCurrentRole(role.id)}
                                         className="h-4 w-4 accent-pink-500"
                                     />
                                 </Label>
@@ -60,7 +64,8 @@ export default function RoleAssignFields({
                                         name="role_ids[]"
                                         id={`role-${role.id}`}
                                         value={role.id}
-                                        defaultChecked={selectedRoles.includes(role.id)}
+                                        checked={currentRole === role.id}
+                                        onChange={() => setCurrentRole(role.id)}
                                         className="h-4 w-4 accent-pink-500"
                                     />
                                 </Label>

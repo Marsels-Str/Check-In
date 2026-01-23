@@ -1,17 +1,12 @@
 import { useT } from '@/lib/t';
+import { router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Form, Head } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
-import { Form, Head, Link } from '@inertiajs/react';
-
-type Language = {
-    id: number;
-    name: string;
-    code: string;
-};
+import { BreadcrumbItem, Language } from '@/types';
 
 interface Props {
     language: Language;
@@ -24,6 +19,10 @@ export default function EditLanguage({ language }: Props) {
         { title: t('breadcrumb.languages'), href: '/languages' },
         { title: t('breadcrumb.languages.edit'), href: '/languages' },
     ];
+
+    const translationsIndex = (language: Language) => {
+        router.get(route('translations.index', language.id))
+    }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -55,12 +54,12 @@ export default function EditLanguage({ language }: Props) {
                             </div>
 
                             <div className="flex items-center justify-between gap-3 pt-4">
-                                <Link
-                                    href={route('languages.index')}
+                                <Button
+                                    onClick={() => translationsIndex(language)}
                                     className="inline-flex items-center rounded-lg border border-border/60 bg-background px-3.5 py-1.5 text-sm font-medium text-muted-foreground shadow-sm transition hover:bg-muted"
                                 >
                                     {t('languages.edit.back')}
-                                </Link>
+                                </Button>
 
                                 <Button
                                     type="submit"

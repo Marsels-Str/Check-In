@@ -6,10 +6,10 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, router } from '@inertiajs/react';
 import DashboardSlot from '@/components/dashboard/dashboard-slot';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
-import { defaultLayout, type DashboardLayout } from '@/dashboard/registry';
+import { defaultLayout, DashboardLayout } from '@/dashboard/registry';
 import { DashboardDataProvider } from '@/components/dashboard/dashboard-data-context';
 import { DashboardRenderModule } from '@/components/dashboard/dashboard-render-module';
-import type { BreadcrumbItem, BusinessProfile, DiagramState, EmployeeActivityPoint, MessageReminderState, OverviewData, WorkedHoursPoint } from '@/types';
+import { BreadcrumbItem, BusinessProfile, DiagramState, EmployeeActivityPoint, MessageReminderState, OverviewData, WorkedHoursPoint } from '@/types';
 
 interface DashboardProps {
     workedHours: DiagramState<WorkedHoursPoint>;
@@ -17,7 +17,7 @@ interface DashboardProps {
     overview: OverviewData;
     message: MessageReminderState;
     businesses: BusinessProfile[];
-    selectedBusinessId?: number | null;
+    selectedBusinessId: number | null;
 }
 
 export default function Dashboard(props: DashboardProps) {

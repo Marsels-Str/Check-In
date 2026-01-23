@@ -1,5 +1,5 @@
 import { useT } from '@/lib/t';
-import { type User } from '@/types';
+import { User } from '@/types';
 import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

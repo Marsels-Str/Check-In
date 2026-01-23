@@ -1,6 +1,6 @@
 import { useT } from '@/lib/t';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import UserCreateFields from '@/components/users/user-create-fields';
 

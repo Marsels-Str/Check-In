@@ -1,10 +1,16 @@
 import { useT } from '@/lib/t';
+import { User } from '@/types';
 import { useCan } from '@/lib/can';
 import { Form } from '@inertiajs/react';
 import LiveTimer from '@/components/live-timer';
 import { Button } from '@/components/ui/button';
 
-export default function EmployeeTable({ employees }: { employees: any[]; selectedBusinessId: number | null }) {
+interface Props {
+    employees: User[];
+    selectedBusinessId: number | null;
+}
+
+export default function EmployeeTable({ employees }: Props) {
     const canRemove = useCan('employees.remove');
     const canClockIn = useCan('employees.clockIn');
     const canClockOut = useCan('employees.clockOut');
@@ -24,7 +30,7 @@ export default function EmployeeTable({ employees }: { employees: any[]; selecte
                 </thead>
                 <tbody>
                     {employees.length ? (
-                        employees.map((employee) => (
+                        employees.map((employee: User) => (
                             <tr
                                 key={employee.id}
                                 className="border-b text-gray-800 transition hover:bg-gray-50 dark:border-white/5 dark:text-gray-200 dark:hover:bg-white/5"

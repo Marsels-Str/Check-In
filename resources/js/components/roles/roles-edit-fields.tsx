@@ -1,11 +1,18 @@
 import { useT } from '@/lib/t';
+import { Role } from '@/types';
 import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
-export default function RolesEditFields({ role, rolePermissions, permissions }: { role: any; rolePermissions: string[]; permissions: string[] }) {
+interface Props {
+    role: Role;
+    rolePermissions: string[];
+    permissions: string[];
+}
+
+export default function RolesEditFields({ role, rolePermissions, permissions }: Props) {
     const t = useT();
     
     return (

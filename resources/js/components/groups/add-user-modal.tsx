@@ -1,6 +1,6 @@
 import { useT } from '@/lib/t';
 import { Form } from '@inertiajs/react';
-import { Button } from '@headlessui/react';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import InputError from '@/components/input-error';

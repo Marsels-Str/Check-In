@@ -1,18 +1,7 @@
 import { useT } from '@/lib/t';
+import type { TranslationFilters } from '@/types';
 
-interface Props {
-    group: string;
-    setGroup: (v: string) => void;
-    viewName: string;
-    setViewName: (v: string) => void;
-    field: string;
-    setField: (v: string) => void;
-    groups: string[];
-    views: string[];
-    fields: string[];
-}
-
-export default function TranslationFilters({ group, setGroup, viewName, setViewName, field, setField, groups, views, fields }: Props) {
+export default function TranslationFilters({ group, setGroup, viewName, setViewName, field, setField, groups, views, fields }: TranslationFilters) {
     const t = useT();
     
     return (

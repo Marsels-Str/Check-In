@@ -53,6 +53,25 @@ export interface EmployeeActivityPoint {
     count?: number;
 }
 
+export interface Language {
+    id: number;
+    name: string;
+    code: string;
+    translated_count: number;
+};
+
+export interface Original {
+    id: number;
+    key: string;
+    text: string;
+}
+
+export interface Translation {
+    id: number;
+    translation: string | null;
+    original: Original;
+}
+
 export interface OverviewUser {
     id?: number;
     name?: string;
@@ -90,6 +109,27 @@ export interface MessageReminderState extends EmptyState {
     data?: MessageReminder[];
 }
 
+export interface Role {
+    id: number;
+    name: string;
+}
+
+export interface Roles {
+    globalRoles: Role[];
+    businessRoles: Role[];
+    userRole: number[];
+}
+
+export interface TranslationRow {
+    id: number;
+    key: string;
+    original: string;
+    translation: string | null;
+    group: string;
+    view: string;
+    field: string;
+};
+
 export interface SharedData {
     name: string;
     auth: {
@@ -102,6 +142,18 @@ export interface SharedData {
     ziggy: Config & { location: string };
 }
 
+export interface TranslationFilters {
+    group: string;
+    setGroup: (v: string) => void;
+    viewName: string;
+    setViewName: (v: string) => void;
+    field: string;
+    setField: (v: string) => void;
+    groups: string[];
+    views: string[];
+    fields: string[];
+}
+
 export interface UserProfile {
     user_id?: number;
     age?: number | string;
@@ -112,7 +164,7 @@ export interface UserProfile {
     country?: string;
     unique_id?: string;
     personal_code?: string;
-    portrait?: string | File | null;
+    portrait?: string | null;
 }
 
 export interface BusinessProfile {
@@ -159,7 +211,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    roles: string[];
+    roles: Roles;
     password: string;
     unique_id: string;
     created_at: string;

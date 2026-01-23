@@ -1,20 +1,17 @@
 import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
-import { type BreadcrumbItem, type User } from '@/types';
+import { BreadcrumbItem, User, Role } from '@/types';
 import RoleAssignFields from '@/components/users/user-assign-fields';
 
-export default function Assign({
-    user,
-    globalRoles = [] as { id: number; name: string }[],
-    businessRoles = [] as { id: number; name: string }[],
-    userRoles = [] as number[],
-}: {
+interface Props {
     user: User;
-    globalRoles: { id: number; name: string }[];
-    businessRoles: { id: number; name: string }[];
-    userRoles: number[];
-}) {
+    globalRoles: Role[];
+    businessRoles: Role[];
+    userRole: number[];
+}
+
+export default function Assign({ user, globalRoles, businessRoles, userRole }: Props) {
     const t = useT();
     
     const breadcrumbs: BreadcrumbItem[] = [
@@ -41,7 +38,7 @@ export default function Assign({
                     </Link>
                 </div>
 
-                <RoleAssignFields userId={user.id} globalRoles={globalRoles} businessRoles={businessRoles} selectedRoles={userRoles} />
+                <RoleAssignFields user={user} globalRoles={globalRoles} businessRoles={businessRoles} userRole={userRole} />
             </div>
         </AppLayout>
     );

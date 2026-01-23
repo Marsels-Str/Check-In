@@ -2,7 +2,7 @@ import { useT } from '@/lib/t';
 import { useState } from 'react';
 import { useCan } from '@/lib/can';
 import { Link } from '@inertiajs/react';
-import { Button } from '@headlessui/react';
+import { Button } from '@/components/ui/button';
 import AddUserModal from './add-user-modal';
 
 export default function GroupUsers({ group, users }: any) {

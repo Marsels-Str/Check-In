@@ -1,57 +1,30 @@
 import { useT } from '@/lib/t';
 import { useState } from 'react';
 import { useCan } from '@/lib/can';
+import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { BusinessProfile, User } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import type { BusinessProfile, User } from '@/types';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
-export default function EmployeeSearchAndAdd({
-    businesses,
-    selectedBusinessId,
-}: {
+interface Props {
     businesses: BusinessProfile[];
     selectedBusinessId: number | null;
-}) {
+}
+
+export default function EmployeeSearchAndAdd({ businesses, selectedBusinessId }: Props) {
     const { searchResult = null } = usePage<{ searchResult?: User | null }>().props;
     const [uniqueId, setUniqueId] = useState('');
     const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? null);
     const canAdd = useCan('employees.add');
     const canAccess = useCan('business.access');
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!uniqueId.trim()) return;
-
-        router.get(
-            route('employees.search'),
-            { unique_id: uniqueId },
-            {
-                only: ['searchResult'],
-                preserveState: true,
-                preserveScroll: true,
-            },
-        );
-    };
-
-    const handleAddEmployee = () => {
-        if (!searchResult) return;
-
-        router.post(
-            route('employees.store'),
-            {
-                user_id: searchResult.id,
-                business_id: businessId,
-            },
-            {
-                onSuccess: () => {
-                    setUniqueId('');
-                },
-            },
-        );
-
-        setUniqueId('');
+    const addEmployee = (user: User, businessId: number | null) => {
+        router.post(route('employees.store'), {
+            user_id: user.id,
+            business_id: businessId,
+        });
     };
 
     const t = useT();
@@ -85,13 +58,13 @@ export default function EmployeeSearchAndAdd({
                 </div>
 
                 {canAdd && (
-                    <form onSubmit={handleSearch} className="mb-4 flex flex-wrap items-center gap-3">
+                    <Form method="get" action={route('employees.search')} className="mb-4 flex flex-wrap items-center gap-3">
                         <Input
                             type="number"
                             name="unique_id"
                             value={uniqueId}
                             onChange={(e) => setUniqueId(e.target.value)}
-                            placeholder="Enter employee Unique ID"
+                            placeholder="00000000"
                             className="w-full max-w-xs rounded-lg border px-3 py-2 text-sm"
                         />
                         <Button
@@ -100,14 +73,14 @@ export default function EmployeeSearchAndAdd({
                         >
                             {t('employees.search.search')}
                         </Button>
-                    </form>
+                    </Form>
                 )}
 
                 {!!searchResult && (
                     <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-white/10 dark:bg-white/5">
                         <p className="font-medium text-gray-800 dark:text-gray-200">{searchResult.name}</p>
                         <Button
-                            onClick={handleAddEmployee}
+                            onClick={() => addEmployee(searchResult, businessId)}
                             className="mt-3 inline-flex items-center rounded-lg bg-green-100/20 px-4 py-2 text-sm font-medium text-green-700 ring-1 ring-green-400/30 transition-all hover:bg-green-200/30 hover:text-green-800 dark:bg-green-900/40 dark:text-green-300 dark:ring-green-500/30 dark:hover:bg-green-900/30 dark:hover:text-green-200"
                         >
                             {t('employees.search.add')}

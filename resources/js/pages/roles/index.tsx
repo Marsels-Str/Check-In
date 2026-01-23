@@ -1,12 +1,16 @@
 import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, Role } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import RoleDesktopView from '@/components/roles/role-index-desktop';
 import RoleMobileView from '@/components/roles/role-index-mobile';
 
-export default function Index({ roles }: { roles: any[] }) {
+interface Props {
+    roles: Role[];
+}
+
+export default function Index({ roles }: Props) {
     const t = useT();
     
     const canCreate = useCan('roles.create');

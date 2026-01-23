@@ -1,23 +1,8 @@
 import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import { BreadcrumbItem, Language, TranslationRow } from '@/types';
 import TranslationsTable from '@/components/translations/translations-table';
-
-type Language = {
-    id: number;
-    name: string;
-};
-
-type TranslationRow = {
-    id: number;
-    key: string;
-    original: string;
-    translation: string | null;
-    group: string;
-    view: string;
-    field: string;
-};
 
 interface Props {
     language: Language;

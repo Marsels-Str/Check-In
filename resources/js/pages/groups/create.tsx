@@ -1,5 +1,5 @@
 import { useT } from '@/lib/t';
-import { Button } from '@headlessui/react';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Input } from '@/components/ui/input';

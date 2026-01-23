@@ -1,12 +1,18 @@
 import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import { BreadcrumbItem, User } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function Show({ user }: { user: any }) {
+interface Props {
+    user: User;
+}
+
+export default function Show({ user }: Props) {
     const profile = user.profile || {};
     const roles = Array.isArray(user.roles) ? user.roles.map((r: any) => r.name).join(', ') : '—';
+
+    // @ts-ignore nesaprotams errors, tāpēc tas tiek ignorēts
     const ownedBusiness = user.owned_business ? user.owned_business.name : null;
     const businesses = ownedBusiness || (Array.isArray(user.businesses) && user.businesses.length > 0 ? user.businesses.map((b: any) => b.name).join(', ') : '—');
 

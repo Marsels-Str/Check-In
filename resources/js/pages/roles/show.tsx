@@ -1,9 +1,14 @@
 import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import { BreadcrumbItem, Role } from '@/types';
 
-export default function Show({ role, permissions }: { role: any; permissions: string[] }) {
+interface Props {
+    role: Role;
+    permissions: string[];
+}
+
+export default function Show({ role, permissions }: Props) {
     const t = useT();
     
     const breadcrumbs: BreadcrumbItem[] = [

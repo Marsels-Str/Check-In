@@ -75,7 +75,7 @@ class UserController extends Controller
                 'businessRoles' => $userBusinessId
                     ? Role::where('business_id', $userBusinessId)->orderBy('name')->get()
                     : collect(),
-                'userRoles' => $user->roles->pluck('id')->toArray(),
+                'userRole' => $user->roles->pluck('id')->toArray(),
             ]);
         }
 
@@ -101,7 +101,7 @@ class UserController extends Controller
                 ->orderBy('name')
                 ->get(),
 
-            'userRoles' => $user->roles->pluck('id')->toArray(),
+            'userRole' => $user->roles->pluck('id')->toArray(),
         ]);
     }
 

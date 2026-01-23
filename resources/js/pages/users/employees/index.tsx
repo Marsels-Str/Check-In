@@ -1,19 +1,17 @@
 import { useT } from '@/lib/t';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, User } from '@/types';
+import { BreadcrumbItem, User, BusinessProfile } from '@/types';
 import EmployeeTable from '@/components/users/employees/employees-index-table';
 import EmployeeSearchAndAdd from '@/components/users/employees/search-and-add';
 
-export default function Index({
-    employees,
-    businesses,
-    selectedBusinessId,
-}: {
+interface Props {
     employees: User[];
-    businesses: any[];
+    businesses: BusinessProfile[];
     selectedBusinessId: number | null;
-}) {
+}
+
+export default function Index({ employees, businesses, selectedBusinessId }: Props) {
     const t = useT();
     
     const breadcrumbs: BreadcrumbItem[] = [

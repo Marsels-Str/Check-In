@@ -140,12 +140,12 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complet
     });
 
     // Languages
-    Route::post('/languages/{language}/sync', [LanguageController::class, 'start'])->name('languages.sync');
+    Route::post('/languages/{language}/sync', [LanguageController::class, 'start'])->name('languages.sync')->middleware('permission:languages.access');
     Route::resource('languages', LanguageController::class)->middleware('permission:languages.access');
     Route::post('/languages/change', [LanguageController::class, 'switch'])->name('language.change');
     Route::get('languages/{language}/translations', [TranslationController::class, 'index'])->name('translations.index')->middleware('permission:languages.access');
     Route::get('languages/{language}/translations/{original}/edit', [TranslationController::class, 'edit'])->name('translations.edit')->middleware('permission:languages.access');
-    Route::put('languages/{language}/translations/{original}', [TranslationController::class, 'update'])->name('translations.update');
+    Route::put('languages/{language}/translations/{original}', [TranslationController::class, 'update'])->name('translations.update')->middleware('permission:languages.access');
 });
 
 require __DIR__.'/settings.php';

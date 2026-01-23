@@ -1,6 +1,6 @@
-import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
-import RangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
 import { useT } from '@/lib/t';
+import RangeToggle from '@/components/diagrams/tiny-ui/range-toggle';
+import { useDashboardData } from '@/components/dashboard/dashboard-data-context';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export default function WorkedHoursDiagram() {

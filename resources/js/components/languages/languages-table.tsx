@@ -1,31 +1,39 @@
 import { useT } from '@/lib/t';
-import { Link } from '@inertiajs/react';
+import { Language } from '@/types';
 import { useMemo, useState } from 'react';
 import { router } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
-type Language = {
-    id: number;
-    name: string;
-    code: string;
-    translated_count: number;
-};
-
 interface Props {
     languages: Language[];
     originals: number;
-    lastBatch?: string | null;
 }
 
-export default function LanguagesTable({ languages, originals, lastBatch }: Props) {
+export default function LanguagesTable({ languages, originals }: Props) {
     const [search, setSearch] = useState('');
 
     const filtered = useMemo(() => {
         const s = search.toLowerCase();
         return languages.filter((v) => v.name.toLowerCase().includes(s) || v.code.toLowerCase().includes(s));
     }, [languages, search]);
+
+    const syncLanguage = (language: Language) => {
+        router.post(route('languages.sync', language.id));
+    };
+
+    const translationsIndex = (language: Language) => {
+        router.get(route('translations.index', language.id))
+    }
+
+    const editLanguage = (language: Language) => {
+        router.get(route('languages.edit', language.id))
+    }
+
+    const deleteLanguage = (language: Language) => {
+        router.delete(route('languages.destroy', language.id));
+    };
 
     const t = useT();
 
@@ -59,23 +67,25 @@ export default function LanguagesTable({ languages, originals, lastBatch }: Prop
                         {filtered.map((language) => (
                             <tr key={language.id} className="transition hover:bg-muted/30">
                                 <td className="px-4 py-2 font-medium">
-                                    <Link href={`/languages/${language.id}/translations`} className="hover:underline">
+                                    <Button variant="link" className="px-0" onClick={() => translationsIndex(language)}>
                                         {language.name}
-                                    </Link>
+                                    </Button>
                                 </td>
 
                                 <td className="px-4 py-2 text-muted-foreground">{language.code}</td>
 
                                 <td className="space-x-2 px-4 py-2 text-right">
                                     {originals - language.translated_count > 0 && language.code !== 'en' && (
-                                        <Button variant="link" className="px-0" onClick={() => router.post(`/languages/${language.id}/sync`)}>
+                                        <Button variant="link" className="px-0" onClick={() => syncLanguage(language)}>
                                             {t('languages.index.sync')}
                                         </Button>
                                     )}
 
-                                    <Link href={`/languages/${language.id}/edit`}>{t('languages.index.edit')}</Link>
+                                    <Button variant="link" className="px-0" onClick={() => editLanguage(language)}>
+                                        {t('languages.index.edit')}
+                                    </Button>
 
-                                    <Button variant="link" className="px-0 text-destructive" onClick={() => router.delete(`/languages/${language.id}`)}>
+                                    <Button variant="link" className="px-0 text-destructive" onClick={() => deleteLanguage(language)}>
                                         {t('languages.index.delete')}
                                     </Button>
                                 </td>

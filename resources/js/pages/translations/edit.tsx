@@ -2,26 +2,9 @@ import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { type BreadcrumbItem } from '@/types';
 import InputError from '@/components/input-error';
 import { Form, Head, Link } from '@inertiajs/react';
-
-type Language = {
-    id: number;
-    name: string;
-};
-
-type Original = {
-    id: number;
-    key: string;
-    text: string;
-};
-
-type Translation = {
-    id: number;
-    translation: string | null;
-    original: Original;
-};
+import { BreadcrumbItem, Language, Translation } from '@/types';
 
 interface Props {
     language: Language;

@@ -1,23 +1,16 @@
 import { useT } from '@/lib/t';
+import { Language } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
 import { type BreadcrumbItem } from '@/types';
 import LanguagesTable from '@/components/languages/languages-table';
 
-type Language = {
-    id: number;
-    name: string;
-    code: string;
-    translated_count: number;
-};
-
 interface Props {
     languages: Language[];
     originals: number;
-    last_batch?: string | null;
 }
 
-export default function LanguagesIndex({ languages, originals, last_batch }: Props) {
+export default function LanguagesIndex({ languages, originals }: Props) {
     const t = useT();
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -42,7 +35,7 @@ export default function LanguagesIndex({ languages, originals, last_batch }: Pro
                 </Link>
             </div>
 
-            <LanguagesTable languages={languages} originals={originals} lastBatch={last_batch} />
+            <LanguagesTable languages={languages} originals={originals} />
         </AppLayout>
     );
 }

@@ -1,22 +1,9 @@
 import { useT } from '@/lib/t';
-import { Link } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
+import { router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Language, TranslationRow } from '@/types';
 import TranslationFilters from './translations-filters';
-
-type Language = {
-    id: number;
-    name: string;
-};
-
-type TranslationRow = {
-    id: number;
-    key: string;
-    original: string;
-    translation: string | null;
-    group: string;
-    view: string;
-    field: string;
-};
 
 interface Props {
     language: Language;
@@ -71,6 +58,10 @@ export default function TranslationsTable({ language, rows }: Props) {
         });
     }, [rows, search, group, viewName, field]);
 
+    const editTranslation = (row: TranslationRow) => {
+        router.get(route('translations.edit', [language.id, row.id]));
+    };
+
     const t = useT();
 
     return (
@@ -122,9 +113,9 @@ export default function TranslationsTable({ language, rows }: Props) {
                                 <td className="px-4 py-2">{row.original}</td>
                                 <td className="px-4 py-2">{row.translation ?? '—'}</td>
                                 <td className="px-4 py-2 text-right">
-                                    <Link href={route('translations.edit', [language.id, row.id])} className="text-primary hover:underline">
+                                    <Button variant="link" className="px-0" onClick={() => editTranslation(row)}>
                                         {t('translations.index.edit')}
-                                    </Link>
+                                    </Button>
                                 </td>
                             </tr>
                         ))}

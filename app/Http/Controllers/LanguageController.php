@@ -53,7 +53,7 @@ class LanguageController extends Controller
             'code' => strtolower($request->code),
         ]);
 
-        return redirect()->route('languages.index');
+        return redirect()->route('languages.index')->with('success', 'Language created successfully!');
     }
 
     public function edit(Languages $language)
@@ -73,14 +73,14 @@ class LanguageController extends Controller
             'code' => strtolower($request->code),
         ]);
 
-        return redirect()->route('languages.index');
+        return redirect()->route('languages.index')->with('success', 'Language updated successfully!');
     }
 
     public function destroy(Languages $language)
     {
         $language->delete();
 
-        return redirect()->route('languages.index');
+        return redirect()->route('languages.index')->with('success', 'Language deleted successfully!');
     }
 
     public function start(Languages $language)

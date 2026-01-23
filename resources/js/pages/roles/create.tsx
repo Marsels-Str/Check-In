@@ -1,10 +1,16 @@
 import { useT } from '@/lib/t';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import RoleCreateFields from '@/components/roles/roles-create-fields';
 
-export default function Create({ permissions, businesses, auth }: { permissions: string[]; businesses: any[]; auth: any }) {
+interface Props {
+    permissions: string[];
+    businesses: any[];
+    auth: any;
+}
+
+export default function Create({ permissions, businesses, auth }: Props) {
     const t = useT();
     
     const breadcrumbs: BreadcrumbItem[] = [

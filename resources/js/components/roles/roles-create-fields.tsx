@@ -6,22 +6,22 @@ import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
-interface RolesCreateFieldsProps {
+interface FieldProps {
     permissions: string[];
     businesses: any[];
     auth: any;
 }
 
-interface RoleFormData {
+interface RoleData {
     name: string;
     permissions: string[];
     business_id: number | string | null;
 }
 
-export default function RolesCreateFields({ permissions, businesses, auth }: RolesCreateFieldsProps) {
+export default function RolesCreateFields({ permissions, businesses, auth }: FieldProps) {
     const isOwner = auth.user.roles.some((r: any) => r.name === 'Owner');
 
-    const { data, setData, post, errors } = useForm<RoleFormData>({
+    const { data, setData, post, errors } = useForm<RoleData>({
         name: '',
         permissions: [] as string[],
         business_id: isOwner ? '' : (auth.user.ownedBusiness?.id ?? ''),

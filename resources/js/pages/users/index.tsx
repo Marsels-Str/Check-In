@@ -2,7 +2,7 @@ import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
-import { type BreadcrumbItem, User } from '@/types';
+import { BreadcrumbItem, User } from '@/types';
 import UserIndexCards from '@/components/users/user-index-mobile';
 import UsersDesktopView from '@/components/users/user-index-desktop';
 
