@@ -1,12 +1,12 @@
 import { useT } from '@/lib/t';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, BusinessProfile } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
 import RoleCreateFields from '@/components/roles/roles-create-fields';
 
 interface Props {
     permissions: string[];
-    businesses: any[];
+    businesses: BusinessProfile[];
     auth: any;
 }
 

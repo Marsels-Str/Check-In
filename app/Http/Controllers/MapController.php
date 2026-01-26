@@ -6,6 +6,7 @@ use App\Models\Map;
 use Inertia\Inertia;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class MapController extends Controller
 {
@@ -73,11 +74,7 @@ class MapController extends Controller
 
     public function show(Map $map)
     {
-        $user = request()->user();
-
-        if (!$user->can('maps.view') && !$user->hasRole('Owner')) {
-            return back();
-        }
+        $this->authorizeMapAccess($map, 'maps.view');
 
         return Inertia::render('maps/show', [
             'map' => $map->load('business'),
@@ -85,27 +82,9 @@ class MapController extends Controller
         ]);
     }
 
-    public function edit(Map $map)
-    {
-        $user = request()->user();
-
-        if (!$user->can('maps.update') && !$user->hasRole('Owner')) {
-            return back();
-        }
-
-        return Inertia::render('maps/edit', [
-            'map' => $map,
-            'selectedBusinessId' => $map->business_id,
-        ]);
-    }
-
     public function update(Request $request, Map $map)
     {
-        $user = $request->user();
-
-        if (!$user->can('maps.update') && !$user->hasRole('Owner')) {
-            return back();
-        }
+        $this->authorizeMapAccess($map, 'maps.update');
 
         $data = $request->validate([
             'name'    => 'nullable|string|max:100',
@@ -118,11 +97,9 @@ class MapController extends Controller
 
         if ($data['type'] === 'polygon' && !empty($data['polygon'])) {
             $polygon = is_string($data['polygon']) ? json_decode($data['polygon'], true) : $data['polygon'];
-
             if (!is_array($polygon) || count($polygon) < 3) {
                 return back()->withErrors(['polygon' => 'A polygon must have at least 3 points.'])->withInput();
             }
-
             $data['polygon'] = json_encode($polygon);
         }
 
@@ -131,13 +108,19 @@ class MapController extends Controller
         return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', 'Map updated successfully.');
     }
 
+    public function edit(Map $map)
+    {
+        $this->authorizeMapAccess($map, 'maps.update');
+
+        return Inertia::render('maps/edit', [
+            'map' => $map,
+            'selectedBusinessId' => $map->business_id,
+        ]);
+    }
+
     public function destroy(Map $map)
     {
-        $user = request()->user();
-
-        if (!$user->can('maps.delete') && !$user->hasRole('Owner')) {
-            return back();
-        }
+        $this->authorizeMapAccess($map, 'maps.delete');
 
         $map->delete();
 
@@ -151,5 +134,25 @@ class MapController extends Controller
             $user->can('maps.create') => $user->ownedBusiness?->id ?? $user->businesses()->value('businesses.id'),
             default => null,
         };
+    }
+
+    private function authorizeMapAccess(Map $map, string $permission = null)
+    {
+        $user = request()->user();
+
+        if ($user->hasRole('Owner')) {
+            return;
+        }
+
+        $authBusinessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id ?? null;
+
+        if (($permission && !$user->can($permission)) || 
+            is_null($map->business_id) || 
+            ($map->business_id && $map->business_id !== $authBusinessId)
+        ) {
+            throw new HttpResponseException(
+                redirect()->route('maps.index')->with('error', 'You do not have permission to access this page!')
+            );
+        }
     }
 }

@@ -1,6 +1,7 @@
 import { useT } from '@/lib/t';
+import { User } from '@/types';
 
-export default function BusinessName({ user }: { user: any }) {
+export default function BusinessName({ user }: { user: User }) {
     const t = useT();
     
     const businesses =

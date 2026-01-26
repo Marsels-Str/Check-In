@@ -3,12 +3,12 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, usePage } from '@inertiajs/react';
 import DeleteUser from '@/components/delete-user';
 import ProfileCard from '@/components/profile-card';
+import { BreadcrumbItem, SharedData } from '@/types';
 import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem, type SharedData } from '@/types';
 import ProfileForm from '@/components/profile-settings/profile-form';
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+export default function Profile() {
     const { auth } = usePage<SharedData>().props;
 
     const t = useT();

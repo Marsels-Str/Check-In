@@ -1,12 +1,12 @@
 import FitToBounds from '@/components/fit-to-bounds';
 import AppLayout from '@/layouts/app-layout';
 import { useT } from '@/lib/t';
-import { type BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, Map } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { Circle, MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 
-export default function Show({ map }: { map: any }) {
+export default function Show({ map }: { map: Map }) {
     const toNum = (v: any): number | null => (v == null || v === '' ? null : Number(v));
     const t = useT();
 

@@ -1,3 +1,4 @@
+import { useCan } from '@/lib/can';
 import { router } from '@inertiajs/react';
 import L from 'leaflet';
 import 'leaflet-draw';
@@ -10,6 +11,7 @@ export default function MapDrawShapes({ canEdit = false, canCreate = false, auth
     const map = useMap();
     const drawnItems = useRef(new L.FeatureGroup()).current;
     const initialized = useRef(false);
+    const canAccess = useCan('business.access');
 
     useEffect(() => {
         if (!map || initialized.current) return;
@@ -54,7 +56,7 @@ export default function MapDrawShapes({ canEdit = false, canCreate = false, auth
                 payload.polygon = layer.getLatLngs()[0].map(({ lat, lng }: any) => ({ lat, lng }));
             }
 
-            if (auth.user.roles.includes('Owner')) {
+            if (canAccess) {
                 if (!selectedBusinessId) {
                     alert('Please select a business first.');
                     return;

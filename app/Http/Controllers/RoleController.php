@@ -7,6 +7,7 @@ use App\Models\Business;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RoleController extends Controller
 {
@@ -18,16 +19,15 @@ class RoleController extends Controller
         if ($user->hasRole('Owner')) {
             $roles = Role::all();
         } else {
-            $businessId = $user->ownedBusiness?->id;
+            $businessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id;
 
-            $roles = $businessId
-                ? Role::where(function($q) use ($businessId) {
-                        $q->whereNull('business_id')
-                          ->orWhere('business_id', $businessId);
-                  })
-                  ->whereNotIn('name', ['Owner', 'Business', 'Unemployed'])
-                  ->get()
-                : collect();
+            if ($businessId) {
+                $roles = Role::where('business_id', $businessId)
+                    ->whereNotIn('name', ['Owner', 'Business', 'Unemployed'])
+                    ->get();
+            } else {
+                $roles = collect();
+            }
         }
 
         return Inertia::render('roles/index', compact('roles'));
@@ -61,6 +61,7 @@ class RoleController extends Controller
             'businesses' => $businesses,
             'auth' => [
                 'user' => $user->load('roles', 'ownedBusiness', 'businesses'),
+                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
             ],
         ]);
     }
@@ -123,19 +124,7 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $user = auth()->user();
-
-        if (!$user->hasRole('Owner')) {
-            $authBusinessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id ?? null;
-
-            if ($role->business_id && $role->business_id !== $authBusinessId) {
-                return back();
-            }
-
-            if (is_null($role->business_id) && in_array($role->name, ['Owner', 'Business'])) {
-                return back();
-            }
-        }
+        $this->authorizeRoleAccess($role, 'roles.update');
 
         return Inertia::render('roles/edit', [
             'role' => $role,
@@ -146,19 +135,7 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
-        $user = auth()->user();
-
-        if (!$user->hasRole('Owner')) {
-            $authBusinessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id ?? null;
-
-            if ($role->business_id && $role->business_id !== $authBusinessId) {
-                return back();
-            }
-
-            if (is_null($role->business_id) && in_array($role->name, ['Owner', 'Business'])) {
-                return back();
-            }
-        }
+        $this->authorizeRoleAccess($role, 'roles.update');
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -175,24 +152,32 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        $user = auth()->user();
-
-        if (!$user->hasRole('Owner')) {
-            $authBusinessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id ?? null;
-
-            if ($role->business_id && $role->business_id !== $authBusinessId) {
-                return back();
-            }
-
-            if (is_null($role->business_id) && in_array($role->name, ['Owner', 'Business'])) {
-                return back();
-            }
-        }
+        $this->authorizeRoleAccess($role, 'roles.delete');
 
         $role->delete();
 
         \Artisan::call('permission:cache-reset');
 
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
+    }
+
+    private function authorizeRoleAccess(Role $role, string $permission = null)
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole('Owner')) {
+            return;
+        }
+
+        $authBusinessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id ?? null;
+
+        if (($permission && !$user->can($permission)) ||
+            (is_null($role->business_id)) ||
+            ($role->business_id && $role->business_id !== $authBusinessId)
+        ) {
+            throw new HttpResponseException(
+                redirect()->route('roles.index')->with('error', 'You do not have permission to access this page!')
+            );
+        }
     }
 }

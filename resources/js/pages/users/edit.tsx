@@ -38,7 +38,7 @@ export default function Edit({ user }: { user: User }) {
                     <div className="mb-4">
                         <h2 className="text-center text-lg font-semibold">{t('users.edit.profile.info')}</h2>
 
-                        <UserProfileFields user_profile={{ ...user.profile, user_id: user.id }} />
+                        <UserProfileFields profile={{ ...user.profile, user_id: user.id }} />
                     </div>
                 </div>
             </div>

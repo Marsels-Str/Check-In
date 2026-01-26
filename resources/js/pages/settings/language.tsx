@@ -3,16 +3,10 @@ import { useMemo, useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { type BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, Language } from '@/types';
 import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Head, router, usePage } from '@inertiajs/react';
-
-type Language = {
-    id: number;
-    name: string;
-    code: string;
-};
 
 export default function LanguageSettings() {
     const { props } = usePage<{

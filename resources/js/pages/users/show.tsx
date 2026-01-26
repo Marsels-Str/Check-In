@@ -10,11 +10,11 @@ interface Props {
 
 export default function Show({ user }: Props) {
     const profile = user.profile || {};
-    const roles = Array.isArray(user.roles) ? user.roles.map((r: any) => r.name).join(', ') : '—';
+    const roles = Array.isArray(user.roles) ? user.roles.map((r) => r.name).join(', ') : '—';
 
     // @ts-ignore nesaprotams errors, tāpēc tas tiek ignorēts
     const ownedBusiness = user.owned_business ? user.owned_business.name : null;
-    const businesses = ownedBusiness || (Array.isArray(user.businesses) && user.businesses.length > 0 ? user.businesses.map((b: any) => b.name).join(', ') : '—');
+    const businesses = ownedBusiness || (Array.isArray(user.businesses) && user.businesses.length > 0 ? user.businesses.map((b) => b.name).join(', ') : '—');
 
     const t = useT();
 

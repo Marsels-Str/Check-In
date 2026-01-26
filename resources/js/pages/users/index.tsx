@@ -6,7 +6,12 @@ import { BreadcrumbItem, User } from '@/types';
 import UserIndexCards from '@/components/users/user-index-mobile';
 import UsersDesktopView from '@/components/users/user-index-desktop';
 
-export default function Index({ users, currentUser }: { users: User[]; currentUser: User }) {
+interface Props {
+    users: User[];
+    currentUser: User;
+}
+
+export default function Index({ users, currentUser }: Props) {
     const canCreate = useCan('users.create');
 
     const t = useT();

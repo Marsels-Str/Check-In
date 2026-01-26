@@ -1,25 +1,16 @@
 import { useT } from '@/lib/t';
 import { useRef } from 'react';
 import { router } from '@inertiajs/react';
+import { BusinessProfile } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-interface Business {
-    id: number;
-    name: string;
-    email: string;
-    phone?: string;
-    logo?: string | null;
-    country?: string;
-    city?: string;
-    address?: string;
-    owner?: {
-        name: string;
-    };
+interface Props {
+    business: BusinessProfile;
 }
 
-export default function BusinessCard({ business }: { business?: Business | null }) {
+export default function BusinessCard({ business }: Props) {
     const t = useT();
     
     if (!business) {

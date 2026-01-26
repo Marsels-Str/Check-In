@@ -4,7 +4,7 @@ import MapEditorInputs from '@/components/maps/map-editor-inputs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, EditableMap, Map } from '@/types';
+import { BreadcrumbItem, EditableMap, Map } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
@@ -20,7 +20,7 @@ export default function Edit({ map }: { map: Map }) {
     });
 
     // @ts-ignore
-    const { data, setData, put, errors, processing } = form;
+    const { data, setData, put, errors } = form;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -65,7 +65,7 @@ export default function Edit({ map }: { map: Map }) {
                             {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                         </div>
 
-                        <MapEditorInputs data={data} setData={setData} errors={errors} />
+                        <MapEditorInputs map={data} setData={setData} errors={errors} />
 
                         <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-white/10">
                             <MapDrawEditor map={map} data={data} setData={setData} />

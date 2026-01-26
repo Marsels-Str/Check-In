@@ -8,7 +8,12 @@ import UserAvatar from '@/components/users/tiny-ui/user-avatar';
 import StatusBadge from '@/components/users/tiny-ui/status-badge';
 import BusinessName from '@/components/users/tiny-ui/business-name';
 
-export default function UserIndexCards({ users, currentUser }: { users: User[]; currentUser: User }) {
+interface Props {
+    users: User[];
+    currentUser: User;
+}
+
+export default function UserIndexCards({ users, currentUser }: Props) {
     const canAssign = useCan('roles.assign');
     const canUpdate = useCan('users.update');
     const canDelete = useCan('users.delete');

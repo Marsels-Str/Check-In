@@ -5,11 +5,12 @@ import useMapCenter from '@/hooks/use-map-center';
 import AppLayout from '@/layouts/app-layout';
 import { useCan } from '@/lib/can';
 import { useT } from '@/lib/t';
-import { type BreadcrumbItem, type BusinessProfile, type Map, type PageProps } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
+import { BreadcrumbItem, BusinessProfile, Map, PageProps } from '@/types';
+import { Head, router } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import { Button } from '@/components/ui/button';
 
 interface IndexProps extends PageProps {
     maps: Map[];
@@ -26,6 +27,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
     const canUpdate = useCan('maps.update');
     const canDelete = useCan('maps.delete');
     const canShow = useCan('maps.show');
+    const canAccess = useCan('business.access');
     
     const t = useT();
 
@@ -45,6 +47,18 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
         },
     ];
 
+    const mapsEdit = (map: Map) => {
+        router.get(route('maps.edit', map.id))
+    }
+
+    const mapsShow = (map: Map) => {
+        router.get(route('maps.show', map.id))
+    }
+
+    const mapsDelete = (map: Map) => {
+        router.delete(route('maps.destroy', map.id))
+    }
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('maps.index.title')} />
@@ -56,7 +70,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                         <p className="text-sm text-gray-600 dark:text-gray-400">{t('maps.index.text')}</p>
                     </div>
 
-                    {auth.user.roles.includes('Owner') && (
+                    {canAccess && (
                         <BusinessDropdownMenu businesses={businesses} selectedBusinessId={currentBusinessId} onChange={handleBusinessChange} />
                     )}
                 </div>
@@ -97,25 +111,31 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                                         <td className="py-4 pr-6 pl-3 text-right text-sm">
                                             <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
                                                 {canShow && (
-                                                    <Link
-                                                        href={route('maps.show', map.id)}
-                                                        className="hover:text-green-600 dark:hover:text-green-300"
+                                                    <Button
+                                                        onClick={() => mapsShow(map)}
+                                                        variant="link"
+                                                        className="px-0"
                                                     >
                                                         {t('maps.index.show')}
-                                                    </Link>
+                                                    </Button>
                                                 )}
                                                 {canUpdate && (
-                                                    <Link
-                                                        href={route('maps.edit', map.id)}
-                                                        className="hover:text-green-600 dark:hover:text-green-300"
+                                                    <Button
+                                                        onClick={() => mapsEdit(map)}
+                                                        variant="link"
+                                                        className="px-0"
                                                     >
                                                         {t('maps.index.edit')}
-                                                    </Link>
+                                                    </Button>
                                                 )}
                                                 {canDelete && (
-                                                    <button className="text-red-600 hover:text-red-500 dark:text-red-500 dark:hover:text-red-400">
+                                                    <Button
+                                                        onClick={() => mapsDelete(map)}
+                                                        variant="link"
+                                                        className="px-0 text-destructive"
+                                                    >
                                                         {t('maps.index.delete')}
-                                                    </button>
+                                                    </Button>
                                                 )}
                                             </div>
                                         </td>

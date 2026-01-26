@@ -6,14 +6,18 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
-export default function UserProfileFields({ user_profile }: { user_profile: UserProfile }) {
+interface Props {
+    profile: UserProfile;
+}
+
+export default function UserProfileFields({ profile }: Props) {
     const t = useT();
 
     return (
         <div className="mx-auto w-full max-w-md">
             <Form
                 method="patch"
-                action={route('users.update-user-profile', user_profile.user_id)}
+                action={route('users.update-user-profile', profile.user_id)}
                 className="space-y-6 rounded-xl border px-6 py-6 shadow-md backdrop-blur-sm"
             >
                 {({ errors }) => (
@@ -21,25 +25,25 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="age">{t('users.profile.age')}</Label>
-                                <Input id="age" type="number" name="age" defaultValue={user_profile.age} placeholder="14-100" />
+                                <Input id="age" type="number" name="age" defaultValue={profile.age} placeholder="14-100" />
                                 <InputError message={errors.age} />
                             </div>
 
                             <div>
                                 <Label htmlFor="height">{t('users.profile.height')}</Label>
-                                <Input id="height" type="number" name="height" defaultValue={user_profile.height} placeholder="100-300" />
+                                <Input id="height" type="number" name="height" defaultValue={profile.height} placeholder="100-300" />
                                 <InputError message={errors.height} />
                             </div>
 
                             <div>
                                 <Label htmlFor="weight">{t('users.profile.weight')}</Label>
-                                <Input id="weight" type="number" name="weight" defaultValue={user_profile.weight} placeholder="40-700" />
+                                <Input id="weight" type="number" name="weight" defaultValue={profile.weight} placeholder="40-700" />
                                 <InputError message={errors.weight} />
                             </div>
 
                             <div>
                                 <Label htmlFor="phone">{t('users.profile.phone')}</Label>
-                                <Input id="phone" type="text" name="phone" defaultValue={user_profile.phone} placeholder="8-15" />
+                                <Input id="phone" type="text" name="phone" defaultValue={profile.phone} placeholder="8-15" />
                                 <InputError message={errors.phone} />
                             </div>
 
@@ -49,7 +53,7 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
                                     id="personal_code"
                                     type="text"
                                     name="personal_code"
-                                    defaultValue={user_profile.personal_code}
+                                    defaultValue={profile.personal_code}
                                     placeholder="000000-00000"
                                 />
                                 <InputError message={errors.personal_code} />
@@ -57,13 +61,13 @@ export default function UserProfileFields({ user_profile }: { user_profile: User
 
                             <div>
                                 <Label htmlFor="country">{t('users.profile.country')}</Label>
-                                <Input id="country" type="text" name="country" defaultValue={user_profile.country} placeholder="4-60" />
+                                <Input id="country" type="text" name="country" defaultValue={profile.country} placeholder="4-60" />
                                 <InputError message={errors.country} />
                             </div>
 
                             <div>
                                 <Label htmlFor="city">{t('users.profile.city')}</Label>
-                                <Input id="city" type="text" name="city" defaultValue={user_profile.city} placeholder="1-170" />
+                                <Input id="city" type="text" name="city" defaultValue={profile.city} placeholder="1-170" />
                                 <InputError message={errors.city} />
                             </div>
                         </div>

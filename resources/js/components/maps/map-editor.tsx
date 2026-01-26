@@ -1,5 +1,5 @@
 import FitToBounds from '@/components/fit-to-bounds';
-import type { EditableMap, Map } from '@/types';
+import { EditableMap, Map } from '@/types';
 import L, { LatLng } from 'leaflet';
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
@@ -7,15 +7,13 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef } from 'react';
 import { Circle, MapContainer, Marker, Polygon, Popup, TileLayer, useMap } from 'react-leaflet';
 
-export default function MapDrawEditor({
-    map,
-    data,
-    setData,
-}: {
+interface Props {
     map: Map;
     data: EditableMap;
     setData: (key: keyof EditableMap | EditableMap, value?: any) => void;
-}) {
+}
+
+export default function MapDrawEditor({ map, data, setData }: Props) {
     const drawnItemsRef = useRef<L.FeatureGroup>(new L.FeatureGroup());
     const initializedRef = useRef(false);
 

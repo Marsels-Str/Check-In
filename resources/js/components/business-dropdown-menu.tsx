@@ -7,20 +7,20 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { type BusinessProfile } from '@/types';
+import { BusinessProfile } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-interface BusinessDropdownMenuProps {
+interface Props {
     businesses: BusinessProfile[];
-    selectedBusinessId: number | string | null;
-    onChange: (id: number | string | null) => void;
+    selectedBusinessId: number | null;
+    onChange: (id: number | null) => void;
     label?: string;
     align?: 'start' | 'center' | 'end';
 }
 
-export default function BusinessDropdownMenu({ businesses, selectedBusinessId, onChange, label, align = 'end' }: BusinessDropdownMenuProps) {
-    const [currentId, setCurrentId] = useState<number | string | null>(selectedBusinessId);
+export default function BusinessDropdownMenu({ businesses, selectedBusinessId, onChange, label, align = 'end' }: Props) {
+    const [currentId, setCurrentId] = useState<number | null>(selectedBusinessId);
     
     const t = useT();
 
@@ -72,7 +72,7 @@ export default function BusinessDropdownMenu({ businesses, selectedBusinessId, o
                                 onChange(b.id);
                             }}
                             className={`cursor-pointer ${
-                                String(b.id) === String(currentId) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : ''
+                                (b.id) === (currentId) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : ''
                             }`}
                         >
                             {b.name}

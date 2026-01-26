@@ -1,11 +1,16 @@
 import { useT } from '@/lib/t';
+import { User } from '@/types';
+import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
-export default function ProfileForm({ user }: { user: any; }) {
+interface Props {
+    user: User;
+}
+
+export default function ProfileForm({ user }: Props) {
     const t = useT();
     
     return (

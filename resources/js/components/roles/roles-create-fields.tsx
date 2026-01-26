@@ -1,4 +1,6 @@
 import { useT } from '@/lib/t';
+import { useCan } from '@/lib/can';
+import { BusinessProfile } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,25 +8,25 @@ import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
-interface FieldProps {
+interface Props {
     permissions: string[];
-    businesses: any[];
+    businesses: BusinessProfile[];
     auth: any;
 }
 
 interface RoleData {
     name: string;
     permissions: string[];
-    business_id: number | string | null;
+    business_id: number | null;
 }
 
-export default function RolesCreateFields({ permissions, businesses, auth }: FieldProps) {
-    const isOwner = auth.user.roles.some((r: any) => r.name === 'Owner');
+export default function RolesCreateFields({ permissions, businesses, auth }: Props) {
+    const canAccess = useCan('business.access');
 
     const { data, setData, post, errors } = useForm<RoleData>({
         name: '',
-        permissions: [] as string[],
-        business_id: isOwner ? '' : (auth.user.ownedBusiness?.id ?? ''),
+        permissions: [],
+        business_id: canAccess ? (auth.user.ownedBusiness?.id ?? null) : null,
     });
 
     function handleCheckboxChange(permissionName: string, isChecked: boolean) {
@@ -56,7 +58,7 @@ export default function RolesCreateFields({ permissions, businesses, auth }: Fie
                 <InputError message={errors.name} />
             </div>
 
-            {isOwner && (
+            {canAccess && (
                 <div className="flex justify-center pt-1">
                     <BusinessDropdownMenu
                         businesses={businesses}

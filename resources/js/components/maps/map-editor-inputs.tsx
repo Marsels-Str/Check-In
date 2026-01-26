@@ -1,41 +1,39 @@
 import { useT } from '@/lib/t';
-import type { EditableMap } from '@/types';
+import { EditableMap } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function MapEditorInputs({
-    data,
-    setData,
-    errors = {},
-}: {
-    data: EditableMap;
+interface Props {
+    map: EditableMap;
     setData: (key: keyof EditableMap, value: any) => void;
     errors?: Partial<Record<keyof EditableMap, string>>;
-}) {
+}
+
+export default function MapEditorInputs({ map, setData, errors = {} }: Props) {
     const t = useT();
 
     return (
         <div className="space-y-4">
-            {data.type === 'marker' && (
+            {map.type === 'marker' && (
                 <>
-                    <MapInput label={t('maps.edit.lat')} value={data.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
-                    <MapInput label={t('maps.edit.lng')} value={data.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
+                    <MapInput label={t('maps.edit.lat')} value={map.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
+                    <MapInput label={t('maps.edit.lng')} value={map.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
                 </>
             )}
 
-            {data.type === 'circle' && (
+            {map.type === 'circle' && (
                 <>
-                    <MapInput label={t('maps.edit.lat')} value={data.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
-                    <MapInput label={t('maps.edit.lng')} value={data.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
-                    <MapInput label={t('maps.edit.radius')} value={data.radius} onChange={(v) => setData('radius', v)} error={errors?.radius} />
+                    <MapInput label={t('maps.edit.lat')} value={map.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
+                    <MapInput label={t('maps.edit.lng')} value={map.lng} onChange={(v) => setData('lng', v)} error={errors?.lng} />
+                    <MapInput label={t('maps.edit.radius')} value={map.radius} onChange={(v) => setData('radius', v)} error={errors?.radius} />
                 </>
             )}
 
-            {data.type === 'polygon' && (
+            {map.type === 'polygon' && (
                 <div>
                     <Label>{t('maps.edit.polygon')}</Label>
                     <textarea
-                        value={data.polygon}
+                        value={map.polygon}
                         onChange={(e) => setData('polygon', e.target.value)}
                         className="mt-1 w-full rounded-md border p-2"
                         rows={3}

@@ -88,14 +88,14 @@ export default function GroupMap({ group, availableMaps }: any) {
 
                                                 {canDetachMap && map?.id === m.id && (
                                                     <Button
-                                                        type="button"
                                                         onClick={() =>
                                                             router.delete(route('groups.detach-map', group.id), {
                                                                 data: { map_id: m.id },
                                                                 preserveScroll: true,
                                                             })
                                                         }
-                                                        className="text-sm text-red-500 hover:underline"
+                                                        variant="link"
+                                                        className="px-0 text-destructive"
                                                     >
                                                         {t('groups.show.maps.detach')}
                                                     </Button>

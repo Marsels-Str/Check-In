@@ -1,12 +1,17 @@
 import { useT } from '@/lib/t';
 import { useRef } from 'react';
 import { Form } from '@inertiajs/react';
+import { ClockingSettings } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
-export default function AutoClockForm({ settings }: { settings: any }) {
+interface Props {
+    settings: ClockingSettings;
+}
+
+export default function AutoClockForm({ settings }: Props) {
     const lunchStartRef = useRef<HTMLInputElement>(null);
     const lunchEndRef = useRef<HTMLInputElement>(null);
 

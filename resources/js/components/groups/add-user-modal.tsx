@@ -1,8 +1,8 @@
 import { useT } from '@/lib/t';
 import { Form } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
 export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
@@ -45,15 +45,15 @@ export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
 
                             <div className="flex justify-end gap-3 pt-2">
                                 <Button
-                                    type="button"
                                     onClick={onClose}
-                                    className="rounded-lg bg-gray-300/40 px-3.5 py-1.5 text-sm font-medium dark:bg-gray-700/40">
+                                    variant="link"
+                                    className="px-0">
                                     {t('groups.show.users.add.cancel')}
                                 </Button>
 
                                 <Button
-                                    type="submit"
-                                    className="rounded-lg bg-pink-200/30 px-3.5 py-1.5 text-sm font-medium text-pink-700 dark:bg-pink-900/40 dark:text-pink-300">
+                                    variant="link"
+                                    className="px-0">
                                     {t('groups.show.users.add.add')}
                                 </Button>
                             </div>

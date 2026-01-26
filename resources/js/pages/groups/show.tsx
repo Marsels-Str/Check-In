@@ -1,11 +1,11 @@
 import { useT } from '@/lib/t';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import GroupMap from '../../components/groups/group-map';
-import GroupChat from '../../components/groups/group-chat';
-import GroupUsers from '../../components/groups/group-users';
-import GroupImages from '../../components/groups/group-images';
+import GroupMap from '@/components/groups/group-map';
+import GroupChat from '@/components/groups/group-chat';
+import GroupUsers from '@/components/groups/group-users';
+import GroupImages from '@/components/groups/group-images';
 
 export default function Show({ group, users, errors, availableMaps }: any) {
     const t = useT();

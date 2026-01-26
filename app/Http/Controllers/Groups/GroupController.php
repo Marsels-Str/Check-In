@@ -55,6 +55,7 @@ class GroupController extends Controller
             'businesses' => $businesses,
             'auth' => [
                 'user' => $user->load('roles', 'ownedBusiness', 'businesses'),
+                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
             ],
         ]);
     }

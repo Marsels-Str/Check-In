@@ -1,24 +1,22 @@
 import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import BusinessCard from '@/components/business-card';
 import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
+import { BreadcrumbItem, BusinessProfile } from '@/types';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 import BusinessForm from '@/components/profile-settings/business-form';
 import CreateBusinessForm from '@/components/profile-settings/create-business-form';
 
-export default function Business({
-    business,
-    businesses = [],
-    selectedBusinessId,
-}: {
-    business?: any;
-    businesses?: any[];
-    selectedBusinessId?: number | string | null;
-}) {
-    function handleBusinessChange(id: number | string | null) {
+interface Props {
+    business: BusinessProfile;
+    businesses: BusinessProfile[];
+    selectedBusinessId: number | null;
+}
+
+export default function Business({ business, businesses, selectedBusinessId }: Props) {
+    function handleBusinessChange(id: number | null) {
         router.visit(route('business.edit'), {
             method: 'get',
             data: { business_id: id },
@@ -60,7 +58,7 @@ export default function Business({
                                 {businesses.length > 1 && (
                                     <BusinessDropdownMenu
                                         businesses={businesses}
-                                        selectedBusinessId={selectedBusinessId ?? null}
+                                        selectedBusinessId={selectedBusinessId}
                                         onChange={handleBusinessChange}
                                     />
                                 )}

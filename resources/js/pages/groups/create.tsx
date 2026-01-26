@@ -1,25 +1,26 @@
 import { useT } from '@/lib/t';
-import { Button } from '@/components/ui/button';
+import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { BusinessProfile, BreadcrumbItem } from '@/types';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
 type FormData = {
     name: string;
     description: string;
-    business_id: string | number | null;
+    business_id: number | null;
 };
 
-export default function Create({ businesses, auth }: { businesses: any[]; auth: any }) {
-    const isOwner = auth.user.roles.some((r: any) => r.name === 'Owner');
+export default function Create({ businesses, auth }: { businesses: BusinessProfile[]; auth: any }) {
+    const canAccess = useCan('business.access');
 
     const { data, setData, post, errors } = useForm<FormData>({
         name: '',
         description: '',
-        business_id: isOwner ? '' : (auth.user.ownedBusiness?.id ?? auth.user.business_id ?? null),
+        business_id: canAccess ? null : (auth.user.ownedBusiness?.id ?? auth.user.business_id ?? null),
     });
 
     function submit(e: React.SyntheticEvent) {
@@ -83,7 +84,7 @@ export default function Create({ businesses, auth }: { businesses: any[]; auth: 
                         {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
                     </div>
 
-                    {isOwner && (
+                    {canAccess && (
                         <div className="flex justify-center">
                             <BusinessDropdownMenu
                                 businesses={businesses}

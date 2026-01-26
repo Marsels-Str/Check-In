@@ -57,7 +57,7 @@ export interface Language {
     id: number;
     name: string;
     code: string;
-    translated_count: number;
+    translated_count?: number;
 };
 
 export interface Original {
@@ -118,6 +118,13 @@ export interface Roles {
     globalRoles: Role[];
     businessRoles: Role[];
     userRole: number[];
+}
+
+export interface ClockingSettings {
+    work_start: number;
+    work_end: number;
+    lunch_start: number;
+    lunch_end: number;
 }
 
 export interface TranslationRow {
@@ -211,7 +218,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    roles: Roles;
+    roles: Role[];
     password: string;
     unique_id: string;
     created_at: string;

@@ -1,7 +1,7 @@
 import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 
 export default function Index({ groups }: { groups: any[] }) {
