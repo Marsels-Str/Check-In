@@ -56,6 +56,12 @@ export default function GroupMap({ group, availableMaps }: any) {
     const boundsPoints = [...(markerPos ? [markerPos] : []), ...(circleCenter ? [circleCenter] : []), ...polygonCoords];
     const initialCenter: [number, number] = boundsPoints[0] || [56.9496, 24.1052];
 
+    const mapsDetach = (mapId: number) => {
+        router.delete(route('groups.detach-map', group.id), {
+            data: { map_id: mapId },
+        });
+    };
+
     return (
         <div className="mt-8">
             <div className="mx-auto max-w-5xl p-4">
@@ -88,12 +94,8 @@ export default function GroupMap({ group, availableMaps }: any) {
 
                                                 {canDetachMap && map?.id === m.id && (
                                                     <Button
-                                                        onClick={() =>
-                                                            router.delete(route('groups.detach-map', group.id), {
-                                                                data: { map_id: m.id },
-                                                                preserveScroll: true,
-                                                            })
-                                                        }
+                                                        onClick={() => mapsDetach(m.id)}
+                                                        type="button"
                                                         variant="link"
                                                         className="px-0 text-destructive"
                                                     >

@@ -13,15 +13,13 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $owner = Role::firstOrCreate(['name' => 'Owner']);
-        $business = Role::firstOrCreate(['name' => 'Business']);
-        $worker   = Role::firstOrCreate(['name' => 'Unemployed']);
+        $owner = Role::firstOrCreate(['name' => 'Owner', 'guard_name' => 'web']);
+        $business = Role::firstOrCreate(['name' => 'Business', 'guard_name' => 'web']);
+        $worker = Role::firstOrCreate(['name' => 'Unemployed', 'guard_name' => 'web']);
 
-        $allPermissions = Permission::all();
+        $owner->givePermissionTo(Permission::where('guard_name', 'web')->get());
 
-        $owner->givePermissionTo(Permission::all());
-
-        $business->givePermissionTo([
+        $businessPermissions = [
             // Darba grupu privilēģijas
             'groups.create',
             'groups.view',
@@ -66,12 +64,18 @@ class RoleSeeder extends Seeder
 
             // Uzņēmuma privilēģijas
             'business.create',
-        ]);
-        
-        $worker->givePermissionTo([
+        ];
+
+        $businessPermissions = Permission::whereIn('name', $businessPermissions)->where('guard_name', 'web')->get();
+        $business->givePermissionTo($businessPermissions);
+
+        $workerPermissions = [
             'groups.view',
             'groups.show',
             'business.create',
-        ]);
+        ];
+
+        $workerPermissions = Permission::whereIn('name', $workerPermissions)->where('guard_name', 'web')->get();
+        $worker->givePermissionTo($workerPermissions);
     }
 }

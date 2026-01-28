@@ -57,7 +57,7 @@ export interface Language {
     id: number;
     name: string;
     code: string;
-    translated_count?: number;
+    translated_count: number;
 };
 
 export interface Original {

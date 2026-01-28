@@ -169,7 +169,7 @@ class ProfileController extends Controller
         ]);
         $profile->save();
 
-        return redirect()->back()->with('success', 'Profile updated successfully.');
+        return redirect()->back()->with('success', t('settings.profile.success.update'));
     }
 
     public function updatePortrait(Request $request): RedirectResponse
@@ -185,7 +185,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return redirect()->route('profile.update')->with('success', 'Portrait updated successfully.');
+        return redirect()->route('profile.update')->with('success', t('settings.profile.success.portrait'));
     }
 
     public function removePortrait(Request $request): RedirectResponse
@@ -194,7 +194,7 @@ class ProfileController extends Controller
             $request->user()->profile->update(['portrait' => null]);
         }
 
-        return redirect()->route('profile.update')->with('success', 'Portrait removed successfully.');
+        return redirect()->route('profile.update')->with('success', t('settings.profile.success.portrait.remove'));
     }
 
     public function destroy(Request $request): RedirectResponse

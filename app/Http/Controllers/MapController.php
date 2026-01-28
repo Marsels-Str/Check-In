@@ -69,7 +69,7 @@ class MapController extends Controller
 
         Map::create($data);
 
-        return redirect()->route('maps.index', ['business_id' => $data['business_id']])->with('success', 'Map created successfully.');
+        return redirect()->route('maps.index', ['business_id' => $data['business_id']])->with('success', t('maps.success.create'));
     }
 
     public function show(Map $map)
@@ -95,17 +95,15 @@ class MapController extends Controller
             'type'    => 'required|string|in:marker,circle,polygon',
         ]);
 
-        if ($data['type'] === 'polygon' && !empty($data['polygon'])) {
-            $polygon = is_string($data['polygon']) ? json_decode($data['polygon'], true) : $data['polygon'];
-            if (!is_array($polygon) || count($polygon) < 3) {
-                return back()->withErrors(['polygon' => 'A polygon must have at least 3 points.'])->withInput();
-            }
-            $data['polygon'] = json_encode($polygon);
+        $polygon = is_string($data['polygon']) ? json_decode($data['polygon'], true) : $data['polygon'];
+        if (is_array($polygon) && count($polygon) < 3) {
+            return redirect()->route('maps.edit', $map->business_id)->with('error', t('maps.error.polygon'));
         }
+        $data['polygon'] = json_encode($polygon);
 
         $map->update($data);
 
-        return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', 'Map updated successfully.');
+        return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', t('maps.success.update'));
     }
 
     public function edit(Map $map)
@@ -124,7 +122,7 @@ class MapController extends Controller
 
         $map->delete();
 
-        return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', 'Map deleted successfully.');
+        return redirect()->route('maps.index', ['business_id' => $map->business_id])->with('success', t('maps.success.delete'));
     }
 
     private function resolveBusinessId($user, $inputId = null): ?int
@@ -151,7 +149,7 @@ class MapController extends Controller
             ($map->business_id && $map->business_id !== $authBusinessId)
         ) {
             throw new HttpResponseException(
-                redirect()->route('maps.index')->with('error', 'You do not have permission to access this page!')
+                redirect()->route('maps.index')->with('error', t('maps.error.auth'))
             );
         }
     }

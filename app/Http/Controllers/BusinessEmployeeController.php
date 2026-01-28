@@ -66,6 +66,10 @@ class BusinessEmployeeController extends Controller
             ->with('profile')
             ->first();
 
+        if (!$searchResult) {
+            return redirect()->route('employees.index')->with('error', t('employees.error.nothing'));
+        }
+
         return back()->with('searchResult', $searchResult);
     }
 
@@ -74,11 +78,11 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (!$this->canManage($authUser, $user)) {
-            return back()->with('error', 'You do not have permission to clock in this user!');
+            return back()->with('error', t('employees.error.auth.in'));
         }
 
         if (TimeLog::where('user_id', $user->id)->whereNull('clock_out')->exists()) {
-            return back()->with('error', 'You are already clocked in!');
+            return back()->with('error', t('employees.error.in'));
         }
 
         $business = $user->businesses()->first();
@@ -89,7 +93,7 @@ class BusinessEmployeeController extends Controller
             'clock_in' => now(),
         ]);
 
-        return back()->with('success', 'You clocked in successfully!');
+        return back()->with('success', t('employees.success.in'));
     }
 
     public function clockOut(Request $request, User $user)
@@ -97,20 +101,20 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (!$this->canManage($authUser, $user)) {
-            return back()->with('error', 'You do not have permission to clock out this user!');
+            return back()->with('error', t('employees.error.auth.out'));
         }
 
         $existing = TimeLog::where('user_id', $user->id)->whereNull('clock_out')->first();
 
         if (!$existing) {
-            return back()->with('error', 'You are not clocked in!');
+            return back()->with('error', t('employees.error.out'));
         }
 
         $existing->update([
             'clock_out' => now(),
         ]);
 
-        return back()->with('success', 'You clocked out successfully!');
+        return back()->with('success', t('employees.success.out'));
     }
 
     private function canManage(User $authUser, User $targetUser): bool
@@ -129,12 +133,16 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (! $authUser->hasRole('Owner') && ! $authUser->hasRole('Business')) {
-            return back()->with('error', 'You do not have permission to add employees!');
+            return back()->with('error', t('employees.error.auth.add'));
         }
 
         $rules = ['user_id' => 'required|exists:users,id'];
         if ($authUser->hasRole('Owner')) {
             $rules['business_id'] = 'required|exists:businesses,id';
+        }
+
+        if ($request->user()->hasRole('Owner') && ! $request->filled('business_id')) {
+            return redirect()->route('employees.index')->with('error', t('employees.error.missing'));
         }
 
         $validated = $request->validate($rules);
@@ -146,16 +154,16 @@ class BusinessEmployeeController extends Controller
         $user = User::with('profile', 'businesses')->findOrFail($validated['user_id']);
 
         if ($user->hasRole('Owner') || $user->hasRole('Business')) {
-            return back()->with('error', 'This user cannot be added as an employee!');
+            return back()->with('error', t('employees.error.add'));
         }
 
         $existingBusiness = $user->businesses()->first();
         if ($existingBusiness && $existingBusiness->id !== $business->id) {
-            return back()->with('error', 'This user already belongs to a different business!');
+            return back()->with('error', t('employees.error.different'));
         }
 
         if ($business->employees()->where('users.id', $user->id)->exists()) {
-            return back()->with('error', 'This user is already an employee of this business!');
+            return back()->with('error', t('employees.error.belongs'));
         }
 
         $business->employees()->attach($user->id);
@@ -163,7 +171,7 @@ class BusinessEmployeeController extends Controller
 
         $user->load('profile', 'timeLogs');
 
-        return back()->with('success', 'Employee added successfully!');
+        return back()->with('success', t('employees.success.add'));
     }
 
     public function remove(Request $request, User $user)
@@ -171,7 +179,7 @@ class BusinessEmployeeController extends Controller
         $authUser = $request->user();
 
         if (! $authUser->hasRole('Owner') && ! $authUser->hasRole('Business')) {
-            return back()->with('error', 'You do not have permission to remove employees!');
+            return back()->with('error', t('employees.error.auth.remove'));
         }
 
         $businesses = $authUser->hasRole('Owner')
@@ -198,6 +206,6 @@ class BusinessEmployeeController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Employee removed successfully!');
+        return back()->with('success', t('employees.success.remove'));
     }
 }

@@ -57,7 +57,7 @@ class AutoClockController extends Controller
         );
 
         //Atgriež veiksmīgu paziņojumu priekš (front-end)
-        return redirect()->route('auto-clock.update')->with('success', 'Settings updated successfully.');
+        return redirect()->route('auto-clock.update')->with('success', t('settings.clocking.success.update'));
     }
 
     public function extendWork(Request $request)
@@ -74,7 +74,7 @@ class AutoClockController extends Controller
         AutoClockSetting::firstOrCreate(['user_id' => $user->id])->update($validated);
 
         //Atrgriežas
-        return redirect()->route('auto-clock.update')->with('success', 'Settings updated successfully.');
+        return redirect()->route('auto-clock.update')->with('success', t('settings.clocking.success.extend'));
     }
 
     public function loginClockIn(string $token)
@@ -156,6 +156,6 @@ class AutoClockController extends Controller
             'clock_in'    => now(),
         ]);
 
-        return redirect()->route('employees.index');
+        return redirect()->route('employees.index')->with('success', t('settings.clocking.success.in'));
     }
 }

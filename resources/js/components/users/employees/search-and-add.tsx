@@ -5,6 +5,7 @@ import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { BusinessProfile, User } from '@/types';
+import InputError from '@/components/input-error';
 import { router, usePage } from '@inertiajs/react';
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 
@@ -15,7 +16,6 @@ interface Props {
 
 export default function EmployeeSearchAndAdd({ businesses, selectedBusinessId }: Props) {
     const { searchResult = null } = usePage<{ searchResult?: User | null }>().props;
-    const [uniqueId, setUniqueId] = useState('');
     const [businessId, setBusinessId] = useState<number | null>(selectedBusinessId ?? null);
     const canAdd = useCan('employees.add');
     const canAccess = useCan('business.access');
@@ -58,21 +58,29 @@ export default function EmployeeSearchAndAdd({ businesses, selectedBusinessId }:
                 </div>
 
                 {canAdd && (
-                    <Form method="get" action={route('employees.search')} className="mb-4 flex flex-wrap items-center gap-3">
-                        <Input
-                            type="number"
-                            name="unique_id"
-                            value={uniqueId}
-                            onChange={(e) => setUniqueId(e.target.value)}
-                            placeholder="00000000"
-                            className="w-full max-w-xs rounded-lg border px-3 py-2 text-sm"
-                        />
-                        <Button
-                            type="submit"
-                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                        >
-                            {t('employees.search.search')}
-                        </Button>
+                    <Form method="post" action={route('employees.search')} className="flex">
+                        {({ errors }) => (
+                            <>
+                                <div>
+                                    <Input
+                                        id="unique_id"
+                                        type="number"
+                                        name="unique_id"
+                                        placeholder="00000000"
+                                    />
+                                    <InputError message={errors.unique_id} />
+                                </div>
+
+                                <div className="ml-4">
+                                    <Button
+                                        type="submit"
+                                        className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
+                                    >
+                                        {t('employees.search.search')}
+                                    </Button>
+                                </div>
+                            </>
+                        )}
                     </Form>
                 )}
 

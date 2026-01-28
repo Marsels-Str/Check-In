@@ -80,7 +80,7 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complet
     //Employees
     Route::get('/employees', [BusinessEmployeeController::class, 'index'])->name('employees.index')->middleware('permission:employees.view');
     Route::post('/employees', [BusinessEmployeeController::class, 'store'])->name('employees.store')->middleware('permission:employees.add');
-    Route::get('/employees/search', [BusinessEmployeeController::class, 'search'])->name('employees.search')->middleware('permission:employees.view');
+    Route::post('/employees/search', [BusinessEmployeeController::class, 'search'])->name('employees.search')->middleware('permission:employees.view');
     Route::delete('/employees/{user}', [BusinessEmployeeController::class, 'remove'])->name('employees.remove')->middleware('permission:employees.remove');
     Route::post('/employees/{user}/clock-in', [BusinessEmployeeController::class, 'clockIn'])->name('employees.clockin')->middleware('permission:employees.clockIn');
     Route::post('/employees/{user}/clock-out', [BusinessEmployeeController::class, 'clockOut'])->name('employees.clockout')->middleware('permission:employees.clockOut');

@@ -85,7 +85,7 @@ class GroupController extends Controller
             'business_id' => $businessId,
         ]);
 
-        return redirect()->route('groups.index')->with('success', 'Group created successfully.');
+        return redirect()->route('groups.index')->with('success', t('groups.success.create'));
     }
 
     public function show(Request $request, string $id)
@@ -153,7 +153,7 @@ class GroupController extends Controller
 
         $group->update($validated);
 
-        return redirect()->route('groups.index')->with('success', 'Group updated successfully.');
+        return redirect()->route('groups.index')->with('success', t('groups.success.update'));
     }
 
     public function destroy(Request $request, string $id)
@@ -167,7 +167,7 @@ class GroupController extends Controller
 
         $group->delete();
 
-        return redirect()->route('groups.index')->with('success', 'Group deleted successfully.');
+        return redirect()->route('groups.index')->with('success', t('groups.success.delete'));
     }
 
     public function attachMap(Request $request, Group $group)
@@ -189,7 +189,7 @@ class GroupController extends Controller
             $map->update(['group_id' => $group->id]);
         }
 
-        return redirect()->route('groups.show', $group->id);
+        return redirect()->route('groups.show', $group->id)->with('success', t('groups.success.attach'));
     }
 
     public function detachMap(Request $request, Group $group)
@@ -208,7 +208,7 @@ class GroupController extends Controller
 
         $map->update(['group_id' => null]);
 
-        return redirect()->route('groups.show', $group)->with('success', 'Map detached succesfully!');
+        return redirect()->route('groups.show', $group)->with('success', t('groups.success.detach'));
     }
 
     public function updateUsers(Request $request, Group $group)
@@ -232,7 +232,7 @@ class GroupController extends Controller
 
         $group->users()->syncWithoutDetaching($allowedUserIds);
 
-        return redirect()->route('groups.show', $group->id);
+        return redirect()->route('groups.show', $group->id)->with('success', t('groups.success.users.add'));
     }
 
     public function removeUser(Request $request, Group $group, User $user)
@@ -246,7 +246,7 @@ class GroupController extends Controller
             $group->users()->detach($user->id);
         }
 
-        return redirect()->back();
+        return redirect()->route('groups.show', $group->id)->with('success', t('groups.success.users.remove'));
     }
 
     private function resolveBusinessId($user, $inputId = null)

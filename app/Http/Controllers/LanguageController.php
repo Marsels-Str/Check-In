@@ -53,7 +53,7 @@ class LanguageController extends Controller
             'code' => strtolower($request->code),
         ]);
 
-        return redirect()->route('languages.index')->with('success', 'Language created successfully!');
+        return redirect()->route('languages.index')->with('success', t('languages.success.create'));
     }
 
     public function edit(Languages $language)
@@ -73,14 +73,14 @@ class LanguageController extends Controller
             'code' => strtolower($request->code),
         ]);
 
-        return redirect()->route('languages.index')->with('success', 'Language updated successfully!');
+        return redirect()->route('languages.index')->with('success', t('languages.success.update'));
     }
 
     public function destroy(Languages $language)
     {
         $language->delete();
 
-        return redirect()->route('languages.index')->with('success', 'Language deleted successfully!');
+        return redirect()->route('languages.index')->with('success', t('languages.success.delete'));
     }
 
     public function start(Languages $language)
@@ -93,7 +93,7 @@ class LanguageController extends Controller
             $existing = Bus::findBatch($language->translation_batch_id);
 
             if ($existing && ! $existing->finished()) {
-                return back()->with('error', 'Translation in progress, please wait!');
+                return back()->with('error', t('languages.error.progress'));
             }
 
             $language->update(['translation_batch_id' => null]);
@@ -134,7 +134,7 @@ class LanguageController extends Controller
             'translation_batch_id' => $batch->id,
         ]);
 
-        return redirect()->route('languages.index')->with('success', 'Synchronization started, please wait!');
+        return redirect()->route('languages.index')->with('success', t('languages.success.sync'));
     }
 
     public function switch(Request $request)

@@ -1,8 +1,8 @@
 import { useT } from '@/lib/t';
 import { Language } from '@/types';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
-import { type BreadcrumbItem } from '@/types';
 import LanguagesTable from '@/components/languages/languages-table';
 
 interface Props {

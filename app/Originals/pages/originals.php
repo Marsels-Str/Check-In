@@ -62,6 +62,10 @@ return [
     'dropdown.select.business.title' => 'Businesses',
 
     // Viss, kas saistīts ar iestatījumiem
+    'settings.profile.success.update' => 'Profile updated successfully!',
+    'settings.profile.success.portrait' => 'Portrait updated successfully!',
+    'settings.profile.success.portrait.remove' => 'Portrait removed successfully!',
+
     'settings.profile.remove' => 'Remove',
     'settings.profile.remove.confirm' => 'Remove portrait?',
     'settings.profile.id' => 'ID',
@@ -90,6 +94,10 @@ return [
     'settings.profile.delete.dialog.cancel' => 'Cancel',
     'settings.profile.delete.dialog.delete.confirm' => 'Delete account',
 
+    'settings.business.success.update' => 'Business updated successfully!',
+    'settings.business.success.logo' => 'Logo updated successfully!',
+    'settings.business.success.logo.remove' => 'Logo removed successfully!',
+
     'settings.business.title' => 'Business settings',
     'settings.business.small.title' => 'Business information',
     'settings.business.small.description' => 'Update your business details, contact info, and logo',
@@ -114,6 +122,8 @@ return [
     'settings.business.locked.text.2' => 'Ask the owner of the business to remove you, if you wish to be a business owner',
     'settings.business.locked.back' => 'Back',
 
+    'settings.password.success.update' => 'Password updated successfully!',
+
     'settings.password.title' => 'Password settings',
     'settings.password.small.title' => 'Update password',
     'settings.password.small.description' => 'Ensure your account is using a long, random password to stay secure',
@@ -121,6 +131,10 @@ return [
     'settings.password.new' => 'New password',
     'settings.password.confirm' => 'Confirm new password',
     'settings.password.save' => 'Save',
+
+    'settings.clocking.success.update' => 'Settings updated successfully!',
+    'settings.clocking.success.extend' => 'Settings updated successfully!',
+    'settings.clocking.success.in' => 'You got clocked in successfully!',
 
     'settings.clocking.title' => 'Auto clock settings',
     'settings.clocking.small.title' => 'Auto clock settings',
@@ -184,6 +198,24 @@ return [
     'dashboard.diagrams.hours.name' => 'Hours',
 
     // Darbinieku pievienošanas skats
+    'employees.error.auth.in' => 'You do not have permission to clock in this user!',
+    'employees.error.auth.out' => 'You do not have permission to clock out this user!',
+    'employees.error.auth.add' => 'You do not have permission to add employees!',
+    'employees.error.auth.remove' => 'You do not have permission to remove employees!',
+
+    'employees.error.nothing' => 'Nothing found!',
+    'employees.error.missing' => 'Select a business to add to!',
+    'employees.error.in' => 'You are already clocked in!',
+    'employees.error.out' => 'You are not clocked in!',
+    'employees.error.add' => 'This user cannot be added as an employee!',
+    'employees.error.different' => 'This user already belongs to a different business!',
+    'employees.error.belongs' => 'This user is already an employee of this business!',
+
+    'employees.success.in' => 'You clocked in successfully!',
+    'employees.success.out' => 'You clocked out successfully!',
+    'employees.success.add' => 'Employee added successfully!',
+    'employees.success.remove' => 'Employee removed successfully!',
+
     'employees.index.title' => 'Employees',
     'employees.index.label' => 'Employees',
     'employees.index.id' => 'ID',
@@ -202,6 +234,17 @@ return [
     'employees.search.add' => 'Add',
 
     // Grupu skats un viss, kas saistīts ar to
+    'groups.success.create' => 'Group created successfully!',
+    'groups.success.update' => 'Group updated successfully!',
+    'groups.success.delete' => 'Group deleted successfully!',
+    'groups.success.attach' => 'Map attached successfully!',
+    'groups.success.detach' => 'Map detached successfully!',
+    'groups.success.upload' => 'Image uploaded successfully!',
+    'groups.success.remove' => 'Image removed successfully!',
+
+    'groups.success.users.add' => 'Users added to group successfully!',
+    'groups.success.users.remove' => 'Users removed from group successfully!',
+
     'groups.show.users.add.label' => 'Select users',
     'groups.show.users.add.cancel' => 'Cancel',
     'groups.show.users.add.add' => 'Add',
@@ -261,6 +304,11 @@ return [
     'groups.create.save' => 'Save',
 
     // Lietotāji un viss, kas saistīts ar tiem
+    'users.success.assign' => 'Role assigned successfully!',
+    'users.success.store' => 'User created successfully!',
+    'users.success.update' => 'User updated successfully!',
+    'users.success.delete' => 'User deleted successfully!',
+
     'users.index.business.none' => 'No business',
 
     'users.index.active' => 'Active',
@@ -336,6 +384,13 @@ return [
     'users.show.back' => 'Back',
 
     // Lietotāju lomas un viss, kas saistīts ar tām
+    'roles.error.exists' => 'Role name already exists!',
+    'roles.error.auth' => 'You do not have permission to access this page!',
+    
+    'roles.success.create' => 'Role created successfully!',
+    'roles.success.update' => 'Role updated successfully!',
+    'roles.success.delete' => 'Role deleted successfully!',
+
     'roles.index.title' => 'Roles',
     'roles.index.id' => 'ID',
     'roles.index.name' => 'Name',
@@ -375,6 +430,13 @@ return [
     'maps.name' => 'Name',
     'maps.name.none' => 'No name',
 
+    'maps.error.auth' => 'You do not have permission to access this page!',
+    'maps.error.polygon' => 'Polygon must have at least 3 points!',
+
+    'maps.success.create' => 'Map created successfully!',
+    'maps.success.update' => 'Map updated successfully!',
+    'maps.success.delete' => 'Map deleted successfully!',
+
     'maps.edit.polygon' => 'Polygon',
     'maps.edit.title' => 'Edit map',
     'maps.edit.label' => 'Edit',
@@ -408,6 +470,13 @@ return [
     'maps.show.created' => 'Created',
 
     // Valodu skats, kas ir tikai redzams ar lomu "Owner"
+    'languages.error.progress' => 'Translation in progress, please wait!',
+
+    'languages.success.create' => 'Language created successfully!',
+    'languages.success.update' => 'Language updated successfully!',
+    'languages.success.delete' => 'Language deleted successfully!',
+    'languages.success.sync' => 'Synchronization started, please wait!',
+
     'languages.index.title' => 'Languages',
     'languages.index.label' => 'Languages',
     'languages.index.add' => 'Add',
@@ -435,6 +504,8 @@ return [
     'languages.create.code' => 'Code',
     'languages.create.back' => 'Back',
     'languages.create.create' => 'Create',
+
+    'translations.success.update' => 'Translation updated successfully!',
 
     'translations.index.group.all' => 'All view groups',
     'translations.index.view.all' => 'All views',

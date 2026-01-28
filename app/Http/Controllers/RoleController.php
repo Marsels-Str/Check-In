@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -68,48 +69,36 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        $user = $request->user();
-
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:50'],
             'permissions' => 'required|array',
             'business_id' => 'nullable|exists:businesses,id',
         ]);
 
-        $businessId = $request->input('business_id');
+        $businessId = $data['business_id'] ?? null;
+        $guardName = $businessId ? 'business' : 'web';
 
-        if ($user->hasRole('Owner')) {
-            if ($businessId === $user->ownedBusiness?->id) {
-                $businessId = null;
-            }
-        } elseif ($user->hasRole('Business')) {
-            $businessId = $user->ownedBusiness?->id;
-        } else {
-            return back();
-        }
+        $exists = Role::where('name', $data['name'])
+            ->where('guard_name', $guardName)
+            ->exists();
 
-        $existsQuery = Role::where('name', $request->name)
-            ->where('guard_name', 'web')
-            ->where(function($q) use ($businessId) {
-                $q->whereNull('business_id')
-                  ->when($businessId, fn($q) => $q->orWhere('business_id', $businessId));
-            });
-
-        if ($existsQuery->exists()) {
-            return back()->withErrors(['name' => 'Role name already exists!'])->withInput();
+        if ($exists) {
+            return redirect()->route('roles.create')->with('error', t('roles.error.exists'));
         }
 
         $role = Role::create([
-            'name' => $request->name,
-            'guard_name' => 'web',
+            'name' => $data['name'],
+            'guard_name' => $guardName,
             'business_id' => $businessId,
         ]);
 
-        $role->syncPermissions($request->permissions);
+        $permissions = Permission::whereIn('name', $data['permissions'])
+            ->where('guard_name', $guardName)
+            ->get();
 
-        \Artisan::call('permission:cache-reset');
+        $role->syncPermissions($permissions);
 
-        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('roles.index')->with('success', t('roles.success.create'));
     }
 
     public function show(Role $role)
@@ -147,7 +136,7 @@ class RoleController extends Controller
 
         \Artisan::call('permission:cache-reset');
 
-        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('roles.index')->with('success', t('roles.success.update'));
     }
 
     public function destroy(Role $role)
@@ -158,7 +147,7 @@ class RoleController extends Controller
 
         \Artisan::call('permission:cache-reset');
 
-        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
+        return redirect()->route('roles.index')->with('success', t('roles.success.delete'));
     }
 
     private function authorizeRoleAccess(Role $role, string $permission = null)
@@ -176,7 +165,7 @@ class RoleController extends Controller
             ($role->business_id && $role->business_id !== $authBusinessId)
         ) {
             throw new HttpResponseException(
-                redirect()->route('roles.index')->with('error', 'You do not have permission to access this page!')
+                redirect()->route('roles.index')->with('error', t('roles.error.auth'))
             );
         }
     }

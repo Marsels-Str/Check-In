@@ -22,7 +22,7 @@ class GroupImageController extends Controller
             'image_blob' => $data,
         ]);
 
-        return redirect()->route('groups.show', $group);
+        return redirect()->route('groups.show', $group)->with('success', t('groups.success.upload'));
     }
 
     public function destroy(string $id)
@@ -31,6 +31,6 @@ class GroupImageController extends Controller
         $groupId = $image->group_id;
         $image->delete();
 
-        return redirect()->route('groups.show', $groupId);
+        return redirect()->route('groups.show', $groupId)->with('success', t('groups.success.remove'));
     }
 }

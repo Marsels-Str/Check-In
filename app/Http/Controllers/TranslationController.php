@@ -72,6 +72,6 @@ class TranslationController extends Controller
             ]
         );
 
-        return redirect()->route('translations.index', $language->id)->with('success', 'Translation updated successfully!');
+        return redirect()->route('translations.index', $language->id)->with('success', t('translations.success.update'));
     }
 }
