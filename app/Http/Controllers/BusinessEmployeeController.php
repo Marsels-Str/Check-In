@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\TimeLog;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BusinessEmployeeController extends Controller
 {
@@ -17,6 +18,7 @@ class BusinessEmployeeController extends Controller
         $employees = collect();
         $businesses = collect();
         $selectedBusinessId = null;
+        $businessUserCount = 0;
 
         $withRelations = [
             'timeLogs' => fn($q) => $q->whereNull('clock_out')->orderByDesc('clock_in')->take(1),
@@ -25,16 +27,19 @@ class BusinessEmployeeController extends Controller
         if ($authUser->hasRole('Owner')) {
             $businesses = Business::select('id', 'name')->orderBy('name')->get();
             $selectedBusinessId = $request->query('business_id');
+            
+            $employees = $selectedBusinessId ? Business::find($selectedBusinessId)?->employees()->with($withRelations)->get() : collect();
 
-            $employees = $selectedBusinessId
-                ? Business::find($selectedBusinessId)?->employees()->with($withRelations)->get()
-                : collect();
+            $businessUserCount = $selectedBusinessId ? DB::table('business_users')->where('business_id', $selectedBusinessId)->count() : 0;
+
         } elseif ($authUser->hasRole('Business') && $authUser->ownedBusiness) {
             $business = $authUser->ownedBusiness;
             $businesses = collect([$business]);
             $selectedBusinessId = $business->id;
-
             $employees = $business->employees()->with($withRelations)->get();
+            
+            $businessUserCount = $employees->count();
+
         } elseif ($authUser->can('employees.view')) {
             $business = $authUser->businesses()->first();
             $selectedBusinessId = $business?->id;
@@ -53,6 +58,7 @@ class BusinessEmployeeController extends Controller
             'currentUser' => $authUser,
             'businesses' => $businesses,
             'selectedBusinessId' => $selectedBusinessId,
+            'businessUserCount' => $businessUserCount,
         ]);
     }
 

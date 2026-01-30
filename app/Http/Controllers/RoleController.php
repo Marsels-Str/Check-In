@@ -19,22 +19,26 @@ class RoleController extends Controller
 
         if ($user->hasRole('Owner')) {
             $roles = Role::all();
+            $businesses = Business::all(['id', 'name']);
         } else {
-            $businessId = $user->ownedBusiness?->id ?? $user->businesses->first()?->id;
+            $business = $user->ownedBusiness ?? $user->businesses->first();
 
-            if ($businessId) {
-                $roles = Role::where('business_id', $businessId)
-                    ->whereNotIn('name', ['Owner', 'Business', 'Unemployed'])
+            if ($business) {
+                $roles = Role::where('business_id', $business->id)
+                    ->whereNotIn('name', $excludeForBusiness)
                     ->get();
+
+                $businesses = collect([$business]);
             } else {
                 $roles = collect();
+                $businesses = collect();
             }
         }
 
-        return Inertia::render('roles/index', compact('roles'));
+        return Inertia::render('roles/index', compact('roles', 'businesses'));
     }
 
-public function create(Request $request)
+    public function create(Request $request)
     {
         $user = $request->user();
 

@@ -1,16 +1,17 @@
 import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, Role } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import RoleDesktopView from '@/components/roles/role-index-desktop';
+import { BreadcrumbItem, BusinessProfile, Role } from '@/types';
 import RoleMobileView from '@/components/roles/role-index-mobile';
+import RoleDesktopView from '@/components/roles/role-index-desktop';
 
 interface Props {
     roles: Role[];
+    businesses: BusinessProfile[];
 }
 
-export default function Index({ roles }: Props) {
+export default function Index({ roles, businesses }: Props) {
     const t = useT();
     
     const canCreate = useCan('roles.create');
@@ -43,9 +44,9 @@ export default function Index({ roles }: Props) {
                     )}
                 </div>
 
-                <RoleMobileView roles={roles} />
+                <RoleMobileView roles={roles} businesses={businesses}/>
 
-                <RoleDesktopView roles={roles} />
+                <RoleDesktopView roles={roles} businesses={businesses} />
             </div>
         </AppLayout>
     );

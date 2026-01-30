@@ -9,9 +9,10 @@ interface Props {
     employees: User[];
     businesses: BusinessProfile[];
     selectedBusinessId: number | null;
+    businessUserCount: number;
 }
 
-export default function Index({ employees, businesses, selectedBusinessId }: Props) {
+export default function Index({ employees, businesses, selectedBusinessId, businessUserCount }: Props) {
     const t = useT();
     
     const breadcrumbs: BreadcrumbItem[] = [
@@ -35,7 +36,7 @@ export default function Index({ employees, businesses, selectedBusinessId }: Pro
                     <EmployeeSearchAndAdd businesses={businesses} selectedBusinessId={selectedBusinessId} />
                 </div>
 
-                <EmployeeTable employees={employees} selectedBusinessId={selectedBusinessId} />
+                <EmployeeTable employees={employees} selectedBusinessId={selectedBusinessId} businessUserCount={businessUserCount} />
             </div>
         </AppLayout>
     );

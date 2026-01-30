@@ -216,6 +216,7 @@ return [
     'employees.success.add' => 'Employee added successfully!',
     'employees.success.remove' => 'Employee removed successfully!',
 
+    'employees.index.total' => 'Total employees',
     'employees.index.title' => 'Employees',
     'employees.index.label' => 'Employees',
     'employees.index.id' => 'ID',
@@ -270,6 +271,7 @@ return [
     'groups.index.id' => 'ID',
     'groups.index.name' => 'Name',
     'groups.index.description' => 'Description',
+    'groups.index.business' => 'Business',
     'groups.index.actions' => 'Actions',
     'groups.index.show' => 'Show',
     'groups.index.edit' => 'Edit',
@@ -395,6 +397,7 @@ return [
     'roles.index.id' => 'ID',
     'roles.index.name' => 'Name',
     'roles.index.permissions' => 'Permissions',
+    'roles.index.business' => 'Business',
     'roles.index.actions' => 'Actions',
     'roles.index.show' => 'Show',
     'roles.index.edit' => 'Edit',

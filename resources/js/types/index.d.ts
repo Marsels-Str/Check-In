@@ -112,6 +112,7 @@ export interface MessageReminderState extends EmptyState {
 export interface Role {
     id: number;
     name: string;
+    business_id?: number;
 }
 
 export interface Roles {

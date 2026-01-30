@@ -1,17 +1,19 @@
 import { useT } from '@/lib/t';
-import { Role } from '@/types';
 import { useCan } from '@/lib/can';
 import { router } from '@inertiajs/react';
+import { Role, BusinessProfile } from '@/types';
 import { Button } from '@/components/ui/button';
 
 interface Props {
     roles: Role[];
+    businesses: BusinessProfile[];
 }
 
-export default function RolesDesktopView({ roles }: Props) {
+export default function RolesDesktopView({ roles, businesses }: Props) {
     const canEdit = useCan('roles.update');
     const canDelete = useCan('roles.delete');
     const canShow = useCan('roles.show');
+    const canAccess = useCan('business.access');
 
     const t = useT();
 
@@ -35,6 +37,7 @@ export default function RolesDesktopView({ roles }: Props) {
                         <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.id')}</th>
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.name')}</th>
                         <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.permissions')}</th>
+                        {canAccess && <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.business')}</th>}
                         <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.actions')}</th>
                     </tr>
                 </thead>
@@ -51,6 +54,11 @@ export default function RolesDesktopView({ roles }: Props) {
                                     </Button>
                                 )}
                             </td>
+                            {canAccess && (
+                                <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
+                                    {role.business_id ? businesses.find(b => b.id === role.business_id)?.name : 'Global'}
+                                </td>
+                            )}
                             <td className="py-4 pr-6 pl-3 text-right text-sm">
                                 <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
                                     {canEdit && (

@@ -1,17 +1,19 @@
 import { useT } from '@/lib/t';
-import { Role } from '@/types';
+import { Role, BusinessProfile } from '@/types';
 import { useCan } from '@/lib/can';
 import { router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 
 interface Props {
     roles: Role[];
+    businesses: BusinessProfile[];
 }
 
-export default function RolesMobileView({ roles }: Props) {
+export default function RolesMobileView({ roles, businesses }: Props) {
     const canEdit = useCan('roles.update');
     const canDelete = useCan('roles.delete');
     const canShow = useCan('roles.show');
+    const canAccess = useCan('business.access');
 
     const t = useT();
 
@@ -36,8 +38,13 @@ export default function RolesMobileView({ roles }: Props) {
                 >
                     <div className="flex items-center justify-between">
                         <div>
-                            <div className="font-medium text-gray-900 dark:text-gray-100">{role.name}</div>
                             <div className="text-xs text-gray-500 dark:text-gray-400">{t('roles.index.id')}: {role.id}</div>
+                            <div className="font-medium text-gray-900 dark:text-gray-100">{role.name}</div>
+                            {canAccess && (
+                                <div className="text-xs text-gray-500 dark:text-gray-400">
+                                    {role.business_id ? businesses.find(b => b.id === role.business_id)?.name : 'Global'}
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex gap-3 text-sm">

@@ -9,6 +9,7 @@ export default function Index({ groups }: { groups: any[] }) {
     const canUpdate = useCan('groups.update');
     const canDelete = useCan('groups.delete');
     const canShow = useCan('groups.show');
+    const canAccess = useCan('business.access');
 
     const t = useT();
 
@@ -43,6 +44,7 @@ export default function Index({ groups }: { groups: any[] }) {
                                     <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.id')}</th>
                                     <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.name')}</th>
                                     <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.description')}</th>
+                                    {canAccess && <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.business')}</th>}
                                     <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('groups.index.actions')}</th>
                                 </tr>
                             </thead>
@@ -54,6 +56,7 @@ export default function Index({ groups }: { groups: any[] }) {
                                             <td className="py-4 pr-3 pl-6 text-sm text-gray-900 dark:text-gray-200">{group.id}</td>
                                             <td className="px-3 py-4 text-sm text-gray-900 dark:text-gray-200">{group.name}</td>
                                             <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">{group.description || '—'}</td>
+                                            {canAccess && <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">{group.business.name}</td>}
                                             <td className="py-4 pr-6 pl-3 text-right text-sm">
                                                 <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
                                                     {canShow && (
