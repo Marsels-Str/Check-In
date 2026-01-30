@@ -34,7 +34,7 @@ class RoleController extends Controller
         return Inertia::render('roles/index', compact('roles'));
     }
 
-    public function create(Request $request)
+public function create(Request $request)
     {
         $user = $request->user();
 
@@ -53,9 +53,15 @@ class RoleController extends Controller
             'languages.access',
         ];
 
-        $permissions = Permission::query()->when($user->hasRole('Business'), function ($q) use ($excludedForBusiness) {
+        $guardName = $user->hasRole('Owner') ? 'web' : 'business';
+
+        $permissions = Permission::query()
+            ->where('guard_name', $guardName)
+            ->when($guardName === 'business', function ($q) use ($excludedForBusiness) {
                 $q->whereNotIn('name', $excludedForBusiness);
-            })->orderBy('name')->pluck('name');
+            })
+            ->orderBy('name')
+            ->pluck('name');
 
         return Inertia::render('roles/create', [
             'permissions' => $permissions,
@@ -118,7 +124,7 @@ class RoleController extends Controller
         return Inertia::render('roles/edit', [
             'role' => $role,
             'rolePermissions' => $role->permissions()->pluck('name'),
-            'permissions' => Permission::pluck('name'),
+            'permissions' => Permission::where('guard_name', $role->guard_name)->orderBy('name')->pluck('name'),
         ]);
     }
 

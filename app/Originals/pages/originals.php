@@ -243,7 +243,7 @@ return [
     'groups.success.remove' => 'Image removed successfully!',
 
     'groups.success.users.add' => 'Users added to group successfully!',
-    'groups.success.users.remove' => 'Users removed from group successfully!',
+    'groups.success.users.remove' => 'User removed from group successfully!',
 
     'groups.show.users.add.label' => 'Select users',
     'groups.show.users.add.cancel' => 'Cancel',
@@ -285,7 +285,7 @@ return [
     'groups.show.users' => 'Users',
     'groups.show.chat' => 'Chat',
     'groups.show.images' => 'Images',
-    'groups.show.maps' => 'Map entry',
+    'groups.show.maps' => 'Map',
 
     'groups.edit.title' => 'Edit group',
     'groups.edit.label' => 'Edit group',

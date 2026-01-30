@@ -20,8 +20,8 @@ export default function EditLanguage({ language }: Props) {
         { title: t('breadcrumb.languages.edit'), href: '/languages' },
     ];
 
-    const translationsIndex = (language: Language) => {
-        router.get(route('translations.index', language.id))
+    const translationsIndex = () => {
+        router.get(route('languages.index'))
     }
 
     return (
@@ -55,7 +55,8 @@ export default function EditLanguage({ language }: Props) {
 
                             <div className="flex items-center justify-between gap-3 pt-4">
                                 <Button
-                                    onClick={() => translationsIndex(language)}
+                                    onClick={() => translationsIndex()}
+                                    type="button"
                                     className="inline-flex items-center rounded-lg border border-border/60 bg-background px-3.5 py-1.5 text-sm font-medium text-muted-foreground shadow-sm transition hover:bg-muted"
                                 >
                                     {t('languages.edit.back')}

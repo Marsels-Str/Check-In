@@ -1,34 +1,43 @@
 import { useT } from '@/lib/t';
 import { useState } from 'react';
 import { useCan } from '@/lib/can';
-import { Link } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
+import { User, Group } from '@/types';
+import { router } from '@inertiajs/react';
 import AddUserModal from './add-user-modal';
+import { Button } from '@/components/ui/button';
 
-export default function GroupUsers({ group, users }: any) {
+interface Props {
+    group: Group;
+    users: User[];
+}
+
+export default function GroupUsers({ group, users }: Props) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const canAddUsers = useCan('groups.addUsers');
     const canRemoveUsers = useCan('groups.removeUsers');
 
     const t = useT();
 
+    const userRemove = (user: User) => {
+        router.delete(route('groups.remove-users', { group: group.id, user: user.id }));
+    };
+
     return (
         <div className="mt-6">
             <h2 className="text-lg font-semibold">{t('groups.show.users.label')}:</h2>
 
             <ul className="my-2">
-                {group.users?.map((user: any) => (
+                {group.users?.map((user: User) => (
                     <li key={user.id} className="flex items-center">
                         <span>{user.name}</span>
                         {canRemoveUsers && (
-                            <Link
-                                href={route('groups.remove-users', { group: group.id, user: user.id })}
-                                method="delete"
-                                as="button"
-                                className="ml-2 text-red-500 hover:text-red-700"
+                            <Button
+                                onClick={() => userRemove(user)}
+                                variant="link"
+                                className="text-destructive"
                             >
                                 {t('groups.show.users.remove')}
-                            </Link>
+                            </Button>
                         )}
                     </li>
                 ))}

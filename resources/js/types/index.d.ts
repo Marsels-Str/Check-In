@@ -120,6 +120,14 @@ export interface Roles {
     userRole: number[];
 }
 
+export interface Group {
+    id: number;
+    name: string;
+    business_id: number;
+    description?: string;
+    users?: User[];
+}
+
 export interface ClockingSettings {
     work_start: number;
     work_end: number;

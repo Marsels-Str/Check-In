@@ -210,6 +210,7 @@ class UserController extends Controller
         }
 
         User::destroy($id);
+        
         return redirect()->route('users.index')->with('success', t('users.success.delete'));
     }
 }
