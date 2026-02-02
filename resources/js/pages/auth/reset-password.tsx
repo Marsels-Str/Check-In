@@ -18,6 +18,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     return (
         <AuthLayout title={t('auth.reset.small.title')} description={t('auth.reset.small.description')}>
             <Head title={t('auth.reset.title')} />
+            <meta name="description" content="Reset your password" />
 
             <Form
                 method="post"

@@ -21,6 +21,8 @@ export default function Contacts() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('contacts.title')} />
+            <meta name="description" content="Get in touch with us through our contact information" />
+            
             <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">{t('contacts.label')}</h1>
 
             <div className="flex justify-center">

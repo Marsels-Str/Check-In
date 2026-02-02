@@ -19,6 +19,7 @@ export default function Appearance() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('settings.appearance.title')} />
+            <meta name="description" content="Customize the appearance settings of your application" />
 
             <SettingsLayout>
                 <div className="space-y-6">

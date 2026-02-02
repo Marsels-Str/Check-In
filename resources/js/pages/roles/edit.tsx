@@ -21,6 +21,7 @@ export default function Edit({ role, rolePermissions, permissions }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('roles.edit.title')}: ${role.name}`} />
+            <meta name="description" content="Edit a role and assign permissions" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

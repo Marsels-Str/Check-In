@@ -20,6 +20,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     return (
         <AuthLayout title={t('auth.login.small.title')} description={t('auth.login.small.description')}>
             <Head title={t('auth.login.title')} />
+            <meta name="description" content="Login to your account to access the Check-In application" />
 
             <Form method="post" action={route('login')} resetOnSuccess={['password']} className="flex flex-col gap-6">
                 {({ processing, errors }) => (

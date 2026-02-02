@@ -11,6 +11,7 @@ export default function CompleteProfile() {
     return (
         <>
             <Head title={t('auth.complete.profile.title')} />
+            <meta name="description" content="Complete your profile to start using the application" />
 
             <div className="mx-auto w-full max-w-lg px-4 py-10">
                 <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm transition-all duration-300 dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">

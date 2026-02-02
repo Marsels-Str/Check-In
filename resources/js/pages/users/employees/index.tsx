@@ -25,6 +25,7 @@ export default function Index({ employees, businesses, selectedBusinessId, busin
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('employees.index.title')} />
+            <meta name="description" content="Manage your employees, add new ones or remove old ones" />
 
             <div className="mx-auto max-w-6xl p-4 md:p-6">
                 <div className="mb-8 text-center sm:text-left">

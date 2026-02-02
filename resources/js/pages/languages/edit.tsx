@@ -27,6 +27,7 @@ export default function EditLanguage({ language }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('languages.edit.title')} />
+            <meta name="description" content="Edit an existing language and its details" />
 
             <div className="mx-auto max-w-md space-y-8">
                 <div className="space-y-1">

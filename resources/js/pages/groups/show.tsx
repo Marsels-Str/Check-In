@@ -18,6 +18,7 @@ export default function Show({ group, users, errors, availableMaps }: any) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('groups.show.title')}: ${group.name}`} />
+            <meta name="description" content="View group details and manage group content" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

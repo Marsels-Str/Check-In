@@ -14,6 +14,8 @@ export default function Register() {
     return (
         <AuthLayout title={t('auth.register.small.title')} description={t('auth.register.small.description')}>
             <Head title={t('auth.register.title')} />
+            <meta name="description" content="Create a new account to start using the Check-In application" />
+            
             <Form
                 method="post"
                 action={route('register')}

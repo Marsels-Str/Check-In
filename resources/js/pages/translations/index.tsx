@@ -20,6 +20,7 @@ export default function TranslationsIndex({ language, rows }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${language.name} ${t('translations.index.title')}`} />
+            <meta name="description" content="Manage translations for the selected language" />
 
             <div className="mx-auto max-w-[1000px] space-y-4">
                 <div className="flex items-center justify-between">

@@ -14,6 +14,7 @@ export default function AfterComplete() {
     return (
         <>
             <Head title={t('auth.complete.after.title')} />
+            <meta name="description" content="Complete your profile" />
 
             <div className="flex min-h-[80vh] items-center justify-center px-4 py-10">
                 <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white/80 p-8 text-center shadow-sm transition-all duration-300 dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">

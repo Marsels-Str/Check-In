@@ -9,6 +9,8 @@ export default function BusinessLocked() {
     return (
         <AppLayout>
             <Head title={t('settings.business.locked.title')} />
+            <meta name="description" content="Business settings are locked" />
+            
             <LockedBusiness />
         </AppLayout>
     );

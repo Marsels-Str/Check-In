@@ -23,6 +23,7 @@ export default function Profile() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('settings.profile.title')} />
+            <meta name="description" content="Manage your profile settings and personal information" />
 
             <div className="relative">
                 <div className="mb-4 px-3 py-2 md:hidden">

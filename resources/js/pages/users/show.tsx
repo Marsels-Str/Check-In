@@ -26,6 +26,8 @@ export default function Show({ user }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('users.show.title')}: ${user.name}`} />
+            <meta name="description" content="View user details and manage user information" />
+            
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">
                     <div>

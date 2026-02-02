@@ -37,6 +37,7 @@ export default function Business({ business, businesses, selectedBusinessId }: P
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('settings.business.title')} />
+            <meta name="description" content="Manage your business settings and information" />
 
             <div className="relative">
                 <div className="relative">

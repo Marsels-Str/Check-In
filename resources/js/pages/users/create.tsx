@@ -17,6 +17,7 @@ export default function Create() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('users.create.title')} />
+            <meta name="description" content="Create a new user" />
 
             <div className="px-4 py-8">
                 <div className="mb-6 flex items-center justify-between">

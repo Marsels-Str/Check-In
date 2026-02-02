@@ -19,6 +19,7 @@ export default function Show({ role, permissions }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('roles.show.title')}: ${role.name}`} />
+            <meta name="description" content="View role details and assigned permissions" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

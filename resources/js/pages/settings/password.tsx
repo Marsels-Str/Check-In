@@ -26,6 +26,7 @@ export default function Password() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('settings.password.title')} />
+            <meta name="description" content="Manage your password settings and update your password" />
 
             <SettingsLayout>
                 <div className="space-y-8">

@@ -23,6 +23,7 @@ export default function EditTranslation({ language, translation }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('translations.edit.title')} />
+            <meta name="description" content="Edit a translation for the selected language" />
 
             <div className="mx-auto max-w-md space-y-8">
                 <div className="space-y-1">

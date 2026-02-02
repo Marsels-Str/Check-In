@@ -21,6 +21,7 @@ export default function Create({ permissions, businesses, auth }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('roles.create.title')} />
+            <meta name="description" content="Create a new role and assign permissions" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

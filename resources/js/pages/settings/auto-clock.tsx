@@ -25,6 +25,7 @@ export default function AutoClock() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <SettingsLayout>
                 <Head title={t('settings.clocking.title')} />
+                <meta name="description" content="Manage your auto-clock settings and work time extensions" />
 
                 <div className="space-y-8">
                 <HeadingSmall title={t('settings.clocking.small.title')} description={t('settings.clocking.small.description')} />

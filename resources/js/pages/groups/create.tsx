@@ -38,6 +38,7 @@ export default function Create({ businesses, auth }: { businesses: BusinessProfi
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('groups.create.title')} />
+            <meta name="description" content="Create a new group" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

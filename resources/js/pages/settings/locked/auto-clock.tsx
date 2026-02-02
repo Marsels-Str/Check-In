@@ -9,6 +9,8 @@ export default function AutoClockLocked() {
     return (
         <AppLayout>
             <Head title={t('settings.clocking.locked.title')} />
+            <meta name="description" content="Auto-clock settings are locked" />
+            
             <LockedAutoClock />
         </AppLayout>
     );

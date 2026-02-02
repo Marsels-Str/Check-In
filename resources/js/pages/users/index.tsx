@@ -26,6 +26,7 @@ export default function Index({ users, currentUser }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('users.index.title')} />
+            <meta name="description" content="Manage your users" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

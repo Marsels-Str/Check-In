@@ -11,6 +11,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
     return (
         <AuthLayout title={t('auth.verifiy.small.title')} description={t('auth.verify.small.description')}>
             <Head title={t('auth.verify.title')} />
+            <meta name="description" content="Verify your email address" />
 
             {status === 'verification-link-sent' && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">

@@ -23,6 +23,7 @@ export default function LanguagesIndex({ languages, originals }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('languages.index.title')} />
+            <meta name="description" content="Manage application languages and translations" />
 
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold dark:text-white">{t('languages.index.label')}</h2>

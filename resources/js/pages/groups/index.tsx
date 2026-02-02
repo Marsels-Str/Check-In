@@ -18,6 +18,7 @@ export default function Index({ groups }: { groups: any[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('groups.index.title')} />
+            <meta name="description" content="Manage your groups, create and manage groups" />
 
             <div className="px-4">
                 <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">

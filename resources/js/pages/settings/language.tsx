@@ -20,6 +20,7 @@ export default function LanguageSettings() {
         id: 0,
         name: 'English',
         code: 'en',
+        translated_count: 0,
     };
 
     const allLanguages = useMemo(() => {
@@ -58,6 +59,7 @@ export default function LanguageSettings() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('settings.language.title')} />
+            <meta name="description" content="Manage your language settings" />
 
             <SettingsLayout>
                 <div className="max-w-xl space-y-4">

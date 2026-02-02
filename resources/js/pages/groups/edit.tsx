@@ -18,6 +18,7 @@ export default function Edit({ group }: { group: any }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('groups.edit.title')}: ${group.name}`} />
+            <meta name="description" content="Edit a group" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

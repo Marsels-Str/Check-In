@@ -37,6 +37,7 @@ export default function Edit({ map }: { map: Map }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('maps.edit.title')} />
+            <meta name="description" content="Edit an existing map" />
 
             <div className="px-4">
                 <div className="mx-auto mt-8 max-w-3xl space-y-6 rounded-xl border border-gray-200 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-md">

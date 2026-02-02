@@ -18,6 +18,7 @@ export default function CreateLanguage() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('languages.create.title')} />
+            <meta name="description" content="Create a new language for the application" />
 
             <div className="mx-auto max-w-md space-y-8">
                 <div className="space-y-1">

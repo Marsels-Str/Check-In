@@ -14,6 +14,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
     return (
         <AuthLayout title={t('auth.forgot.small.title')} description={t('auth.forgot.small.description')}>
             <Head title={t('auth.forgot.title')} />
+            <meta name="description" content="Request a password reset link to regain access to your account" />
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
 

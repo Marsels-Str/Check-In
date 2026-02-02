@@ -13,6 +13,7 @@ export default function ConfirmPassword() {
             description="This is a secure area of the application. Please confirm your password before continuing."
         >
             <Head title="Confirm password" />
+            <meta name="description" content="Confirm your password to access secure areas of the application" />
 
             <Form method="post" action={route('password.confirm')} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (

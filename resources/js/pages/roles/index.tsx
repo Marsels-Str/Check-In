@@ -26,6 +26,7 @@ export default function Index({ roles, businesses }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('roles.index.title')} />
+            <meta name="description" content="Manage roles and their permissions within the application" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

@@ -62,6 +62,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('maps.index.title')} />
+            <meta name="description" content="Manage maps and their shapes within the application" />
 
             <div className="px-4">
                 <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">

@@ -22,6 +22,7 @@ export default function Assign({ user, globalRoles, businessRoles, userRole }: P
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('users.assign.title')} />
+            <meta name="description" content="Assign roles to a user" />
 
             <div className="px-4">
                 <div className="mb-6 flex items-center justify-between">

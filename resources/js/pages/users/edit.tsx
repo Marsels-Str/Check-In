@@ -16,6 +16,8 @@ export default function Edit({ user }: { user: User }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('users.edit.title')} />
+            <meta name="description" content="Edit a user" />
+            
             <div className="px-2">
                 <div className="flex items-center justify-between">
                     <div>
