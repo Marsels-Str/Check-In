@@ -117,7 +117,6 @@ class BusinessProfileController extends Controller
 
         return Inertia::render('settings/business', [
             'status'             => $request->session()->get('status'),
-            'auth'               => ['user' => $user->load('profile')],
             'business'           => $business,
             'businesses'         => $businesses,
             'selectedBusinessId' => $selectedBusinessId,

@@ -70,7 +70,7 @@ export default function UsersDesktopView({ users, currentUser }: Props) {
                                 <RoleName user={user} />
                             </td>
                             <td className="px-3 py-4 text-sm">
-                                <StatusBadge active={user.is_active === 1} />
+                                <StatusBadge active={user.is_active === 1} viewer={currentUser} target={user} />
                             </td>
                             <td className="relative py-4 pr-6 pl-3 text-right text-sm">
                                 <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">

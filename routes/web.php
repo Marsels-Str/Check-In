@@ -2,23 +2,22 @@
 
 use Inertia\Inertia;
 
+use App\Models\Group;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-use App\Models\Group;
 
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AutoClockController;
+use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Groups\GroupController;
 use App\Http\Controllers\BusinessEmployeeController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Groups\GroupImageController;
 use App\Http\Controllers\Groups\GroupMessageController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Settings\BusinessProfileController;
 
 Route::get('/', fn () => Inertia::render('welcome'))->name('home');
@@ -114,11 +113,6 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complet
     Route::get('/auto-clock/login-clockin/{token}', [AutoClockController::class, 'loginClockIn'])->name('auto-clock.login-clockin');
     Route::get('/auto-clock/extend-work/{token}', [AutoClockController::class, 'extendWorkEmail'])->name('auto-clock.extend-work-email');
     Route::get('/auto-clock/after-login', [AutoClockController::class, 'handleAfterLogin'])->name('auto-clock.after-login');
-
-    //Auto Clock
-    Route::get('/settings/auto-clock', [AutoClockController::class, 'index'])->name('auto-clock.edit');
-    Route::put('/settings/auto-clock', [AutoClockController::class, 'update'])->name('auto-clock.update');
-    Route::post('/settings/auto-clock/extend', [AutoClockController::class, 'extendWork'])->name('auto-clock.extend');
 
     // Group Messages
     Route::post('/groups/{group}/messages', [GroupMessageController::class, 'store']);

@@ -26,6 +26,7 @@ export interface NavItem {
     title: string;
     isActive?: boolean;
     icon?: LucideIcon | null;
+    can?: string;
 }
 
 export interface TimeLog {

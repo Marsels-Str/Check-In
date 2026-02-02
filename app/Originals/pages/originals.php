@@ -313,8 +313,9 @@ return [
 
     'users.index.business.none' => 'No business',
 
-    'users.index.active' => 'Active',
-    'users.index.inactive' => 'Inactive',
+    'users.index.status.active' => 'Active',
+    'users.index.status.inactive' => 'Inactive',
+    'users.index.status.business' => 'Business',
 
     'users.roles.global' => 'Global roles',
     'users.roles.business' => 'Business roles',

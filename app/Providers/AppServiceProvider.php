@@ -23,6 +23,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Inertia::share([
+            'auth' => function () {
+                $user = auth()->user();
+                return $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'roles' => $user->roles->pluck('name'),
+                    'permissions' => $user->getAllPermissions()->pluck('name'),
+                ] : null;
+            },
+
             'flash' => fn () => [
                 'success' => session('success')
                     ? ['text' => session('success'), 'id' => uniqid()]
@@ -31,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
                     ? ['text' => session('error'), 'id' => uniqid()]
                     : null,
             ],
+
             'searchResult' => fn () => session('searchResult'),
         ]);
 

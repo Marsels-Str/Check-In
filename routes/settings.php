@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use App\Models\Languages;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AutoClockController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\PasswordController;
 
@@ -19,6 +20,11 @@ Route::middleware('auth')->group(function () {
     Route::put('settings/password', [PasswordController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('password.update');
+
+    //Auto Clock
+    Route::get('/settings/auto-clock', [AutoClockController::class, 'index'])->name('auto-clock.edit');
+    Route::put('/settings/auto-clock', [AutoClockController::class, 'update'])->name('auto-clock.update');
+    Route::post('/settings/auto-clock/extend', [AutoClockController::class, 'extendWork'])->name('auto-clock.extend');
 
     Route::get('settings/appearance', function () {
         return Inertia::render('settings/appearance');
