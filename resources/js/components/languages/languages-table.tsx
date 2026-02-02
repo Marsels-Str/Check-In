@@ -39,7 +39,7 @@ export default function LanguagesTable({ languages, originals }: Props) {
 
     return (
         <div className="mt-6 space-y-4">
-            <div className="max-w-md space-y-1">
+            <div className="max-w-md">
                 <Label htmlFor="language-search">{t('languages.index.search')}</Label>
 
                 <Input id="language-search" value={search} onChange={(e) => setSearch(e.target.value)} />
