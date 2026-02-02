@@ -1,5 +1,5 @@
 import { useT } from '@/lib/t';
-import { type SharedData } from '@/types';
+import { SharedData } from '@/types';
 import WelcomeLogo from '@/components/welcome-logo';
 import { Head, Link, usePage } from '@inertiajs/react';
 

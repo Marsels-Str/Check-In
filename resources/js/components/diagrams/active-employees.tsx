@@ -30,13 +30,14 @@ export default function EmployeeActivityDiagram() {
 
             <ResponsiveContainer width="100%" height="90%" initialDimension={{ width: 1, height: 1 }}>
                 <BarChart data={data}>
-                    <XAxis dataKey="label" stroke="#FF4081" />
+                    <XAxis dataKey="label" tickFormatter={(value) => t(value)} stroke="#FF4081" />
                     <YAxis allowDecimals={false} stroke="#FF4081" />
                     <Tooltip
                         formatter={(value) => {
                             const count = typeof value === 'number' ? value : 0;
                             return [count, t('dashboard.diagrams.employees.activity.tooltip')];
                         }}
+                        labelFormatter={(value) => t(value)}
                     />
                     <Bar dataKey="count" radius={[4, 4, 0, 0]} stroke="#f0e4e8ff" />
                 </BarChart>

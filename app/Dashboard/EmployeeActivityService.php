@@ -169,7 +169,7 @@ class EmployeeActivityService
             $key = $day->format('Y-m-d');
 
             $data[] = [
-                'label' => $range === 'month' ? $day->format('j') : $day->format('D'),
+                'label' => $range === 'month' ? $day->format('j') : 'dashboard.diagrams.weekday.' . $day->format('N'),
                 'count' => (int) ($counts[$key] ?? 0),
             ];
         }

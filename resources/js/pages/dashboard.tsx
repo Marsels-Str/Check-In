@@ -50,6 +50,7 @@ export default function Dashboard(props: DashboardProps) {
         >
             <AppLayout breadcrumbs={breadcrumbs}>
                 <Head title={t('dashboard.view.title')} />
+                <meta name="description" content="Diagrams, that lets you overview the whole business in one page" />
 
                 <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                     {canAccess && (

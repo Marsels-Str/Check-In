@@ -177,6 +177,14 @@ return [
     'dashboard.diagrams.range.week' => 'Week',
     'dashboard.diagrams.range.month' => 'Month',
 
+    'dashboard.diagrams.weekday.1' => 'Monday',
+    'dashboard.diagrams.weekday.2' => 'Tuesday',
+    'dashboard.diagrams.weekday.3' => 'Wednesday',
+    'dashboard.diagrams.weekday.4' => 'Thursday',
+    'dashboard.diagrams.weekday.5' => 'Friday',
+    'dashboard.diagrams.weekday.6' => 'Saturday',
+    'dashboard.diagrams.weekday.7' => 'Sunday',
+
     'dashboard.diagrams.employees.activity.empty' => 'Get a job, to view personal statistics',
     'dashboard.diagrams.employees.activity.title' => 'Activity',
     'dashboard.diagrams.employees.activity.tooltip' => 'Employees',

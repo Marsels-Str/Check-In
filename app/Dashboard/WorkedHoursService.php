@@ -72,7 +72,7 @@ class WorkedHoursService
                 return [
                     'label' => $range === 'month'
                         ? $day->format('j')
-                        : $day->format('D'),
+                        : 'dashboard.diagrams.weekday.' . $day->format('N'),
                     'hours' => round($seconds / 3600),
                 ];
             })
