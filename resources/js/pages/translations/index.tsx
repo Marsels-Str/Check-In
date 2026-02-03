@@ -11,7 +11,7 @@ interface Props {
 
 export default function TranslationsIndex({ language, rows }: Props) {
     const t = useT();
-    
+
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('breadcrumb.languages'), href: '/languages' },
         { title: t('breadcrumb.languages.translations'), href: '/languages' },
@@ -22,8 +22,8 @@ export default function TranslationsIndex({ language, rows }: Props) {
             <Head title={`${language.name} ${t('translations.index.title')}`} />
             <meta name="description" content="Manage translations for the selected language" />
 
-            <div className="mx-auto max-w-[1000px] space-y-4">
-                <div className="flex items-center justify-between">
+            <div className="mx-auto max-w-full sm:max-w-none p-4 space-y-4">
+                <div className="flex justify-between">
                     <h2 className="text-xl font-bold dark:text-white">
                         {language.name} {t('translations.index.label')}
                     </h2>
@@ -36,7 +36,9 @@ export default function TranslationsIndex({ language, rows }: Props) {
                     </Link>
                 </div>
 
-                <TranslationsTable language={language} rows={rows} />
+                <div className="overflow-x">
+                    <TranslationsTable language={language} rows={rows} />
+                </div>
             </div>
         </AppLayout>
     );

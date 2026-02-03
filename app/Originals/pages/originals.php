@@ -532,6 +532,7 @@ return [
     'translations.index.title' => 'Translations',
     'translations.index.label' => 'translations',
     'translations.index.back' => 'Back',
+    'translations.index.more' => 'Load more',
 
     'translations.edit.title' => 'Edit translation',
     'translations.edit.label' => 'Edit translation',
