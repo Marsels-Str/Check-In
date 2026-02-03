@@ -64,7 +64,7 @@ export default function TranslationsTable({ language, rows }: Props) {
 
     return (
         <div className="w-full space-y-4">
-            <div className="sticky top-0 z-20 space-y-2 rounded-md border bg-white p-2 shadow-sm">
+            <div className="sticky top-0 z-20 space-y-2 rounded-md border bg-white dark:bg-background p-2 shadow-sm">
                 <input
                     id="search"
                     value={search}
