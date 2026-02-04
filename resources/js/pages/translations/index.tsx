@@ -1,6 +1,8 @@
 import { useT } from '@/lib/t';
+import { Head } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 import { BreadcrumbItem, Language, TranslationRow } from '@/types';
 import TranslationsTable from '@/components/translations/translations-table';
 
@@ -17,23 +19,24 @@ export default function TranslationsIndex({ language, rows }: Props) {
         { title: t('breadcrumb.languages.translations'), href: '/languages' },
     ];
 
+    const translationsBack = () => {
+        router.get(route('languages.index'))
+    }
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${language.name} ${t('translations.index.title')}`} />
             <meta name="description" content="Manage translations for the selected language" />
 
-            <div className="mx-auto max-w-full sm:max-w-none p-4 space-y-4">
+            <div className="mx-auto max-w-full p-2 space-y-2">
                 <div className="flex justify-between">
                     <h2 className="text-xl font-bold dark:text-white">
                         {language.name} {t('translations.index.label')}
                     </h2>
 
-                    <Link
-                        href={route('languages.index')}
-                        className="rounded-md border border-border px-4 py-2 text-sm text-muted-foreground hover:bg-muted"
-                    >
+                    <Button variant="outline" onClick={() => translationsBack()}>
                         {t('translations.index.back')}
-                    </Link>
+                    </Button>
                 </div>
 
                 <div className="overflow-x">

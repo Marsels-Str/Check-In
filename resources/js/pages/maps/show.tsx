@@ -1,8 +1,9 @@
 import FitToBounds from '@/components/fit-to-bounds';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { useT } from '@/lib/t';
 import { BreadcrumbItem, Map } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { Circle, MapContainer, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 
@@ -55,39 +56,46 @@ export default function Show({ map }: { map: Map }) {
         },
     ];
 
+    const mapsBack = (map: Map) => {
+        router.get(route('maps.index', map.business_id), {
+            business_id: map.business_id,
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('maps.show.title')} #${map.id}`} />
             <meta name="description" content="View map details and shapes" />
 
-            <div className="px-4">
-                <div className="mx-auto mt-8 max-w-3xl space-y-6 rounded-xl border border-gray-200 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-md">
+            <div className="p-10">
+                <div className="mx-auto max-w-3xl space-y-6 rounded-xl border bg-background p-6 shadow-xl">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('maps.show.label')} #{map.id}</h1>
-                            <p className="text-sm text-gray-500">{t('maps.show.text')}</p>
+                            <h1 className="text-xl font-bold dark:text-white">
+                                {t('maps.show.label')} #{map.id}
+                            </h1>
+                            <p className="text-sm text-muted-foreground">{t('maps.show.text')}</p>
                         </div>
-                        <Link
-                            href={route('maps.index', { business_id: map.business_id })}
-                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                        >
+                        <Button type="button" variant="outline" onClick={() => mapsBack(map)}>
                             {t('maps.show.back')}
-                        </Link>
+                        </Button>
                     </div>
 
-                    <div className="grid gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <div className="text-muted-foreground">
                         <p>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">{t('maps.show.name')}:</span> {map.name || t('maps.show.empty')}
+                            <span className="font-bold text-foreground">{t('maps.show.name')}:</span> {map.name || t('maps.show.empty')}
                         </p>
+
                         <p>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">{t('maps.show.type')}:</span> {map.type}
+                            <span className="font-bold text-foreground">{t('maps.show.type')}:</span> {map.type}
                         </p>
+
                         <p>
-                            <span className="font-medium text-gray-900 dark:text-gray-100">{t('maps.show.created')}:</span> {new Date(map.created_at).toLocaleString()}
+                            <span className="font-bold text-foreground">{t('maps.show.created')}:</span> {new Date(map.created_at).toLocaleString()}
                         </p>
                     </div>
 
-                    <div className="relative z-50 h-[450px] overflow-hidden rounded-lg border border-gray-200 shadow-sm dark:border-white/10">
+                    <div className="relative z-50 h-[450px] overflow-hidden rounded-lg border">
                         <MapContainer center={center} zoom={12} className="h-full w-full">
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             {marker && (

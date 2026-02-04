@@ -1,6 +1,7 @@
 import BusinessDropdownMenu from '@/components/business-dropdown-menu';
 import MapDrawShapes from '@/components/maps/map-draw-shapes';
 import NameCell from '@/components/maps/name-cell';
+import { Button } from '@/components/ui/button';
 import useMapCenter from '@/hooks/use-map-center';
 import AppLayout from '@/layouts/app-layout';
 import { useCan } from '@/lib/can';
@@ -10,7 +11,6 @@ import { Head, router } from '@inertiajs/react';
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { Button } from '@/components/ui/button';
 
 interface IndexProps extends PageProps {
     maps: Map[];
@@ -28,7 +28,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
     const canDelete = useCan('maps.delete');
     const canShow = useCan('maps.show');
     const canAccess = useCan('business.access');
-    
+
     const t = useT();
 
     function handleBusinessChange(id: number | any) {
@@ -48,27 +48,27 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
     ];
 
     const mapsEdit = (map: Map) => {
-        router.get(route('maps.edit', map.id))
-    }
+        router.get(route('maps.edit', map.id));
+    };
 
     const mapsShow = (map: Map) => {
-        router.get(route('maps.show', map.id))
-    }
+        router.get(route('maps.show', map.id));
+    };
 
     const mapsDelete = (map: Map) => {
-        router.delete(route('maps.destroy', map.id))
-    }
+        router.delete(route('maps.destroy', map.id));
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('maps.index.title')} />
             <meta name="description" content="Manage maps and their shapes within the application" />
 
-            <div className="px-4">
-                <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="px-2 space-y-4 p-2">
+                <div className="flex justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('maps.index.label')}</h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{t('maps.index.text')}</p>
+                        <h1 className="text-xl font-bold dark:text-white">{t('maps.index.label')}</h1>
+                        <p className="text-sm text-muted-foreground">{t('maps.index.text')}</p>
                     </div>
 
                     {canAccess && (
@@ -76,69 +76,56 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                     )}
                 </div>
 
-                <div className="relative z-50 mb-10 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
+                <div className="relative z-50 rounded-lg border bg-white dark:bg-background">
                     {center ? (
-                        <MapContainer center={center} zoom={13} className="h-[550px] w-full rounded-lg">
+                        <MapContainer center={center} zoom={13} className="h-[500px] w-full rounded-lg">
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             <MapDrawShapes canCreate={canCreate} canUpdate={canUpdate} auth={auth} selectedBusinessId={currentBusinessId} />
                         </MapContainer>
                     ) : (
-                        <div className="p-6 text-center text-gray-600 dark:text-gray-400">{t('maps.index.empty')}...</div>
+                        <div className="p-6 text-center text-muted-foreground italic">{t('maps.index.empty')}...</div>
                     )}
                 </div>
 
-                <div className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
-                    <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent dark:scrollbar-thumb-gray-600 max-h-[340px] overflow-y-auto md:max-h-[230px]">
-                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-                            <thead className="sticky top-0 z-10 bg-gray-50 backdrop-blur-sm dark:bg-[#0f0f0f]/95">
-                                <tr>
-                                    <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.id')}</th>
-                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.name')}</th>
-                                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.created')}</th>
-                                    <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('maps.index.actions')}</th>
+                <div className="overflow-hidden rounded-lg border bg-white dark:bg-background">
+                    <div className="max-h-[305px] overflow-y-auto">
+                        <table className="min-w-full divide-y">
+                            <thead className="sticky top-0 z-10 bg-muted">
+                                <tr className="text-left">
+                                    <th className="px-4 py-2 dark:text-white">{t('maps.index.id')}</th>
+                                    <th className="px-4 py-2 dark:text-white">{t('maps.index.name')}</th>
+                                    <th className="px-4 py-2 dark:text-white">{t('maps.index.created')}</th>
+                                    <th className="px-4 py-2 text-right dark:text-white">{t('maps.index.actions')}</th>
                                 </tr>
                             </thead>
 
-                            <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                            <tbody className="divide-y">
                                 {maps.map((map) => (
-                                    <tr key={map.id} className="transition hover:bg-gray-50 dark:hover:bg-white/5">
-                                        <td className="py-4 pr-3 pl-6 text-sm text-gray-900 dark:text-gray-200">{map.id}</td>
-                                        <td className="px-3 py-4 text-sm text-gray-900 dark:text-gray-200">
+                                    <tr key={map.id} className="hover:bg-muted">
+                                        <td className="px-4 py-2 dark:text-white">{map.id}</td>
+
+                                        <td className="px-4 py-2 dark:text-white">
                                             <NameCell id={map.id ?? 0} name={map.name} activeId={activeId} setActiveId={setActiveId} />
                                         </td>
-                                        <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
-                                            {new Date(map.created_at).toLocaleString()}
-                                        </td>
-                                        <td className="py-4 pr-6 pl-3 text-right text-sm">
-                                            <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
-                                                {canShow && (
-                                                    <Button
-                                                        onClick={() => mapsShow(map)}
-                                                        variant="link"
-                                                        className="px-0"
-                                                    >
-                                                        {t('maps.index.show')}
-                                                    </Button>
-                                                )}
-                                                {canUpdate && (
-                                                    <Button
-                                                        onClick={() => mapsEdit(map)}
-                                                        variant="link"
-                                                        className="px-0"
-                                                    >
-                                                        {t('maps.index.edit')}
-                                                    </Button>
-                                                )}
-                                                {canDelete && (
-                                                    <Button
-                                                        onClick={() => mapsDelete(map)}
-                                                        variant="link"
-                                                        className="px-0 text-destructive"
-                                                    >
-                                                        {t('maps.index.delete')}
-                                                    </Button>
-                                                )}
-                                            </div>
+
+                                        <td className="px-4 py-2 text-muted-foreground">{new Date(map.created_at).toLocaleString()}</td>
+
+                                        <td className="space-x-2 px-4 py-2 text-right">
+                                            {canShow && (
+                                                <Button variant="link" className="px-0 text-blue-700 dark:text-blue-500" onClick={() => mapsShow(map)}>
+                                                    {t('maps.index.show')}
+                                                </Button>
+                                            )}
+                                            {canUpdate && (
+                                                <Button variant="link" className="px-0 text-yellow-700 dark:text-yellow-500" onClick={() => mapsEdit(map)}>
+                                                    {t('maps.index.edit')}
+                                                </Button>
+                                            )}
+                                            {canDelete && (
+                                                <Button variant="link" className="px-0 text-red-700 dark:text-red-500" onClick={() => mapsDelete(map)}>
+                                                    {t('maps.index.delete')}
+                                                </Button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

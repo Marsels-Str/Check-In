@@ -1,6 +1,7 @@
 import { useT } from '@/lib/t';
 import { router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Language, TranslationRow } from '@/types';
 import TranslationFilters from './translations-filters';
@@ -64,13 +65,12 @@ export default function TranslationsTable({ language, rows }: Props) {
 
     return (
         <div className="w-full space-y-4">
-            <div className="sticky top-0 z-20 space-y-2 rounded-md border bg-white dark:bg-background p-2 shadow-sm">
-                <input
+            <div className="sticky top-0 z-20 space-y-2 rounded-md border bg-white dark:bg-background p-2 shadow-xl">
+                <Input
                     id="search"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder={t('translations.index.search')}
-                    className="w-full rounded-md border border-border p-2"
                 />
 
                 <TranslationFilters
@@ -86,21 +86,22 @@ export default function TranslationsTable({ language, rows }: Props) {
                 />
             </div>
 
-            <div className="space-y-3 sm:hidden">
+            {/* Mobīlais skats */}
+            <div className="space-y-2 sm:hidden">
                 {filtered.slice(0, pageSize).map((row) => (
-                    <div key={row.id} className="rounded-md border border-border bg-background p-3 shadow-sm">
+                    <div key={row.id} className="rounded-md border border-border bg-background p-2 shadow-sm">
                         <div className="flex items-center justify-between">
                             <span className="font-mono text-xs text-muted-foreground">{row.key}</span>
-                            <Button variant="link" size="sm" onClick={() => editTranslation(row)}>
+                            <Button variant="link" className="text-yellow-700 dark:text-yellow-300" onClick={() => editTranslation(row)}>
                                 {t('translations.index.edit')}
                             </Button>
                         </div>
-                        <div className="mt-1 space-y-1">
+                        <div>
                             <p>
-                                <span className="font-semibold">{t('translations.index.original')}:</span> {row.original}
+                                <span className="font-bold">{t('translations.index.original')}:</span> {row.original}
                             </p>
                             <p>
-                                <span className="font-semibold">{t('translations.index.translation')}:</span> {row.translation ?? '—'}
+                                <span className="font-bold">{t('translations.index.translation')}:</span> {row.translation ?? '—'}
                             </p>
                         </div>
                     </div>
@@ -113,31 +114,32 @@ export default function TranslationsTable({ language, rows }: Props) {
                 )}
             </div>
 
-            <div className="hidden overflow-x-auto rounded-lg border border-border sm:block">
-                <table className="min-w-full text-sm">
-                    <thead className="bg-muted/50">
+            {/* Datora skats */}
+            <div className="overflow-x-auto rounded-lg border border-border">
+                <table className="min-w-full">
+                    <thead className="bg-muted">
                         <tr>
-                            <th className="px-4 py-2 text-left font-medium">{t('translations.index.key')}</th>
-                            <th className="px-4 py-2 text-left font-medium">{t('translations.index.original')}</th>
-                            <th className="px-4 py-2 text-left font-medium">{t('translations.index.translation')}</th>
-                            <th className="px-4 py-2 text-right font-medium">{t('translations.index.actions')}</th>
+                            <th className="px-4 py-2 text-left">{t('translations.index.key')}</th>
+                            <th className="px-4 py-2 text-left">{t('translations.index.original')}</th>
+                            <th className="px-4 py-2 text-left">{t('translations.index.translation')}</th>
+                            <th className="px-4 py-2 text-right">{t('translations.index.actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                         {filtered.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-4 py-6 text-center text-muted-foreground italic">
+                                <td colSpan={4} className="px-4 py-4 text-center text-muted-foreground italic">
                                     {t('translations.index.empty')}
                                 </td>
                             </tr>
                         ) : (
                             filtered.map((row) => (
-                                <tr key={row.id} className="hover:bg-muted/30">
+                                <tr key={row.id} className="hover:bg-muted">
                                     <td className="px-4 py-2 font-mono text-xs whitespace-nowrap">{row.key}</td>
                                     <td className="px-4 py-2">{row.original}</td>
                                     <td className="px-4 py-2">{row.translation ?? '—'}</td>
                                     <td className="px-4 py-2 text-right">
-                                        <Button variant="link" className="px-0" onClick={() => editTranslation(row)}>
+                                        <Button variant="link" className="px-0 text-yellow-700 dark:text-yellow-300" onClick={() => editTranslation(row)}>
                                             {t('translations.index.edit')}
                                         </Button>
                                     </td>
