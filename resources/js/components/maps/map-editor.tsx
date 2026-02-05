@@ -121,7 +121,7 @@ export default function MapDrawEditor({ map, data, setData }: Props) {
     };
 
     return (
-        <div className="relative z-50 h-96">
+        <div className="h-[400px]">
             <MapContainer center={boundsPoints[0] ?? [56.9496, 24.1052]} zoom={10} style={{ height: '100%', width: '100%' }}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 

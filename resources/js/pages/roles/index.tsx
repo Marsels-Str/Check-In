@@ -1,7 +1,8 @@
 import { useT } from '@/lib/t';
 import { useCan } from '@/lib/can';
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 import { BreadcrumbItem, BusinessProfile, Role } from '@/types';
 import RoleMobileView from '@/components/roles/role-index-mobile';
 import RoleDesktopView from '@/components/roles/role-index-desktop';
@@ -13,39 +14,36 @@ interface Props {
 
 export default function Index({ roles, businesses }: Props) {
     const t = useT();
-    
+
     const canCreate = useCan('roles.create');
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('breadcrumb.roles'),
-            href: '/roles'
-        }
+            href: '/roles',
+        },
     ];
+
+    const rolesCreate = () => {
+        router.get(route('roles.create'));
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('roles.index.title')} />
             <meta name="description" content="Manage roles and their permissions within the application" />
 
-            <div className="px-4">
-                <div className="mb-6 flex items-center justify-between">
+            <div className="p-2">
+                <div className="flex justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{t('roles.index.label')}</h1>
-                        <p className="text-sm text-gray-500">{t('roles.index.text')}</p>
+                        <h1 className="text-xl font-bold dark:text-white">{t('roles.index.label')}</h1>
+                        <p className="text-sm text-muted-foreground">{t('roles.index.text')}</p>
                     </div>
 
-                    {canCreate && (
-                        <Link
-                            href={route('roles.create')}
-                            className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                        >
-                            {t('roles.index.create')}
-                        </Link>
-                    )}
+                    {canCreate && <Button onClick={() => rolesCreate()}>{t('roles.index.create')}</Button>}
                 </div>
 
-                <RoleMobileView roles={roles} businesses={businesses}/>
+                <RoleMobileView roles={roles} businesses={businesses} />
 
                 <RoleDesktopView roles={roles} businesses={businesses} />
             </div>

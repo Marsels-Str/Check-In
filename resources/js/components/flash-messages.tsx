@@ -52,7 +52,7 @@ export default function FlashMessages() {
     }, []);
 
     return (
-        <div className="fixed top-6 right-6 z-50 flex flex-col gap-3">
+        <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3">
             {queue.map((msg) => (
                 <div
                     key={msg.id}

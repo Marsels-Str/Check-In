@@ -87,17 +87,21 @@ class MapController extends Controller
         $this->authorizeMapAccess($map, 'maps.update');
 
         $data = $request->validate([
-            'name'    => 'nullable|string|max:100',
-            'lat'     => 'nullable|numeric',
-            'lng'     => 'nullable|numeric',
-            'radius'  => 'nullable|numeric',
-            'polygon' => 'nullable',
-            'type'    => 'required|string|in:marker,circle,polygon',
+            'name' => 'required|string|max:100',
+
+            'type' => 'required|string|in:marker,circle,polygon',
+
+            'lat' => 'required_if:type,marker,circle|nullable|numeric',
+            'lng' => 'required_if:type,marker,circle|nullable|numeric',
+
+            'radius' => 'required_if:type,circle|nullable|numeric|min:1',
+
+            'polygon' => 'required_if:type,polygon|nullable',
         ]);
 
         $polygon = is_string($data['polygon']) ? json_decode($data['polygon'], true) : $data['polygon'];
         if (is_array($polygon) && count($polygon) < 3) {
-            return redirect()->route('maps.edit', $map->business_id)->with('error', t('maps.error.polygon'));
+            return redirect()->route('maps.edit', $map->id)->with('error', t('maps.error.polygon'));
         }
         $data['polygon'] = json_encode($polygon);
 

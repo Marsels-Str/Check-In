@@ -1,4 +1,3 @@
-import { useT } from '@/lib/t';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -7,6 +6,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useT } from '@/lib/t';
 import { BusinessProfile } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ interface Props {
 
 export default function BusinessDropdownMenu({ businesses, selectedBusinessId, onChange, label, align = 'end' }: Props) {
     const [currentId, setCurrentId] = useState<number | null>(selectedBusinessId);
-    
+
     const t = useT();
 
     const selectBusiness = t('dropdown.select.business');
@@ -32,52 +32,64 @@ export default function BusinessDropdownMenu({ businesses, selectedBusinessId, o
     }, [selectedBusinessId]);
 
     const selectedBusiness = businesses.find((b) => String(b.id) === String(currentId));
+    const isSelected = Boolean(currentId);
+
+    const base =
+        'inline-flex items-center justify-between rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-150 ease-out ring-1 ring-inset';
+
+    const yellow =
+        'bg-yellow-100 text-yellow-700 ring-yellow-300/50 hover:ring-2 hover:ring-yellow-400/70 dark:bg-yellow-900/30 dark:text-yellow-300 dark:ring-yellow-500/40 dark:hover:ring-yellow-400/70';
+
+    const green =
+        'bg-emerald-100 text-emerald-700 ring-emerald-300/50 hover:ring-2 hover:ring-emerald-400/70 dark:bg-emerald-900/30 dark:text-emerald-300 dark:ring-emerald-500/40 dark:hover:ring-emerald-400/70';
 
     return (
-        <div className="space-y-1">
-            {label && <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</p>}
+        <div>
+            {label && <p className="text-sm dark:text-white">{label}</p>}
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <button
-                        type="button"
-                        className="inline-flex items-center justify-between rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                    >
+                    <button type="button" className={`${base} ${isSelected ? green : yellow}`}>
                         {selectedBusiness?.name || selectBusiness}
                         <ChevronDown className="ml-2 h-4 w-4 opacity-80" />
                     </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align={align} className="w-56 bg-white dark:bg-[#0d0d0d]/90 dark:text-gray-100">
-                    <DropdownMenuLabel className="text-gray-600 dark:text-gray-400">{selectBusinessTitle}</DropdownMenuLabel>
-                    <DropdownMenuSeparator className="dark:bg-gray-700" />
+                <DropdownMenuContent align={align} className="w-56 bg-background dark:text-white">
+                    <DropdownMenuLabel className="dark:text-white">{selectBusinessTitle}</DropdownMenuLabel>
+
+                    <DropdownMenuSeparator />
 
                     <DropdownMenuItem
                         onClick={() => {
                             setCurrentId(null);
                             onChange(null);
                         }}
-                        className="text-gray-500 italic"
+                        className="text-muted-foreground italic"
                     >
-                       {t('dropdown.select.business')}
+                        {t('dropdown.select.business')}
                     </DropdownMenuItem>
 
                     <DropdownMenuSeparator />
 
-                    {businesses.map((b) => (
-                        <DropdownMenuItem
-                            key={b.id}
-                            onClick={() => {
-                                setCurrentId(b.id);
-                                onChange(b.id);
-                            }}
-                            className={`cursor-pointer ${
-                                (b.id) === (currentId) ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : ''
-                            }`}
-                        >
-                            {b.name}
-                        </DropdownMenuItem>
-                    ))}
+                    {businesses.map((b) => {
+                        const active = b.id === currentId;
+
+                        return (
+                            <DropdownMenuItem
+                                key={b.id}
+                                onClick={() => {
+                                    setCurrentId(b.id);
+                                    onChange(b.id);
+                                }}
+                                className={`cursor-pointer transition ${
+                                    active ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300' : 'hover:bg-muted'
+                                }`}
+                            >
+                                {b.name}
+                            </DropdownMenuItem>
+                        );
+                    })}
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>

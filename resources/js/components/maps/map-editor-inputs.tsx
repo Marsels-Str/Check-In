@@ -1,7 +1,8 @@
-import { useT } from '@/lib/t';
-import { EditableMap } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useT } from '@/lib/t';
+import { EditableMap } from '@/types';
+import InputError from '../input-error';
 
 interface Props {
     map: EditableMap;
@@ -13,7 +14,7 @@ export default function MapEditorInputs({ map, setData, errors = {} }: Props) {
     const t = useT();
 
     return (
-        <div className="space-y-4">
+        <div>
             {map.type === 'marker' && (
                 <>
                     <MapInput label={t('maps.edit.lat')} value={map.lat} onChange={(v) => setData('lat', v)} error={errors?.lat} />
@@ -35,8 +36,8 @@ export default function MapEditorInputs({ map, setData, errors = {} }: Props) {
                     <textarea
                         value={map.polygon}
                         onChange={(e) => setData('polygon', e.target.value)}
-                        className="mt-1 w-full rounded-md border p-2"
-                        rows={3}
+                        className="w-full rounded-md border"
+                        rows={4}
                     />
                     {errors.polygon && <div className="text-sm text-red-500">{errors.polygon}</div>}
                 </div>
@@ -49,8 +50,8 @@ function MapInput({ label, value, onChange, error }: { label: string; value: any
     return (
         <div>
             <Label>{label}</Label>
-            <Input step="any" value={value ?? ''} onChange={(e) => onChange(e.target.value)} className="mt-1" />
-            {error && <div className="text-sm text-red-500">{error}</div>}
+            <Input step="any" value={value ?? ''} onChange={(e) => onChange(e.target.value)} />
+            <InputError message={error} />
         </div>
     );
 }

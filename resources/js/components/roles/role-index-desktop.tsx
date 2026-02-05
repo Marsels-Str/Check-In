@@ -30,44 +30,44 @@ export default function RolesDesktopView({ roles, businesses }: Props) {
     };
 
     return (
-        <div className="hidden overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm md:block dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-                <thead className="bg-gray-50 dark:bg-transparent">
+        <div className="hidden overflow-hidden rounded-lg border bg-background shadow-xl md:block">
+            <table className="min-w-full divide-y">
+                <thead className="bg-muted">
                     <tr>
-                        <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.id')}</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.name')}</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.permissions')}</th>
-                        {canAccess && <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.business')}</th>}
-                        <th className="py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('roles.index.actions')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('roles.index.id')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('roles.index.name')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('roles.index.permissions')}</th>
+                        {canAccess && <th className="px-4 py-2 text-left font-bold dark:text-white">{t('roles.index.business')}</th>}
+                        <th className="px-4 py-2 text-right font-bold dark:text-white">{t('roles.index.actions')}</th>
                     </tr>
                 </thead>
 
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                <tbody className="divide-y">
                     {roles.map((role) => (
-                        <tr key={role.id} className="transition hover:bg-gray-50 dark:hover:bg-white/5">
-                            <td className="py-4 pr-3 pl-6 text-sm font-medium text-gray-900 dark:text-gray-200">{role.id}</td>
-                            <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">{role.name}</td>
-                            <td className="px-3 py-4 text-sm">
+                        <tr key={role.id} className="hover:bg-muted">
+                            <td className="px-4 py-2 dark:text-white">{role.id}</td>
+                            <td className="px-4 py-2 dark:text-white">{role.name}</td>
+                            <td className="px-4 py-2">
                                 {canShow && (
-                                    <Button variant="link" className="px-0" onClick={() => showRole(role)}>
+                                    <Button variant="link" className="px-0 text-blue-700 dark:text-blue-500" onClick={() => showRole(role)}>
                                         {t('roles.index.show')}
                                     </Button>
                                 )}
                             </td>
                             {canAccess && (
-                                <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
+                                <td className="px-4 py-2 dark:text-white">
                                     {role.business_id ? businesses.find(b => b.id === role.business_id)?.name : 'Global'}
                                 </td>
                             )}
-                            <td className="py-4 pr-6 pl-3 text-right text-sm">
-                                <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
+                            <td className="px-4 py-2 text-right">
+                                <div className="flex justify-end space-x-2 dark:text-white">
                                     {canEdit && (
-                                        <Button variant="link" className="px-0" onClick={() => editRole(role)}>
+                                        <Button variant="link" className="px-0 text-yellow-700 dark:text-yellow-500" onClick={() => editRole(role)}>
                                             {t('roles.index.edit')}
                                         </Button>
                                     )}
                                     {canDelete && (
-                                        <Button variant="link" className="px-0 text-destructive" onClick={() => deleteRole(role)}>
+                                        <Button variant="link" className="px-0 text-red-700 dark:text-red-500" onClick={() => deleteRole(role)}>
                                             {t('roles.index.delete')}
                                         </Button>
                                     )}
