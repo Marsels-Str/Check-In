@@ -2,7 +2,7 @@ import { useT } from '@/lib/t';
 import { User } from '@/types';
 
 interface Props {
-    active: boolean;
+    active: any;
     viewer?: User;
     target?: User;
 }

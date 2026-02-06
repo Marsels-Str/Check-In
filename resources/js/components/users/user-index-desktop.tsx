@@ -40,61 +40,57 @@ export default function UsersDesktopView({ users, currentUser }: Props) {
     };
 
     return (
-        <div className="hidden overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm md:block dark:border-white/10 dark:bg-[#080808]/80 dark:shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-                <thead className="bg-gray-50 dark:bg-transparent">
+        <div className="hidden overflow-hidden rounded-lg border bg-background shadow-xl md:block">
+            <table className="min-w-full divide-y">
+                <thead className="bg-muted">
                     <tr>
-                        <th className="py-3.5 pr-3 pl-6 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('users.index.name')}</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('users.index.business')}</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('users.index.role')}</th>
-                        <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-300">{t('users.index.status')}</th>
-                        <th className="relative py-3.5 pr-6 pl-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-300">{t('users.index.actions')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('users.index.name')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('users.index.business')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('users.index.role')}</th>
+                        <th className="px-4 py-2 text-left font-bold dark:text-white">{t('users.index.status')}</th>
+                        <th className="px-4 py-2 text-right font-bold dark:text-white">{t('users.index.actions')}</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                <tbody className="divide-y">
                     {visibleUsers.map((user) => (
-                        <tr key={user.id} className="transition hover:bg-gray-50 dark:hover:bg-white/5">
-                            <td className="py-4 pr-3 pl-6 text-sm font-medium text-gray-900 dark:text-gray-200">
-                                <div className="flex items-center gap-3">
+                        <tr key={user.id} className="hover:bg-muted">
+                            <td className="px-4 py-2 dark:text-white">
+                                <div className="flex items-center gap-2">
                                     <UserAvatar user={user} />
                                     <div>
-                                        <div className="font-medium">{user.name}</div>
-                                        <div className="text-xs text-gray-500 dark:text-gray-400">{user.email}</div>
+                                        <div>{user.name}</div>
+                                        <div className="text-sm text-muted-foreground">{user.email}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
+                            <td className="px-4 py-2 dark:text-white">
                                 <BusinessName user={user} />
                             </td>
-                            <td className="px-3 py-4 text-sm text-gray-700 dark:text-gray-300">
+                            <td className="px-4 py-2 dark:text-white">
                                 <RoleName user={user} />
                             </td>
-                            <td className="px-3 py-4 text-sm">
-                                <StatusBadge active={user.is_active === 1} viewer={currentUser} target={user} />
+                            <td className="px-4 py-2">
+                                <StatusBadge active={user.is_clocked_in} viewer={currentUser} target={user} />
                             </td>
-                            <td className="relative py-4 pr-6 pl-3 text-right text-sm">
-                                <div className="flex justify-end gap-3 text-gray-600 dark:text-gray-400">
+                            <td className="px-4 py-2 text-right">
+                                <div className="flex justify-end space-x-2 dark:text-white">
                                     {canAssign && (
                                         <Button variant="link" className="px-0" onClick={() => assignRole(user)}>
                                             {t('users.index.assign')}
                                         </Button>
                                     )}
                                     {canShow && (
-                                        <Button variant="link" className="px-0" onClick={() => showUser(user)}>
+                                        <Button variant="link" className="px-0 text-blue-700 dark:text-blue-500" onClick={() => showUser(user)}>
                                             {t('users.index.show')}
                                         </Button>
                                     )}
                                     {canUpdate && (
-                                        <Button variant="link" className="px-0" onClick={() => editUser(user)}>
+                                        <Button variant="link" className="px-0 text-yellow-700 dark:text-yellow-500" onClick={() => editUser(user)}>
                                             {t('users.index.edit')}
                                         </Button>
                                     )}
                                     {canDelete && (
-                                        <Button
-                                            variant="link"
-                                            onClick={() => deleteUser(user)}
-                                            className="px-0 text-destructive"
-                                        >
+                                        <Button variant="link" onClick={() => deleteUser(user)} className="px-0 text-red-700 dark:text-red-500">
                                             {t('users.index.delete')}
                                         </Button>
                                     )}

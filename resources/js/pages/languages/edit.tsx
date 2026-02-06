@@ -38,7 +38,7 @@ export default function EditLanguage({ language }: Props) {
                 <Form
                     method="put"
                     action={route('languages.update', language.id)}
-                    className="rounded-xl border bg-background p-6 shadow-xl dark:border-white dark:bg-background"
+                    className="rounded-xl border bg-background p-6 shadow-xl"
                 >
                     {({ errors }) => (
                         <div className="space-y-2">

@@ -33,7 +33,7 @@ export default function CreateLanguage() {
                 <Form
                     method="post"
                     action={route('languages.store')}
-                    className="rounded-xl border bg-background p-6 shadow-xl dark:border-white dark:bg-background"
+                    className="rounded-xl border bg-background p-6 shadow-xl"
                 >
                     {({ errors }) => (
                         <div className="space-y-2">

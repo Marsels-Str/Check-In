@@ -9,11 +9,11 @@ export default function UserCreateFields() {
     const t = useT();
     
     return (
-        <div className="mx-auto w-full max-w-md">
-            <Form method="post" action={route('users.store')} className="space-y-6 rounded-lg px-6 py-6">
+        <div>
+            <Form method="post" action={route('users.store')} className="rounded-lg px-4 py-2">
                 {({ errors }) => (
                     <>
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             <div>
                                 <Label htmlFor="name">{t('users.create.name')}</Label>
                                 <Input id="name" name="name" />
@@ -33,11 +33,8 @@ export default function UserCreateFields() {
                             </div>
                         </div>
 
-                        <div className="pt-4 text-center">
-                            <Button
-                                type="submit"
-                                className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                            >
+                        <div className="p-2 text-center">
+                            <Button variant="default">
                                 {t('users.create.create')}
                             </Button>
                         </div>

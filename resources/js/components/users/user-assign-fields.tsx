@@ -26,14 +26,14 @@ export default function RoleAssignFields({ user, globalRoles, businessRoles, use
             {({ errors }) => (
                 <>
                     <div className="space-y-4">
-                        <div className="mx-auto w-full max-w-md space-y-3 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm">
-                            <h3 className="mb-2 text-sm font-semibold text-gray-500">{t('users.roles.global')}</h3>
+                        <div className="mx-auto max-w-md space-y-2 rounded-lg px-4 py-2 shadow-md border">
+                            <h3 className="text-sm font-bold text-muted-foreground">{t('users.roles.global')}</h3>
 
                             {globalRoles.map((role) => (
                                 <Label
                                     key={role.id}
                                     htmlFor={`role-${role.id}`}
-                                    className="flex cursor-pointer items-center justify-between rounded-md border border-white/10 px-3 py-2 transition hover:bg-yellow-500/30"
+                                    className="flex cursor-pointer justify-between rounded-lg border px-2 py-2 hover:bg-muted"
                                 >
                                     <span className="text-sm font-medium">{role.name}</span>
                                     <Input
@@ -43,20 +43,20 @@ export default function RoleAssignFields({ user, globalRoles, businessRoles, use
                                         value={role.id}
                                         checked={currentRole === role.id}
                                         onChange={() => setCurrentRole(role.id)}
-                                        className="h-4 w-4 accent-pink-500"
+                                        className="h-4 w-4 accent-emerald-600 dark:accent-emerald-500"
                                     />
                                 </Label>
                             ))}
                         </div>
 
-                        <div className="mx-auto w-full max-w-md space-y-3 rounded-lg px-6 py-6 shadow ring-1 ring-white/10 backdrop-blur-sm">
-                            <h3 className="mb-2 text-sm font-semibold text-gray-500">{t('users.roles.business')}</h3>
+                        <div className="mx-auto max-w-md space-y-2 rounded-lg px-4 py-2 shadow-md border">
+                            <h3 className="text-sm font-bold text-muted-foreground">{t('users.roles.business')}</h3>
 
                             {businessRoles.map((role) => (
                                 <Label
                                     key={role.id}
                                     htmlFor={`role-${role.id}`}
-                                    className="flex cursor-pointer items-center justify-between rounded-md border border-white/10 px-3 py-2 transition hover:bg-yellow-500/30"
+                                    className="flex cursor-pointer justify-between rounded-md border px-2 py-2 hover:bg-muted"
                                 >
                                     <span className="text-sm font-medium">{role.name}</span>
                                     <Input
@@ -66,7 +66,7 @@ export default function RoleAssignFields({ user, globalRoles, businessRoles, use
                                         value={role.id}
                                         checked={currentRole === role.id}
                                         onChange={() => setCurrentRole(role.id)}
-                                        className="h-4 w-4 accent-pink-500"
+                                        className="h-4 w-4 accent-emerald-600 dark:accent-emerald-500"
                                     />
                                 </Label>
                             ))}
@@ -75,8 +75,8 @@ export default function RoleAssignFields({ user, globalRoles, businessRoles, use
                         <InputError message={errors.role_ids} />
                     </div>
 
-                    <div className="pt-4 text-center">
-                        <Button type="submit">{t('users.roles.assign')}</Button>
+                    <div className="p-2 text-center">
+                        <Button variant="default">{t('users.roles.assign')}</Button>
                     </div>
                 </>
             )}
