@@ -13,58 +13,31 @@ use App\Http\Controllers\Controller;
 
 class GroupController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $user = $request->user();
-
-    //     $groups = match (true) {
-    //         $user->hasRole('Owner') => Group::with('business')->get(),
-            
-    //         $user->can('groups.view') && $user->hasRole('Business') && $user->ownedBusiness =>
-    //             Group::with('business')
-    //                 ->where('business_id', $user->ownedBusiness->id)
-    //                 ->get(),
-            
-    //         $user->can('groups.view') =>
-    //             Group::whereHas('users',  fn($q) => $q->where('users.id', $user->id))
-    //                 ->whereIn('business_id', $user->businesses()->pluck('businesses.id'))
-    //                 ->with('business')
-    //                 ->get(),
-            
-    //         default => collect(),
-    //     };
-
-    //     return Inertia::render('groups/index', compact('groups'));
-    // }
-
     public function index(Request $request)
-{
-    $user = $request->user();
+    {
+        $user = $request->user();
 
-    // fetch IDs of businesses the user belongs to
-    // $userBusinessIds = $user->businesses()->pluck('id');
-    $userBusinessIds = $user->businesses()->pluck('businesses.id');
+        $userBusinessIds = $user->businesses()->pluck('businesses.id');
 
-    $groups = match (true) {
-        $user->hasRole('Owner') => Group::with('business')->get(),
+        $groups = match (true) {
+            $user->hasRole('Owner') => Group::with('business')->get(),
 
-        $user->can('groups.view') && $user->hasRole('Business') && $user->ownedBusiness =>
-            Group::with('business')
-                ->where('business_id', $user->ownedBusiness->id)
-                ->get(),
+            $user->can('groups.view') && $user->hasRole('Business') && $user->ownedBusiness =>
+                Group::with('business')
+                    ->where('business_id', $user->ownedBusiness->id)
+                    ->get(),
 
-        $user->can('groups.view') =>
-            Group::with('business')
-                ->whereHas('users', fn($q) => $q->where('users.id', $user->id))
-                ->whereIn('business_id', $userBusinessIds)
-                ->get(),
+            $user->can('groups.view') =>
+                Group::with('business')
+                    ->whereHas('users', fn($q) => $q->where('users.id', $user->id))
+                    ->whereIn('business_id', $userBusinessIds)
+                    ->get(),
 
-        default => collect(),
-    };
+            default => collect(),
+        };
 
-    return Inertia::render('groups/index', compact('groups'));
-}
-
+        return Inertia::render('groups/index', compact('groups'));
+    }
 
     public function create(Request $request)
     {

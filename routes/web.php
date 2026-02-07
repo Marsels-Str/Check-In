@@ -71,8 +71,6 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complet
     Route::delete('/groups/{group}/detach-map', [GroupController::class, 'detachMap'])->name('groups.detach-map')->middleware('permission:groups.detachMap');
     Route::post('/groups/{group}/users', [GroupController::class, 'updateUsers'])->name('groups.update-users')->middleware('permission:groups.addUsers');
     Route::delete('/groups/{group}/users/{user}', [GroupController::class, 'removeUser'])->name('groups.remove-users')->middleware('permission:groups.removeUsers');
-    
-    //Group Images
     Route::delete('/groups/images/{id}', [GroupImageController::class, 'destroy'])->name('groupImages.destroy')->middleware('permission:groups.removeImage');
     Route::post('/groups/{group}/images', [GroupImageController::class, 'store'])->name('groups.images.store')->middleware('permission:groups.addImage');
 

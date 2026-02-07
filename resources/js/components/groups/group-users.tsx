@@ -1,13 +1,13 @@
 import { useT } from '@/lib/t';
 import { useState } from 'react';
 import { useCan } from '@/lib/can';
-import { User, Group } from '@/types';
+import { User, GroupUser } from '@/types';
 import { router } from '@inertiajs/react';
 import AddUserModal from './add-user-modal';
 import { Button } from '@/components/ui/button';
 
 interface Props {
-    group: Group;
+    group: GroupUser;
     users: User[];
 }
 
@@ -23,19 +23,15 @@ export default function GroupUsers({ group, users }: Props) {
     };
 
     return (
-        <div className="mt-6">
-            <h2 className="text-lg font-semibold">{t('groups.show.users.label')}:</h2>
+        <div>
+            <h2 className="text-lg font-bold">{t('groups.show.users.label')}:</h2>
 
-            <ul className="my-2">
+            <ul>
                 {group.users?.map((user: User) => (
                     <li key={user.id} className="flex items-center">
                         <span>{user.name}</span>
                         {canRemoveUsers && (
-                            <Button
-                                onClick={() => userRemove(user)}
-                                variant="link"
-                                className="text-destructive"
-                            >
+                            <Button variant="link" className="text-red-700 dark:text-red-500" onClick={() => userRemove(user)}>
                                 {t('groups.show.users.remove')}
                             </Button>
                         )}
@@ -44,10 +40,7 @@ export default function GroupUsers({ group, users }: Props) {
             </ul>
 
             {canAddUsers && (
-                <Button
-                    onClick={() => setIsModalOpen(true)}
-                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                >
+                <Button variant="default" onClick={() => setIsModalOpen(true)}>
                     {t('groups.show.users.add')}
                     {/* Add User (Priekš testa atkomentēt) */}
                 </Button>

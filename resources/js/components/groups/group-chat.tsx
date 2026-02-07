@@ -1,6 +1,7 @@
-import { useEcho } from '@laravel/echo-react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { useEcho } from '@laravel/echo-react';
 
 type ChatMessage = {
     id: number;
@@ -18,8 +19,8 @@ export default function GroupChat({ groupId }: { groupId: number }) {
     }, [groupId]);
 
     useEcho<ChatMessage>(`group.${groupId}`, 'GroupMessageSent', (e) => {
-        setMessages(prev => {
-            if (prev.some(m => m.id === e.id)) return prev;
+        setMessages((prev) => {
+            if (prev.some((m) => m.id === e.id)) return prev;
             return [...prev, e];
         });
     });
@@ -29,8 +30,8 @@ export default function GroupChat({ groupId }: { groupId: number }) {
 
         const res = await axios.post(`/groups/${groupId}/messages`, { message: text });
 
-        setMessages(prev => {
-            if (prev.some(m => m.id === res.data.id)) return prev;
+        setMessages((prev) => {
+            if (prev.some((m) => m.id === res.data.id)) return prev;
             return [...prev, res.data];
         });
 
@@ -38,17 +39,17 @@ export default function GroupChat({ groupId }: { groupId: number }) {
     };
 
     return (
-        <div className="flex flex-col gap-3">
-            <div className="max-h-64 space-y-2 overflow-y-auto">
+        <div className="flex flex-col">
+            <div className="max-h-64 overflow-y-auto">
                 {messages.map((m) => (
-                    <div key={m.id} className="text-sm">
+                    <div key={m.id}>
                         <strong>{m.user.name}:</strong> {m.message}
                     </div>
                 ))}
             </div>
 
-            <input
-                className="rounded border px-3 py-2 text-sm"
+            <Input
+                className="rounded-xl border"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
@@ -56,3 +57,7 @@ export default function GroupChat({ groupId }: { groupId: number }) {
         </div>
     );
 }
+
+
+
+// PASKATĪTIEs MOBILE VIEW VISAM, KAS SAISTĪTS AR GRUPĀM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

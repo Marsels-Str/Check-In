@@ -1,61 +1,52 @@
 import { useT } from '@/lib/t';
+import { User } from '@/types';
 import { Form } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
 
-export default function AddUserModal({ isOpen, onClose, groupId, users }: any) {
+interface Props {
+    isOpen: boolean;
+    onClose: () => void;
+    groupId: number;
+    users: User[];
+}
 
+export default function AddUserModal({ isOpen, onClose, groupId, users }: Props) {
     if (!isOpen) return null;
 
     const t = useT();
 
     return (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-md">
-            <div className="relative z-[100000] w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-[#0f0f0f] dark:text-gray-100">
+            <div className="w-full max-w-md rounded-xl border bg-background p-2">
                 <Form method="post" action={route('groups.update-users', groupId)} className="space-y-4">
                     {({ errors }) => (
                         <>
-                            <div className="space-y-2">
-
-                                <div className="space-y-2">
-                                    <h1 className="text-lg font-bold">{t('groups.show.users.add.label')}:</h1>
-                                    <div className="grid max-h-64 grid-cols-1 gap-2 overflow-y-auto">
-                                        {users.map((user: any) => (
-                                            <Label
-                                                key={user.id}
-                                                htmlFor={`user-${user.id}`}
-                                                className="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 hover:bg-gray-100 dark:border-gray-600 dark:bg-[#101010] dark:hover:bg-[#1a1a1a]"
-                                            >
-                                                <Input
-                                                    type="checkbox"
-                                                    name="user_ids[]"
-                                                    value={user.id}
-                                                    id={`user-${user.id}`}
-                                                    className="h-4 w-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-400 dark:border-gray-500 dark:bg-gray-800 dark:focus:ring-yellow-500"
-                                                />
-                                                <span className="text-gray-800 dark:text-gray-200">{user.name}</span>
-                                            </Label>
-                                        ))}
-                                    </div>
-                                    <InputError message={errors.user_ids} />
+                            <div>
+                                <h1 className="text-lg font-bold">{t('groups.show.users.add.label')}:</h1>
+                                <div>
+                                    {users.map((user: any) => (
+                                        <Label
+                                            key={user.id}
+                                            htmlFor={`user-${user.id}`}
+                                            className="flex cursor-pointer space-x-2 rounded-lg border bg-background px-4 py-2 hover:bg-muted"
+                                        >
+                                            <Input type="checkbox" name="user_ids[]" value={user.id} id={`user-${user.id}`} className="h-4 w-4" />
+                                            <span className="dark:text-white">{user.name}</span>
+                                        </Label>
+                                    ))}
                                 </div>
+                                <InputError message={errors.user_ids} />
                             </div>
 
-                            <div className="flex justify-end gap-3 pt-2">
-                                <Button
-                                    onClick={onClose}
-                                    variant="link"
-                                    className="px-0">
+                            <div className="flex justify-end space-x-2">
+                                <Button variant="destructive" onClick={onClose}>
                                     {t('groups.show.users.add.cancel')}
                                 </Button>
 
-                                <Button
-                                    variant="link"
-                                    className="px-0">
-                                    {t('groups.show.users.add.add')}
-                                </Button>
+                                <Button variant="default">{t('groups.show.users.add.add')}</Button>
                             </div>
                         </>
                     )}

@@ -122,12 +122,31 @@ export interface Roles {
     userRole: number[];
 }
 
-export interface Group {
+export interface Group { 
     id: number;
     name: string;
-    business_id: number;
     description?: string;
-    users?: User[];
+}
+
+export interface Image {
+    id: number;
+    image_blob: string;
+}
+
+export interface GroupIndex extends Group{
+    business: BusinessProfile;
+}
+
+export interface GroupImage extends Group{
+    images: Image[];
+}
+
+export interface GroupMaps extends Group{
+    map: Map;
+}
+
+export interface GroupUser extends Group{
+    users: User[];
 }
 
 export interface ClockingSettings {
