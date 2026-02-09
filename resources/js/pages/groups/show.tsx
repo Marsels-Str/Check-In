@@ -2,10 +2,10 @@ import { useT } from '@/lib/t';
 import AppLayout from '@/layouts/app-layout';
 import { Head, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import GroupMap from '@/components/groups/group-map';
-import GroupChat from '@/components/groups/group-chat';
-import GroupUsers from '@/components/groups/group-users';
-import GroupImages from '@/components/groups/group-images';
+import GroupMap from '@/components/groups/show-sections/group-map';
+import GroupChat from '@/components/groups/show-sections/group-chat';
+import GroupUsers from '@/components/groups/show-sections/group-users';
+import GroupImages from '@/components/groups/show-sections/group-images';
 import { BreadcrumbItem, GroupImage, GroupIndex, GroupMaps, GroupUser, User } from '@/types';
 
 type ShowGroup = GroupIndex & GroupUser & GroupImage & GroupMaps;

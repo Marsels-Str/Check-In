@@ -57,7 +57,7 @@ export default function LanguagesTable({ languages, originals }: Props) {
                     <tbody className="divide-y">
                         {filtered.length === 0 && (
                             <tr>
-                                <td colSpan={3} className="px-4 py-4 text-center text-muted-foreground italic">
+                                <td colSpan={3} className="px-4 py-2 text-center text-muted-foreground italic">
                                     {t('languages.index.empty')}
                                 </td>
                             </tr>

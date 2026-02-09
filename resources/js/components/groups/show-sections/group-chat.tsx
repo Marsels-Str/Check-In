@@ -57,7 +57,3 @@ export default function GroupChat({ groupId }: { groupId: number }) {
         </div>
     );
 }
-
-
-
-// PASKATĪTIEs MOBILE VIEW VISAM, KAS SAISTĪTS AR GRUPĀM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -43,9 +43,11 @@ export default function EmployeeSearchAndAdd({ businesses, selectedBusinessId }:
                             <BusinessDropdownMenu
                                 businesses={businesses}
                                 selectedBusinessId={businessId}
+
                                 onChange={(id) => {
-                                    const newId = Number(id);
+                                    const newId = id ? Number(id) : null;
                                     setBusinessId(newId);
+
                                     router.visit(route('employees.index'), {
                                         data: { business_id: newId },
                                         only: ['employees', 'selectedBusinessId'],

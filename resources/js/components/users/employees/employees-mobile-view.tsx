@@ -17,6 +17,10 @@ export default function EmployeeMobileView({ employees }: Props) {
 
     const t = useT();
 
+    if (!employees.length) {
+        return <div className="rounded-xl border px-4 py-2 text-center text-muted-foreground italic md:hidden">{t('employees.index.empty')}</div>;
+    }
+
     return (
         <div className="space-y-3 md:hidden">
             {employees.map((employee: User) => (

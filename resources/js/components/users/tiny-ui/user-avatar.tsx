@@ -5,7 +5,7 @@ export default function UserAvatar({ user }: { user: User }) {
         <img
             src={user.profile.portrait}
             alt={user.name}
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-full object-cover"
         />
     ) : (
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-300">

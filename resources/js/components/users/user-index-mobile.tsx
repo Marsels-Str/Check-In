@@ -39,6 +39,10 @@ export default function UserMobileView({ users, currentUser }: Props) {
         router.delete(route('users.destroy', user.id));
     };
 
+    if (!visibleUsers.length) {
+        return <div className="rounded-xl border px-4 py-2 text-center text-muted-foreground italic md:hidden">{t('users.index.empty')}</div>;
+    }
+
     return (
         <div className="space-y-3 md:hidden">
             {visibleUsers.map((user) => (

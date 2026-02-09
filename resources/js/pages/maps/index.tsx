@@ -64,7 +64,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
             <Head title={t('maps.index.title')} />
             <meta name="description" content="Manage maps and their shapes within the application" />
 
-            <div className="px-2 space-y-4 p-2">
+            <div className="space-y-4 p-2 px-2">
                 <div className="flex justify-between">
                     <div>
                         <h1 className="text-xl font-bold dark:text-white">{t('maps.index.label')}</h1>
@@ -83,7 +83,7 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                             <MapDrawShapes canCreate={canCreate} canUpdate={canUpdate} auth={auth} selectedBusinessId={currentBusinessId} />
                         </MapContainer>
                     ) : (
-                        <div className="p-6 text-center text-muted-foreground italic">{t('maps.index.empty')}...</div>
+                        <div className="p-6 text-center text-muted-foreground italic">{t('maps.index.loading')}...</div>
                     )}
                 </div>
 
@@ -100,35 +100,55 @@ export default function Index({ maps, auth, businesses, selectedBusinessId, prof
                             </thead>
 
                             <tbody className="divide-y">
-                                {maps.map((map) => (
-                                    <tr key={map.id} className="hover:bg-muted">
-                                        <td className="px-4 py-2 dark:text-white">{map.id}</td>
+                                {maps.length ? (
+                                    maps.map((map) => (
+                                        <tr key={map.id} className="hover:bg-muted">
+                                            <td className="px-4 py-2 dark:text-white">{map.id}</td>
 
-                                        <td className="px-4 py-2 dark:text-white">
-                                            <NameCell id={map.id ?? 0} name={map.name} activeId={activeId} setActiveId={setActiveId} />
-                                        </td>
+                                            <td className="px-4 py-2 dark:text-white">
+                                                <NameCell id={map.id ?? 0} name={map.name} activeId={activeId} setActiveId={setActiveId} />
+                                            </td>
 
-                                        <td className="px-4 py-2 text-muted-foreground">{new Date(map.created_at).toLocaleString()}</td>
+                                            <td className="px-4 py-2 text-muted-foreground">{new Date(map.created_at).toLocaleString()}</td>
 
-                                        <td className="space-x-2 px-4 py-2 text-right">
-                                            {canShow && (
-                                                <Button variant="link" className="px-0 text-blue-700 dark:text-blue-500" onClick={() => mapsShow(map)}>
-                                                    {t('maps.index.show')}
-                                                </Button>
-                                            )}
-                                            {canUpdate && (
-                                                <Button variant="link" className="px-0 text-yellow-700 dark:text-yellow-500" onClick={() => mapsEdit(map)}>
-                                                    {t('maps.index.edit')}
-                                                </Button>
-                                            )}
-                                            {canDelete && (
-                                                <Button variant="link" className="px-0 text-red-700 dark:text-red-500" onClick={() => mapsDelete(map)}>
-                                                    {t('maps.index.delete')}
-                                                </Button>
-                                            )}
+                                            <td className="space-x-2 px-4 py-2 text-right">
+                                                {canShow && (
+                                                    <Button
+                                                        variant="link"
+                                                        className="px-0 text-blue-700 dark:text-blue-500"
+                                                        onClick={() => mapsShow(map)}
+                                                    >
+                                                        {t('maps.index.show')}
+                                                    </Button>
+                                                )}
+                                                {canUpdate && (
+                                                    <Button
+                                                        variant="link"
+                                                        className="px-0 text-yellow-700 dark:text-yellow-500"
+                                                        onClick={() => mapsEdit(map)}
+                                                    >
+                                                        {t('maps.index.edit')}
+                                                    </Button>
+                                                )}
+                                                {canDelete && (
+                                                    <Button
+                                                        variant="link"
+                                                        className="px-0 text-red-700 dark:text-red-500"
+                                                        onClick={() => mapsDelete(map)}
+                                                    >
+                                                        {t('maps.index.delete')}
+                                                    </Button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={4} className="px-4 py-2 text-center text-muted-foreground italic">
+                                            {t('maps.index.empty')}
                                         </td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>

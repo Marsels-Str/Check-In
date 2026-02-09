@@ -69,7 +69,7 @@ export default function EmployeeDesktopView({ employees, businessUserCount }: Pr
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={4} className="px-2 py-4 text-center text-muted-foreground">
+                                <td colSpan={4} className="px-2 py-4 text-center text-muted-foreground italic">
                                     {t('employees.index.empty')}
                                 </td>
                             </tr>
