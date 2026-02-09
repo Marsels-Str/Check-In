@@ -36,7 +36,7 @@ export interface TimeLog {
 }
 
 export interface EmptyState {
-    empty?: 'nothing-to-show';
+    empty?: 'nothing-to-show' | 'no-business';
 }
 
 export interface DiagramState<T> extends EmptyState {

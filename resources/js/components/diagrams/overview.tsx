@@ -14,7 +14,7 @@ export default function OverviewCard() {
 
     if (empty === 'nothing-to-show') {
         return (
-            <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
+            <div className="flex h-64 items-center justify-center rounded-xl italic text-muted-foreground">
                 {t('dashboard.diagrams.overview.empty')}
             </div>
         );

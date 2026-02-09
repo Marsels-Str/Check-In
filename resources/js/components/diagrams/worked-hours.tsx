@@ -14,16 +14,16 @@ export default function WorkedHoursDiagram() {
 
     if (empty === 'nothing-to-show') {
         return (
-            <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
+            <div className="flex h-64 items-center justify-center rounded-xl itlalic text-muted-foreground">
                 {t('dashboard.diagrams.hours.empty')}
             </div>
         );
     }
 
     return (
-        <div className="h-64 rounded-xl p-4">
-            <div className="mb-2 flex items-center justify-between">
-                <p className="font-semibold">{t('dashboard.diagrams.hours.title')}</p>
+        <div className="h-64 p-2">
+            <div className="flex justify-between">
+                <p className="font-bold">{t('dashboard.diagrams.hours.title')}</p>
 
                 <RangeToggle range={range} param="range_hours" />
             </div>

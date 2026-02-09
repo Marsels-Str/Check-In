@@ -12,8 +12,8 @@ export type DashboardModuleId =
 export type DashboardSlot =
   | 'top-left'
   | 'top-right'
-  | 'middle'
-  | 'bottom';
+  | 'bottom-1'
+  | 'bottom-2';
 
 export type DashboardLayout = Record<DashboardSlot, DashboardModuleId | null>;
 
@@ -50,6 +50,6 @@ export const dashboardModules = {
 export const defaultLayout: DashboardLayout = {
   'top-left': 'overview',
   'top-right': 'message-reminder',
-  'middle': 'active-employees',
-  'bottom': 'worked-hours',
+  'bottom-1': 'active-employees',
+  'bottom-2': 'worked-hours',
 };

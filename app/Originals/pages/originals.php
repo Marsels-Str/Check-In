@@ -190,6 +190,7 @@ return [
     'dashboard.diagrams.employees.activity.tooltip' => 'Employees',
 
     'dashboard.diagrams.messages.empty' => 'Get a job, or ask to be added to a group, to view messages',
+    'dashboard.diagrams.messages.none' => 'No messages found',
     'dashboard.diagrams.messages.status.new' => 'New activity',
     'dashboard.diagrams.messages.status.none' => 'No unread messages',
 
@@ -198,8 +199,8 @@ return [
     'dashboard.diagrams.overview.personal.status.out' => 'Not working',
     'dashboard.diagrams.overview.personal.action.out' => 'Clock out',
     'dashboard.diagrams.overview.personal.action.in' => 'Clock in',
+    'dashboard.diagrams.overview.business.empty' => 'No employees found',
     'dashboard.diagrams.overview.business.status' => 'Last seen',
-    'dashboard.diagrams.overview.business.title' => 'Employees',
 
     'dashboard.diagrams.hours.empty' => 'Get a job, to view personal statistics',
     'dashboard.diagrams.hours.title' => 'Worked hours',

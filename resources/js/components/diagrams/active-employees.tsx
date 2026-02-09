@@ -14,16 +14,16 @@ export default function EmployeeActivityDiagram() {
 
     if (empty === 'nothing-to-show') {
         return (
-            <div className="flex h-64 items-center justify-center rounded-xl text-sm text-muted-foreground">
+            <div className="flex h-64 items-center justify-center rounded-xl italic text-muted-foreground">
                 {t('dashboard.diagrams.employees.activity.empty')}
             </div>
         );
     }
 
     return (
-        <div className="h-64 rounded-xl p-4">
-            <div className="mb-2 flex items-center justify-between">
-                <p className="font-semibold">{t('dashboard.diagrams.employees.activity.title')}</p>
+        <div className="h-64 p-2">
+            <div className="flex justify-between">
+                <p className="font-bold">{t('dashboard.diagrams.employees.activity.title')}</p>
 
                 <RangeToggle range={range} param="range_activity" />
             </div>

@@ -46,36 +46,32 @@ export default function PersonalPanel({ self }: { self: any }) {
     };
 
     return (
-        <div className="flex h-64 flex-col justify-between rounded-xl p-4 text-center">
-            <div className="flex flex-col items-center gap-2">
+        <div className="flex h-64 flex-col p-2 justify-between">
+            <div className="flex flex-col items-center">
                 <UserAvatar user={self} />
 
-                <p className="leading-tight font-semibold">{self.name}</p>
+                <p className="font-bold">{self.name}</p>
 
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground">
                     {isWorking ? t('dashboard.diagrams.overview.personal.status.in') : t('dashboard.diagrams.overview.personal.status.out')}
                 </p>
             </div>
 
-            <div className="flex flex-col items-center gap-3">
+            <div className="text-center">
                 {isWorking && startTime && (
-                    <div className="font-mono text-lg font-semibold text-green-600 dark:text-green-400">
+                    <div className="text-lg font-bold text-green-700 dark:text-green-500">
                         <LiveTimer startTime={startTime} />
                     </div>
                 )}
+            </div>
 
+            <div className="flex flex-col items-center">
                 {isWorking ? (
-                    <Button
-                        onClick={clockOut}
-                        className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                    >
+                    <Button variant="destructive" onClick={clockOut}>
                         {t('dashboard.diagrams.overview.personal.action.out')}
                     </Button>
                 ) : (
-                    <Button
-                        onClick={clockIn}
-                        className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                    >
+                    <Button variant="default" onClick={clockIn}>
                         {t('dashboard.diagrams.overview.personal.action.in')}
                     </Button>
                 )}

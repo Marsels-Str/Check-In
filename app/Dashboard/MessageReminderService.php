@@ -19,7 +19,7 @@ class MessageReminderService
         if (! $belongsToBusiness) {
             return [
                 'data' => [],
-                'empty' => 'nothing-to-show',
+                'empty' => 'no-business',
             ];
         }
 
@@ -28,7 +28,7 @@ class MessageReminderService
         if (! $businessId) {
             return [
                 'data' => [],
-                'empty' => 'nothing-to-show',
+                'empty' => 'no-business',
             ];
         }
 
