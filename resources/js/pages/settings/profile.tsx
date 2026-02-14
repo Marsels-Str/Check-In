@@ -1,5 +1,7 @@
 import { useT } from '@/lib/t';
+import { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
+import { Button } from '@/components/ui/button';
 import { Head, usePage } from '@inertiajs/react';
 import DeleteUser from '@/components/delete-user';
 import ProfileCard from '@/components/profile-card';
@@ -10,14 +12,15 @@ import ProfileForm from '@/components/profile-settings/profile-form';
 
 export default function Profile() {
     const { auth } = usePage<SharedData>().props;
+    const [cardOpen, setCardOpen] = useState(false);
 
     const t = useT();
-    
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('breadcrumb.settings.profile'),
-            href: '/settings/profile'
-        }
+            href: '/settings/profile',
+        },
     ];
 
     return (
@@ -26,24 +29,41 @@ export default function Profile() {
             <meta name="description" content="Manage your profile settings and personal information" />
 
             <div className="relative">
-                <div className="mb-4 px-3 py-2 md:hidden">
+                <div className="p-2 md:hidden">
                     <ProfileCard user={auth.user} />
                 </div>
 
-                <div className="absolute top-4 right-6 hidden md:block">
-                    <ProfileCard user={auth.user} />
-                </div>
+                {cardOpen && (
+                    <div className="fixed inset-0 z-50 hidden items-center justify-center md:flex">
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCardOpen(false)} />
+
+                        <div className="relative z-10 w-full max-w-md rounded-xl">
+                            <Button variant="outline" className="absolute top-2 right-10" onClick={() => setCardOpen(false)}>
+                                {t('settings.profile.close')}
+                            </Button>
+
+                            <ProfileCard user={auth.user} />
+                        </div>
+                    </div>
+                )}
 
                 <SettingsLayout>
-                    <div className="space-y-12">
-                        <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#0f0f0f]/70">
-                            <HeadingSmall title={t('settings.profile.small.title')} description={t('settings.profile.small.description')} />
-                            <div className="mt-6">
+                    <div className="space-y-4">
+                        <div className="rounded-xl border bg-background p-2 shadow-xl">
+                            <div className="flex justify-between">
+                                <HeadingSmall title={t('settings.profile.small.title')} description={t('settings.profile.small.description')} />
+
+                                <Button variant="default" className="hidden md:inline-flex" onClick={() => setCardOpen(true)}>
+                                    {t('settings.profile.open')}
+                                </Button>
+                            </div>
+
+                            <div className="p-2">
                                 <ProfileForm user={auth.user} />
                             </div>
                         </div>
 
-                        <div className="rounded-2xl border border-red-200/50 bg-red-200/60 p-6 shadow-sm dark:border-red-900/30 dark:bg-red-900/10">
+                        <div className="rounded-xl border bg-red-500/20 p-2 shadow-xl dark:bg-red-600/40">
                             <DeleteUser />
                         </div>
                     </div>

@@ -75,6 +75,8 @@ return [
     'settings.profile.title' => 'Profile settings',
     'settings.profile.small.title' => 'Profile information',
     'settings.profile.small.description' => 'Update your personal details and contact information',
+    'settings.profile.open' => 'Open',
+    'settings.profile.close' => 'Close',
     'settings.profile.name' => 'Name',
     'settings.profile.email' => 'Email',
     'settings.profile.height' => 'Height (Cm)',

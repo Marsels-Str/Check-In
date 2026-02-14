@@ -14,10 +14,10 @@ export default function ProfileForm({ user }: Props) {
     const t = useT();
     
     return (
-        <Form method="patch" action={route('profile.update')} options={{ preserveScroll: true }} className="space-y-6">
+        <Form method="patch" action={route('profile.update')} options={{ preserveScroll: true }}>
             {({ errors }) => (
                 <>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                         <div>
                             <Label htmlFor="name">{t('settings.profile.name')}</Label>
                             <Input id="name" name="name" defaultValue={user.name} />
@@ -50,7 +50,7 @@ export default function ProfileForm({ user }: Props) {
 
                         <div>
                             <Label htmlFor="phone">{t('settings.profile.phone')}</Label>
-                            <Input id="phone" name="phone" defaultValue={user.profile?.phone} />
+                            <Input id="phone" name="phone" defaultValue={user.profile?.phone} placeholder="+123 45 678 90" />
                             <InputError message={errors.phone} />
                         </div>
 
@@ -73,10 +73,8 @@ export default function ProfileForm({ user }: Props) {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                        <Button
-                            className="inline-flex w-full items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                        >
+                    <div className="flex items-center mt-4">
+                        <Button variant="default" className="w-full">
                             {t('settings.profile.save')}
                         </Button>
                     </div>

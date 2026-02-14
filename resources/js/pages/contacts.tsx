@@ -2,7 +2,7 @@ import { useT } from '@/lib/t';
 import { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { BreadcrumbItem } from '@/types';
 
 export default function Contacts() {
     const t = useT();
@@ -23,22 +23,22 @@ export default function Contacts() {
             <Head title={t('contacts.title')} />
             <meta name="description" content="Get in touch with us through our contact information" />
             
-            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">{t('contacts.label')}</h1>
+            <h1 className="flex justify-center font-bold text-5xl">{t('contacts.label')}</h1>
 
             <div className="flex justify-center">
-                <div className="flex max-h-[300px] w-full flex-col gap-4 p-8 md:flex-row">
+                <div className="flex w-full flex-col gap-4 p-8 md:flex-row">
                     <div className="flex flex-1 flex-col items-center">
-                        <p className="mb-2 hidden text-2xl md:block">{t('contacts.support')}</p>
+                        <p className="hidden text-2xl md:block">{t('contacts.support')}</p>
 
                         <div
-                            className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border border-gray-300"
+                            className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border shadow-md"
                             onClick={() => setClickedFirst((prev) => !prev)}
                         >
                             <svg
                                 viewBox="0 0 300 300"
                                 className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${clickedFirst ? 'opacity-0' : 'opacity-100'}`}
                             >
-                                <g transform="translate(0,300) scale(0.100000,-0.100000)" className="fill-gray-900 dark:fill-gray-100" stroke="none">
+                                <g transform="translate(0,300) scale(0.100000,-0.100000)" className="dark:fill-white" stroke="none">
                                     <path
                                         d="M1489 2317 c-109 -31 -220 -132 -259 -235 -91 -238 50 -486 303 -533
                                                     117 -22 248 21 336 109 120 120 151 294 80 448 -35 74 -131 166 -204 194 -73
@@ -73,7 +73,7 @@ export default function Contacts() {
                             </svg>
 
                             <div
-                                className={`absolute inset-0 z-10 flex flex-col items-center justify-center text-center transition-all duration-500 ease-in-out ${clickedFirst ? 'opacity-100' : 'opacity-0'}`}
+                                className={`absolute inset-0 z-10 flex flex-col justify-center text-center transition-all duration-500 ease-in-out ${clickedFirst ? 'opacity-100' : 'opacity-0'}`}
                             >
                                 <p>123-456-789</p>
                                 <p>support@gmail.com</p>
@@ -82,17 +82,17 @@ export default function Contacts() {
                     </div>
 
                     <div className="flex flex-1 flex-col items-center">
-                        <p className="mb-2 hidden text-2xl md:block">{t('contacts.emails')}</p>
+                        <p className="hidden text-2xl md:block">{t('contacts.emails')}</p>
 
                         <div
-                            className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border border-gray-300"
+                            className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border shadow-md"
                             onClick={() => setClickedSecond((prev) => !prev)}
                         >
                             <svg
                                 viewBox="0 0 300 300"
                                 className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${clickedSecond ? 'opacity-0' : 'opacity-100'}`}
                             >
-                                <g transform="translate(0, 250) scale(0.1, -0.1)" className="fill-gray-900 dark:fill-gray-100" stroke="none">
+                                <g transform="translate(0, 250) scale(0.1, -0.1)" className="dark:fill-white" stroke="none">
                                     <path
                                         d="M375 1741 c-48 -22 -79 -54 -100 -103 -13 -32 -15 -120 -15 -660 0
                                             -584 2 -625 19 -663 22 -48 54 -79 103 -100 33 -13 165 -15 1120 -15 1032 0
@@ -141,7 +141,7 @@ export default function Contacts() {
                             </svg>
 
                             <div
-                                className={`absolute inset-0 z-10 flex flex-col items-center justify-center text-center transition-all duration-500 ease-in-out ${clickedSecond ? 'opacity-100' : 'opacity-0'}`}
+                                className={`absolute inset-0 z-10 flex flex-col justify-center text-center transition-all duration-500 ease-in-out ${clickedSecond ? 'opacity-100' : 'opacity-0'}`}
                             >
                                 <p>official@gmail.com</p>
                                 <p>check-in@gmail.com</p>
@@ -150,17 +150,17 @@ export default function Contacts() {
                     </div>
 
                     <div className="flex flex-1 flex-col items-center">
-                        <p className="mb-2 hidden text-2xl md:block">{t('contacts.data')}</p>
+                        <p className="hidden text-2xl md:block">{t('contacts.data')}</p>
 
                         <div
-                            className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border border-gray-300"
+                            className="relative h-64 w-full cursor-pointer overflow-hidden rounded-lg border shadow-md"
                             onClick={() => setClickedThird((prev) => !prev)}
                         >
                             <svg
                                 viewBox="0 0 300 300"
                                 className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${clickedThird ? 'opacity-0' : 'opacity-100'}`}
                             >
-                                <g transform="translate(0, 300) scale(0.1, -0.1)" className="fill-gray-900 dark:fill-gray-100" stroke="none">
+                                <g transform="translate(0, 300) scale(0.1, -0.1)" className="dark:fill-white" stroke="none">
                                     <path
                                         d="M1351 2604 c-88 -23 -171 -74 -246 -149 -114 -114 -172 -247 -180
                                                 -419 -4 -77 -6 -81 -31 -88 -69 -18 -94 -70 -94 -195 0 -80 4 -104 20 -130 19
@@ -194,7 +194,7 @@ export default function Contacts() {
                             </svg>
 
                             <div
-                                className={`absolute inset-0 z-10 flex flex-col items-center justify-center text-center transition-all duration-500 ease-in-out ${clickedThird ? 'opacity-100' : 'opacity-0'}`}
+                                className={`absolute inset-0 z-10 flex flex-col justify-center text-center transition-all duration-500 ease-in-out ${clickedThird ? 'opacity-100' : 'opacity-0'}`}
                             >
                                 <p>protection@gmail.com</p>
                             </div>

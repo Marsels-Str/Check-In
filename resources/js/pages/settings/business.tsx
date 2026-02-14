@@ -1,5 +1,7 @@
 import { useT } from '@/lib/t';
+import { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
+import { Button } from '@/components/ui/button';
 import { Head, router } from '@inertiajs/react';
 import BusinessCard from '@/components/business-card';
 import HeadingSmall from '@/components/heading-small';
@@ -26,12 +28,13 @@ export default function Business({ business, businesses, selectedBusinessId }: P
     }
 
     const t = useT();
+    const [cardOpen, setCardOpen] = useState(false);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('breadcrumb.settings.business'),
-            href: '/settings/business'
-        }
+            href: '/settings/business',
+        },
     ];
 
     return (
@@ -39,41 +42,47 @@ export default function Business({ business, businesses, selectedBusinessId }: P
             <Head title={t('settings.business.title')} />
             <meta name="description" content="Manage your business settings and information" />
 
-            <div className="relative">
-                <div className="relative">
-                    <div className="mb-4 px-3 py-2 md:hidden">
-                        <BusinessCard business={business} key={business?.id} />
-                    </div>
-                    <div className="absolute top-4 right-6 hidden md:block">
+            <div className="md:hidden">
+                <BusinessCard business={business} key={business?.id} />
+            </div>
+
+            {cardOpen && (
+                <div className="fixed inset-0 z-50 hidden items-center justify-center md:flex">
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCardOpen(false)} />
+
+                    <div className="relative z-10 w-full max-w-md rounded-xl">
+                        <Button variant="outline" className="absolute top-2 right-10" onClick={() => setCardOpen(false)}>
+                            {t('settings.profile.close')}
+                        </Button>
+
                         <BusinessCard business={business} key={business?.id} />
                     </div>
                 </div>
+            )}
 
-                <SettingsLayout>
-                    <div className="space-y-12">
-                        <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-[#0f0f0f]/70">
-                            <div className="mb-4 flex items-center justify-between">
-                                <div>
-                                    <HeadingSmall title={t('settings.business.small.title')} description={t('settings.business.small.description')} />
-                                </div>
-                                {businesses.length > 1 && (
-                                    <BusinessDropdownMenu
-                                        businesses={businesses}
-                                        selectedBusinessId={selectedBusinessId}
-                                        onChange={handleBusinessChange}
-                                    />
-                                )}
-                            </div>
+            <SettingsLayout>
+                <div className="rounded-xl border bg-background p-2 shadow-xl">
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                        <HeadingSmall title={t('settings.business.small.title')} description={t('settings.business.small.description')} />
 
-                            {business ? (
-                                <BusinessForm key={business.id} business={business} />
-                            ) : (
-                                <CreateBusinessForm />
+                        <div className="flex items-center justify-end gap-2">
+                            {businesses.length > 1 && (
+                                <BusinessDropdownMenu
+                                    businesses={businesses}
+                                    selectedBusinessId={selectedBusinessId}
+                                    onChange={handleBusinessChange}
+                                />
                             )}
+
+                            <Button variant="default" className="hidden md:inline-flex" onClick={() => setCardOpen(true)}>
+                                {t('settings.profile.open')}
+                            </Button>
                         </div>
                     </div>
-                </SettingsLayout>
-            </div>
+
+                    <div>{business ? <BusinessForm key={business.id} business={business} /> : <CreateBusinessForm />}</div>
+                </div>
+            </SettingsLayout>
         </AppLayout>
     );
 }

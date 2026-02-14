@@ -14,12 +14,12 @@ export default function DeleteUser() {
     const t = useT();
 
     return (
-        <div className="space-y-6">
-            <HeadingSmall title={t('settings.profile.delete.title')} description= {t('settings.profile.delete.description')} />
-            <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
-                <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
-                    <p className="font-medium">{t('settings.profile.delete.warning')}</p>
-                    <p className="text-sm">{t('settings.profile.delete.text')}</p>
+        <div>
+            <HeadingSmall title={t('settings.profile.delete.title')} description={t('settings.profile.delete.description')} />
+            <div className="rounded-xl border bg-red-50/70 p-2 dark:bg-red-950/40">
+                <div className="dark:text-white">
+                    <p className="font-bold">{t('settings.profile.delete.warning')}</p>
+                    <p>{t('settings.profile.delete.text')}</p>
                 </div>
 
                 <Dialog>
@@ -28,9 +28,7 @@ export default function DeleteUser() {
                     </DialogTrigger>
                     <DialogContent>
                         <DialogTitle>{t('settings.profile.delete.dialog.title')}</DialogTitle>
-                        <DialogDescription>
-                            {t('settings.profile.delete.dialog.description')}
-                        </DialogDescription>
+                        <DialogDescription>{t('settings.profile.delete.dialog.description')}</DialogDescription>
 
                         <Form
                             method="delete"
@@ -40,35 +38,26 @@ export default function DeleteUser() {
                             }}
                             onError={() => passwordInput.current?.focus()}
                             resetOnSuccess
-                            className="space-y-6"
+                            className="space-y-4"
                         >
                             {({ resetAndClearErrors, errors }) => (
                                 <>
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="password" className="sr-only">
-                                            {t('settings.profile.delete.dialog.password')}
-                                        </Label>
+                                    <Label htmlFor="password" className="sr-only">
+                                        {t('settings.profile.delete.dialog.password')}
+                                    </Label>
 
-                                        <Input
-                                            id="password"
-                                            type="password"
-                                            name="password"
-                                            ref={passwordInput}
-                                        />
+                                    <Input id="password" type="password" name="password" ref={passwordInput} />
 
-                                        <InputError message={errors.password} />
-                                    </div>
+                                    <InputError message={errors.password} />
 
-                                    <DialogFooter className="gap-2">
+                                    <DialogFooter>
                                         <DialogClose asChild>
-                                            <Button variant="secondary" onClick={() => resetAndClearErrors()}>
+                                            <Button variant="outline" onClick={() => resetAndClearErrors()}>
                                                 {t('settings.profile.delete.dialog.cancel')}
                                             </Button>
                                         </DialogClose>
 
-                                        <Button variant="destructive" asChild>
-                                            <button type="submit">{t('settings.profile.delete.dialog.delete.confirm')}</button>
-                                        </Button>
+                                        <Button variant="destructive">{t('settings.profile.delete.dialog.delete.confirm')}</Button>
                                     </DialogFooter>
                                 </>
                             )}

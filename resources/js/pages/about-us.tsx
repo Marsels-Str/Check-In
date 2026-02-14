@@ -36,9 +36,9 @@ export default function AboutUs() {
             <Head title="About us" />
             <meta name="description" content="Learn more about us, our mission, and our values" />
             
-            <h1 className="flex justify-center text-3xl leading-tight font-bold md:text-5xl">About us</h1>
+            <h1 className="flex justify-center font-bold text-5xl">About us</h1>
 
-            <div className="mx-auto">
+            <div className="mx-auto p-2">
                 <Accordion items={sections} defaultOpenIndex={null} />
             </div>
 

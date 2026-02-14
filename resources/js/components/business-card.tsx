@@ -1,7 +1,7 @@
 import { useT } from '@/lib/t';
 import { useRef } from 'react';
-import { router } from '@inertiajs/react';
 import { BusinessProfile } from '@/types';
+import { router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -12,13 +12,13 @@ interface Props {
 
 export default function BusinessCard({ business }: Props) {
     const t = useT();
-    
+
     if (!business) {
         return (
             <Card className="mx-auto w-full max-w-sm rounded-xl shadow-lg">
-                <CardContent className="flex flex-col items-center space-y-4 p-6 text-center text-gray-500">
+                <CardContent className="flex flex-col space-y-2 p-4 text-center text-muted-foreground">
                     <p>{t('settings.business.empty')}</p>
-                    <p className="text-sm">{t('settings.business.empty.text')}</p>
+                    <p>{t('settings.business.empty.text')}</p>
                 </CardContent>
             </Card>
         );
@@ -52,42 +52,42 @@ export default function BusinessCard({ business }: Props) {
     };
 
     return (
-        <Card className="mx-auto w-full max-w-sm rounded-xl shadow-lg">
-            <CardContent className="flex flex-col items-center space-y-4 p-6">
+        <Card className="mx-auto w-full max-w-sm rounded-xl">
+            <CardContent className="flex flex-col items-center p-6">
                 <div className="cursor-pointer" onClick={handleAvatarClick}>
                     <Avatar className="h-24 w-24 rounded-full border">
                         <AvatarImage src={typeof business.logo === 'string' ? business.logo : undefined} alt={business.name} />
-                        <AvatarFallback className="text-xl">{business.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback>{business.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </div>
 
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
                 {business.logo && (
-                    <Button type="button" variant="destructive" onClick={handleRemoveLogo}>
+                    <Button variant="destructive" onClick={handleRemoveLogo}>
                         {t('settings.business.remove.confirm')}
                     </Button>
                 )}
 
-                <div className="space-y-1 text-center">
-                    <h2 className="text-lg font-semibold">{business.name}</h2>
-                    <p className="text-sm text-muted-foreground">{business.email}</p>
+                <div className="text-center">
+                    <h2 className="text-lg font-bold">{business.name}</h2>
+                    <p className="text-muted-foreground">{business.email}</p>
                 </div>
 
-                <div className="w-full space-y-1 border-t pt-4 text-sm">
+                <div className="w-full border-t">
                     {business.phone && (
                         <p>
-                            <span className="font-medium">{t('settings.business.phone')}:</span> {business.phone}
+                            <span className="font-bold">{t('settings.business.phone')}:</span> {business.phone}
                         </p>
                     )}
                     <p>
-                        <span className="font-medium">{t('settings.business.adress')}:</span> {business.address || '—'}
+                        <span className="font-bold">{t('settings.business.adress')}:</span> {business.address || '—'}
                     </p>
                     <p>
-                        <span className="font-medium">{t('settings.business.city')}:</span> {business.city || '—'}
+                        <span className="font-bold">{t('settings.business.city')}:</span> {business.city || '—'}
                     </p>
                     <p>
-                        <span className="font-medium">{t('settings.business.country')}:</span> {business.country || '—'}
+                        <span className="font-bold">{t('settings.business.country')}:</span> {business.country || '—'}
                     </p>
                 </div>
             </CardContent>

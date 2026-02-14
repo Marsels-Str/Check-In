@@ -31,19 +31,14 @@ function AccordionItemComponent({
     }, [isOpen, content]);
 
     return (
-        <div
-            className="
-                relative overflow-hidden group
-                mt-4 rounded-md
-                border border-gray-200 dark:border-gray-700
-                bg-white dark:bg-neutral-900
-            "
-        >
+        <div className="relative overflow-hidden group mt-4 rounded-md border bg-background">
             <div
                 className="
                     pointer-events-none
                     absolute inset-0
-                    bg-gradient-to-r from-pink-400 via-pink-400/40 to-white
+                    bg-gradient-to-r from-gray-300 via-muted to-white
+                    dark:bg-none
+                    dark:group-hover:bg-muted
                     scale-x-0 origin-left
                     group-hover:scale-x-100
                     transition-transform duration-700 ease-out
@@ -55,15 +50,15 @@ function AccordionItemComponent({
                 className="
                     relative z-10
                     flex w-full items-center justify-between
-                    p-3 text-lg font-semibold
-                    text-gray-900 dark:text-gray-100
+                    p-2 text-lg font-bold
+                    dark:text-white
                 "
             >
                 <span>{title}</span>
 
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-5 w-5 text-gray-600 dark:text-gray-300 transition-transform duration-300 ${
+                    className={`h-5 w-5 dark:text-white transition-transform duration-300 ${
                         isOpen ? 'rotate-180' : ''
                     }`}
                     fill="none"
@@ -88,7 +83,7 @@ function AccordionItemComponent({
                 "
             >
                 <div ref={ref}>
-                    <div className="p-3 text-gray-800 dark:text-gray-200">
+                    <div className="p-2 dark:text-white">
                         {content}
                     </div>
                 </div>

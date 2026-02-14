@@ -130,8 +130,8 @@ class ProfileController extends Controller
         $profile = $user->profile()->first();
 
         $validated = $request->validate([
-            'email'         => ['nullable','email','max:100',"unique:users,email,{$user->id}"],
-            'name'          => ['nullable','string','min:1','max:50','regex:/^[\p{L}\s]+$/u'],
+            'email'         => ['required','email','max:100',"unique:users,email,{$user->id}"],
+            'name'          => ['required','string','min:1','max:50','regex:/^[\p{L}\s]+$/u'],
             'age'           => ['required','integer','min:14','max:100'],
             'height'        => ['required','numeric','min:100','max:300'],
             'weight'        => ['required','numeric','min:40','max:700'],
