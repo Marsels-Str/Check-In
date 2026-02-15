@@ -79,7 +79,12 @@ class BusinessEmployeeController extends Controller
                 ->with('error', t('employees.error.nothing'));
         }
 
-        return back()->with('searchResult', $searchResult);
+        return back()->with('searchResult', [
+            'id' => $searchResult->id,
+            'user_id' => $searchResult->profile->user_id,
+            'name' => $searchResult->name,
+            'unique_id' => $searchResult->profile->unique_id ?? null,
+        ]);
     }
 
     public function clockIn(Request $request, User $user)
