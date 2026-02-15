@@ -68,12 +68,15 @@ class BusinessEmployeeController extends Controller
             'unique_id' => 'required|numeric',
         ]);
 
-        $searchResult = User::whereHas('profile', fn($q) => $q->where('unique_id', $request->unique_id))
+        $uniqueId = (int) $request->unique_id;
+
+        $searchResult = User::whereHas('profile', fn($q) => $q->where('unique_id', $uniqueId))
             ->with('profile')
             ->first();
 
         if (!$searchResult) {
-            return redirect()->route('employees.index')->with('error', t('employees.error.nothing'));
+            return redirect()->route('employees.index')
+                ->with('error', t('employees.error.nothing'));
         }
 
         return back()->with('searchResult', $searchResult);
