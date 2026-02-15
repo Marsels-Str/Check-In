@@ -74,7 +74,7 @@ export default function EmployeeSearchAndAdd({ businesses, selectedBusinessId }:
                                 </div>
 
                                 <div className="ml-4">
-                                    <Button variant="default">
+                                    <Button type="submit" variant="default">
                                         {t('employees.search.search')}
                                     </Button>
                                 </div>
