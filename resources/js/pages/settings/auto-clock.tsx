@@ -1,6 +1,6 @@
 import { useT } from '@/lib/t';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
@@ -17,27 +17,27 @@ export default function AutoClock() {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('breadcrumb.settings.clocking'),
-            href: '/settings/auto-clock'
-        }
+            href: '/settings/auto-clock',
+        },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title={t('settings.clocking.title')} />
+            <meta name="description" content="Manage your auto-clock settings and work time extensions" />
+
             <SettingsLayout>
-                <Head title={t('settings.clocking.title')} />
-                <meta name="description" content="Manage your auto-clock settings and work time extensions" />
+                <div className="rounded-xl border bg-background shadow-xl">
+                    <div className="space-y-2 p-2">
+                        <HeadingSmall title={t('settings.clocking.small.title')} description={t('settings.clocking.small.description')} />
 
-                <div className="space-y-8">
-                <HeadingSmall title={t('settings.clocking.small.title')} description={t('settings.clocking.small.description')} />
-
-                    <AutoClockForm settings={settings} />
-
-                    <hr className="my-10 border-gray-300 dark:border-gray-700" />
-
-                    <ExtendWorkTimeForm initialMinutes={settings.extended_minutes} />
-
-                    {!hasBusiness && <LockedAutoClock />}
+                        <AutoClockForm settings={settings} />
+                    </div>
                 </div>
+
+                <ExtendWorkTimeForm initialMinutes={settings.extended_minutes} />
+
+                {!hasBusiness && <LockedAutoClock />}
             </SettingsLayout>
         </AppLayout>
     );

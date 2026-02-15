@@ -606,7 +606,6 @@ return [
     'auth.verifiy.small.title' => 'Verify email',
     'auth.verify.small.description' => 'Please verify your email address by clicking on the link we just emailed to you',
     'auth.verify.title' => 'Email verification',
-    'auth.verify.description' => 'A new verification link has been sent to the email address you provided during registration',
     'auth.verify.resend' => 'Resend verification email',
     'auth.verify.logout' => 'Log out',
 

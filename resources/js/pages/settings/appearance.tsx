@@ -1,7 +1,7 @@
 import { useT } from '@/lib/t';
 import { Head } from '@inertiajs/react';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import HeadingSmall from '@/components/heading-small';
 import SettingsLayout from '@/layouts/settings/layout';
 import AppearanceTabs from '@/components/appearance-tabs';
@@ -22,7 +22,7 @@ export default function Appearance() {
             <meta name="description" content="Customize the appearance settings of your application" />
 
             <SettingsLayout>
-                <div className="space-y-6">
+                <div className="border rounded-xl bg-background shadow-xl p-2">
                     <HeadingSmall title={t('settings.appearance.small.title')} description={t('settings.appearance.small.description')} />
                     <AppearanceTabs />
                 </div>

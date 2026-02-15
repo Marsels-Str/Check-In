@@ -1,7 +1,7 @@
 import { useT } from '@/lib/t';
 import { Head } from '@inertiajs/react';
+import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import Accordion from '@/components/ui/accordion';
 
 export default function AboutUs() {

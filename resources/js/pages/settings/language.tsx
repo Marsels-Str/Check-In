@@ -52,8 +52,8 @@ export default function LanguageSettings() {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('breadcrumb.settings.language'),
-            href: '/settings/language'
-        }
+            href: '/settings/language',
+        },
     ];
 
     return (
@@ -62,21 +62,15 @@ export default function LanguageSettings() {
             <meta name="description" content="Manage your language settings" />
 
             <SettingsLayout>
-                <div className="max-w-xl space-y-4">
-                    <HeadingSmall title={t('settings.language.small.title')} description={t('settings.language.small.description')}/>
+                <div className="space-y-2 rounded-xl border bg-background p-2 shadow-xl">
+                    <HeadingSmall title={t('settings.language.small.title')} description={t('settings.language.small.description')} />
 
                     <Label>{t('settings.language.search')}</Label>
-                    <Input
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:outline-none"
-                    />
+                    <Input value={search} onChange={(e) => setSearch(e.target.value)} />
 
-                    <div className="divide-y divide-border rounded-lg border border-border">
+                    <div className="divide-y overflow-hidden rounded-lg border">
                         {filtered.length === 0 && (
-                            <div className="px-4 py-6 text-center text-sm text-muted-foreground italic">
-                                {t('settings.language.empty')}
-                            </div>
+                            <div className="px-4 py-2 text-center text-muted-foreground italic">{t('settings.language.empty')}</div>
                         )}
 
                         {filtered.map((lang) => {
@@ -86,19 +80,19 @@ export default function LanguageSettings() {
                                 <button
                                     key={lang.code}
                                     onClick={() => switchLanguage(lang.code)}
-                                    className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm transition ${
-                                        active ? 'bg-primary/10 text-primary' : 'hover:bg-muted'
-                                    }`}
+                                    className={`flex w-full justify-between px-4 py-2 text-left ${active ? 'bg-muted' : 'hover:bg-muted'}`}
                                 >
                                     <div>
                                         <div className="font-medium">
                                             {lang.name}
-                                            {lang.code === 'en' && <span className="ml-2 text-xs text-muted-foreground">{t('settings.language.default')}</span>}
+                                            {lang.code === 'en' && (
+                                                <span className="ml-2 text-muted-foreground">{t('settings.language.default')}</span>
+                                            )}
                                         </div>
-                                        <div className="text-xs text-muted-foreground">{lang.code.toUpperCase()}</div>
+                                        <div className="text-muted-foreground">{lang.code.toUpperCase()}</div>
                                     </div>
 
-                                    {active && <span className="text-xs font-semibold">{t('settings.language.active')}</span>}
+                                    {active && <span className="font-bold">{t('settings.language.active')}</span>}
                                 </button>
                             );
                         })}

@@ -61,7 +61,7 @@ export default function Business({ business, businesses, selectedBusinessId }: P
             )}
 
             <SettingsLayout>
-                <div className="rounded-xl border bg-background p-2 shadow-xl">
+                <div className="rounded-xl border bg-background p-2 shadow-xl space-y-2">
                     <div className="flex flex-col sm:flex-row sm:justify-between">
                         <HeadingSmall title={t('settings.business.small.title')} description={t('settings.business.small.description')} />
 

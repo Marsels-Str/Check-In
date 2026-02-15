@@ -48,24 +48,22 @@ export default function Profile() {
                 )}
 
                 <SettingsLayout>
-                    <div className="space-y-4">
-                        <div className="rounded-xl border bg-background p-2 shadow-xl">
-                            <div className="flex justify-between">
-                                <HeadingSmall title={t('settings.profile.small.title')} description={t('settings.profile.small.description')} />
+                    <div className="rounded-xl border bg-background p-2 shadow-xl">
+                        <div className="flex justify-between">
+                            <HeadingSmall title={t('settings.profile.small.title')} description={t('settings.profile.small.description')} />
 
-                                <Button variant="default" className="hidden md:inline-flex" onClick={() => setCardOpen(true)}>
-                                    {t('settings.profile.open')}
-                                </Button>
-                            </div>
-
-                            <div className="p-2">
-                                <ProfileForm user={auth.user} />
-                            </div>
+                            <Button variant="default" className="hidden md:inline-flex" onClick={() => setCardOpen(true)}>
+                                {t('settings.profile.open')}
+                            </Button>
                         </div>
 
-                        <div className="rounded-xl border bg-red-500/20 p-2 shadow-xl dark:bg-red-600/40">
-                            <DeleteUser />
+                        <div className="p-2">
+                            <ProfileForm user={auth.user} />
                         </div>
+                    </div>
+
+                    <div className="rounded-xl border bg-red-500/20 p-2 shadow-xl dark:bg-red-600/40">
+                        <DeleteUser />
                     </div>
                 </SettingsLayout>
             </div>

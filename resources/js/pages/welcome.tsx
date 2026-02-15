@@ -1,12 +1,25 @@
 import { useT } from '@/lib/t';
 import { SharedData } from '@/types';
+import { Button } from '@/components/ui/button';
 import WelcomeLogo from '@/components/welcome-logo';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage, router } from '@inertiajs/react';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
 
     const t = useT();
+
+    const dashboard = () => {
+        router.get(route('dashboard'));
+    };
+
+    const login = () => {
+        router.get(route('login'));
+    };
+
+    const register = () => {
+        router.get(route('register'));
+    };
 
     return (
         <>
@@ -17,28 +30,20 @@ export default function Welcome() {
             </Head>
             <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
                 <header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
-                    <nav className="flex items-center justify-end gap-4">
+                    <nav className="flex items-center justify-end gap-2">
                         {auth.user ? (
-                            <Link
-                                href={route('dashboard')}
-                                className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                            >
+                            <Button variant="outline" onClick={() => dashboard()}>
                                 {t('welcome.dashboard.link')}
-                            </Link>
+                            </Button>
                         ) : (
                             <>
-                                <Link
-                                    href={route('login')}
-                                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                                >
-                                {t('welcome.login.link')}
-                                </Link>
-                                <Link
-                                    href={route('register')}
-                                    className="inline-flex items-center rounded-lg bg-pink-200/20 px-3.5 py-1.5 text-sm font-medium text-pink-700 ring-1 ring-pink-400/30 transition-all duration-300 ease-in-out ring-inset hover:bg-yellow-200/30 hover:text-yellow-700 hover:ring-yellow-400/30 dark:bg-pink-900/40 dark:text-pink-300 dark:ring-pink-500/30 dark:hover:bg-yellow-900/30 dark:hover:text-yellow-300 dark:hover:ring-yellow-500/30"
-                                >
+                                <Button variant="outline" className="dark:text-white" onClick={() => login()}>
+                                    {t('welcome.login.link')}
+                                </Button>
+
+                                <Button variant="outline" className="dark:text-white" onClick={() => register()}>
                                     {t('welcome.register.link')}
-                                </Link>
+                                </Button>
                             </>
                         )}
                     </nav>
