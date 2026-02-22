@@ -503,6 +503,8 @@ return [
     'languages.index.actions' => 'Actions',
     'languages.index.empty' => 'No languages found',
     'languages.index.sync' => 'Synchronize',
+    'languages.index.progress' => 'Sync in progress',
+    'languages.index.processed' => 'processed',
     'languages.index.edit' => 'Edit',
     'languages.index.delete' => 'Delete',
 

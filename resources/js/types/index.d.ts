@@ -59,6 +59,7 @@ export interface Language {
     name: string;
     code: string;
     translated_count: number;
+    translation_batch_id: string | null;
 };
 
 export interface Original {

@@ -138,6 +138,7 @@ Route::middleware(['auth', 'verified', 'ensure.profile.complete', 'after.complet
     Route::get('languages/{language}/translations', [TranslationController::class, 'index'])->name('translations.index')->middleware('permission:languages.access');
     Route::get('languages/{language}/translations/{original}/edit', [TranslationController::class, 'edit'])->name('translations.edit')->middleware('permission:languages.access');
     Route::put('languages/{language}/translations/{original}', [TranslationController::class, 'update'])->name('translations.update')->middleware('permission:languages.access');
+    Route::get('/languages/{language}/progress', [LanguageController::class, 'progress'])->name('languages.progress');
 });
 
 require __DIR__.'/settings.php';

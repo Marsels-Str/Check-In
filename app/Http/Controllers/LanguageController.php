@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Languages;
 use App\Models\Originals;
+use Illuminate\Bus\Batch;
 use Illuminate\Http\Request;
 use App\Jobs\TranslateOriginalJob;
 use Illuminate\Support\Facades\Bus;
@@ -127,6 +128,21 @@ class LanguageController extends Controller
 
         $batch = Bus::batch($jobs)
             ->name("Sync translations for {$language->code}")
+            ->then(function (Batch $batch) use ($language) {
+                $language->update([
+                    'translation_batch_id' => null
+                ]);
+            })
+            ->catch(function (Batch $batch) use ($language) {
+                $language->update([
+                    'translation_batch_id' => null
+                ]);
+            })
+            ->finally(function (Batch $batch) use ($language) {
+                $language->update([
+                    'translation_batch_id' => null
+                ]);
+            })
             ->onQueue('text-translation')
             ->dispatch();
 
@@ -146,5 +162,30 @@ class LanguageController extends Controller
         cookie()->queue('lang', $lang, 60 * 24  *365);
 
         return redirect()->to(url()->previous());
+    }
+
+    public function progress(Languages $language)
+    {
+        if (! $language->translation_batch_id) {
+            return response()->json([
+                'status' => 'none',
+            ]);
+        }
+
+        $batch = Bus::findBatch($language->translation_batch_id);
+
+        if (! $batch) {
+            return response()->json([
+                'status' => 'missing',
+            ]);
+        }
+
+        return response()->json([
+            'status' => $batch->finished() ? 'finished' : 'running',
+            'total' => $batch->totalJobs,
+            'processed' => $batch->processedJobs(),
+            'failed' => $batch->failedJobs,
+            'progress' => $batch->progress(),
+        ]);
     }
 }
