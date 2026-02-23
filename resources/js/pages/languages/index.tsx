@@ -43,8 +43,7 @@ export default function LanguagesIndex({ languages, originals }: Props) {
 
                 {activeLanguage && (
                     <SyncProgress
-                        languageId={activeLanguage.id}
-                        batchId={activeLanguage.translation_batch_id}
+                        language={activeLanguage}
                     />
                 )}
 

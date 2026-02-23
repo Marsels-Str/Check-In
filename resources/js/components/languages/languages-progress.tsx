@@ -1,29 +1,28 @@
 import { useT } from '@/lib/t';
+import { Language } from '@/types';
 import { useEffect, useState } from 'react';
 
 interface Props {
-    languageId: number;
-    batchId: string | null;
+    language: Language;
 }
 
 interface ProgressResponse {
-    status: 'none' | 'missing' | 'running' | 'finished';
+    status: 'none';
     total?: number;
     processed?: number;
-    failed?: number;
     progress?: number;
 }
 
-export default function SyncProgress({ languageId, batchId }: Props) {
+export default function SyncProgress({ language }: Props) {
     const [data, setData] = useState<ProgressResponse | null>(null);
 
     const t = useT();
 
     useEffect(() => {
-        if (!batchId) return;
+        if (!language.translation_batch_id) return;
 
         const interval = setInterval(async () => {
-            const res = await fetch(route('languages.progress', languageId));
+            const res = await fetch(route('languages.progress', { language: language.id }));
 
             const json = await res.json();
             setData(json);
@@ -34,9 +33,9 @@ export default function SyncProgress({ languageId, batchId }: Props) {
         }, 2000);
 
         return () => clearInterval(interval);
-    }, [languageId, batchId]);
+    }, [language]);
 
-    if (!batchId || !data || data.status === 'none') return null;
+    if (!language.translation_batch_id || !data || data.status === 'none') return null;
 
     return (
         <div className="rounded-lg border bg-background p-2 shadow-md">
@@ -48,7 +47,6 @@ export default function SyncProgress({ languageId, batchId }: Props) {
 
             <div className="text-muted-foreground">
                 {data.processed} / {data.total} {t('languages.index.processed')}
-                {data.failed ? ` • ${data.failed} failed` : ''}
             </div>
         </div>
     );

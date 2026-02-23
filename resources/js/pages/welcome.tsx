@@ -32,7 +32,7 @@ export default function Welcome() {
                 <header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
                     <nav className="flex items-center justify-end gap-2">
                         {auth.user ? (
-                            <Button variant="outline" onClick={() => dashboard()}>
+                            <Button variant="outline" className="dark:text-white" onClick={() => dashboard()}>
                                 {t('welcome.dashboard.link')}
                             </Button>
                         ) : (

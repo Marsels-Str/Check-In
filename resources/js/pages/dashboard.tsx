@@ -81,7 +81,7 @@ export default function Dashboard(props: DashboardProps) {
                     </div>
 
                     <div className="grid gap-2">
-                        <div className="relative h-[29vh] min-h-[260px] max-h-[420px] overflow-hidden rounded-xl border">
+                        <div className="relative h-[28vh] min-h-[260px] max-h-[420px] overflow-hidden rounded-xl border">
                             <DashboardSlot slot="bottom-1" moduleId={layout['bottom-1']} setLayout={setLayout}>
                                 {DashboardRenderModule(layout['bottom-1'], 'bottom-1')}
                             </DashboardSlot>
