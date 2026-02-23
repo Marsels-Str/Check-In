@@ -39,14 +39,14 @@ export default function SyncProgress({ languageId, batchId }: Props) {
     if (!batchId || !data || data.status === 'none') return null;
 
     return (
-        <div className="mb-6 rounded-lg border border-border bg-background p-4 shadow-sm">
-            <div className="mb-2 text-sm font-medium">{t('languages.index.progress')}...</div>
+        <div className="rounded-lg border bg-background p-2 shadow-md">
+            <div className="font-bold">{t('languages.index.progress')}...</div>
 
-            <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
-                <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${data.progress ?? 0}%` }} />
+            <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div className="h-full bg-yellow-500 transition-all duration-500" style={{ width: `${data.progress ?? 0}%` }} />
             </div>
 
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="text-muted-foreground">
                 {data.processed} / {data.total} {t('languages.index.processed')}
                 {data.failed ? ` • ${data.failed} failed` : ''}
             </div>
