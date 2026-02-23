@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
-            
             $table->integer('age')->nullable();
             $table->decimal('height', 5, 2)->nullable();
             $table->decimal('weight', 5, 2)->nullable();
@@ -25,7 +24,6 @@ return new class extends Migration
             $table->longtext('portrait')->nullable();
             $table->bigInteger('unique_id')->unique();
             $table->boolean('status')->nullable();
-            
             $table->timestamps();
         });
     }
