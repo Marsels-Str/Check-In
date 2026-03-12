@@ -49,6 +49,7 @@ export default function BusinessDropdownMenu({ businesses, selectedBusinessId, o
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
+                    {/* data-testid="business-dropdown-trigger" */}
                     <button type="button" className={`${base} ${isSelected ? green : yellow}`}>
                         {selectedBusiness?.name || selectBusiness}
                         <ChevronDown className="ml-2 h-4 w-4 opacity-80" />
@@ -78,6 +79,7 @@ export default function BusinessDropdownMenu({ businesses, selectedBusinessId, o
                         return (
                             <DropdownMenuItem
                                 key={b.id}
+                                // data-testid={`business-${b.id}`}
                                 onClick={() => {
                                     setCurrentId(b.id);
                                     onChange(b.id);

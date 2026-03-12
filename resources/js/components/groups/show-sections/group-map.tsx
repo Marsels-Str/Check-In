@@ -102,6 +102,7 @@ export default function GroupMap({ group, availableMaps }: Props) {
                                                     <Button
                                                         onClick={() => mapsDetach(maps.id)}
                                                         type="button"
+                                                        // data-testid={`map-${maps.id}-detach-trigger`}
                                                         variant="link"
                                                         className="px-0 text-red-700 dark:text-red-500"
                                                     >
@@ -116,6 +117,7 @@ export default function GroupMap({ group, availableMaps }: Props) {
 
                                 <Button variant="default">
                                     {t('groups.show.maps.add')}
+                                    {/* Add Map */}
                                 </Button>
                             </>
                         )}

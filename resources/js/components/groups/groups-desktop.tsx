@@ -56,6 +56,7 @@ export default function GroupDesktopView({ groups }: Props) {
                                             <div className="flex justify-end space-x-2">
                                                 {canShow && (
                                                     <Button
+                                                        // data-testid="show-trigger"
                                                         variant="link"
                                                         className="px-0 text-blue-700 dark:text-blue-500"
                                                         onClick={() => groupsShow(group)}
@@ -74,6 +75,7 @@ export default function GroupDesktopView({ groups }: Props) {
                                                 )}
                                                 {canDelete && (
                                                     <Button
+                                                        // data-testid="delete-trigger"
                                                         variant="link"
                                                         className="px-0 text-red-700 dark:text-red-500"
                                                         onClick={() => groupsDelete(group)}

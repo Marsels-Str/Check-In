@@ -47,3 +47,12 @@ Lai iztūlkotu visus originālos tekstus pēc sinhronizēšanas pogas nospiešan
 
 Lai sagatavotu "Laravel" lokalizācijas failus priekš tūlkošanas izmantot - php artisan lang:prepare (un attiecīgās valodas kods)
 Lai iztūlkotu šos failus izmantot - php artisan lang:translate (un attiecīgās valodas kods)
+
+
+
+
+Lai izmantotu iebūvētos testus izmantot - "php artisan test" un konkrētā testa faila atrašanās vieta, piemēram "php artisan test tests/Feature/Group/AddUser.php"
+Visi pieejamie testi atrodas mapē "tests", tālāk tie ir sadalīti pa apakšmapēm
+Bet lai šie testi strādātu ir jādodas uz "phpunit.xml" failu un jāaizstāj tās pašas 2 rindiņas, kuras šobrīd tiek izmantotas ar tām, kuras ir aizkomentētas
+Protams, kad ir nepieciešama svaiga datubāze, lai viss pilnībā strādātu, tāpēc izmantot - php artisan migrate:fresh --seed
+Pēc tam apmeklēt "Languages" skatu pārlūkā, lai ielādētos visi oriģinālie teksti!!!

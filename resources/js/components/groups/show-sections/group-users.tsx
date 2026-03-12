@@ -42,7 +42,7 @@ export default function GroupUsers({ group, users }: Props) {
             {canAddUsers && (
                 <Button variant="default" onClick={() => setIsModalOpen(true)}>
                     {t('groups.show.users.add')}
-                    {/* Add User (Priekš testa atkomentēt) */}
+                    {/* Add User */}
                 </Button>
             )}
 
