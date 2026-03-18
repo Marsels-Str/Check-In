@@ -118,6 +118,7 @@ class ProfileController extends Controller
     public function update(Request $request, ?User $user = null): RedirectResponse
     {
         $user = $user ?? $request->user();
+        $updatesUserAccount = $request->hasAny(['name', 'email']);
 
         $request->merge([
             'name'    => $request->name    ? htmlspecialchars(trim($request->name))    : null,
@@ -129,9 +130,7 @@ class ProfileController extends Controller
 
         $profile = $user->profile()->first();
 
-        $validated = $request->validate([
-            'email'         => ['required','email','max:100',"unique:users,email,{$user->id}"],
-            'name'          => ['required','string','min:1','max:50','regex:/^[\p{L}\s]+$/u'],
+        $rules = [
             'age'           => ['required','integer','min:14','max:100'],
             'height'        => ['required','numeric','min:100','max:300'],
             'weight'        => ['required','numeric','min:40','max:700'],
@@ -145,9 +144,16 @@ class ProfileController extends Controller
                 'required','string','regex:/^\d{6}-\d{5}$/',
                 Rule::unique('user_profiles','personal_code')->ignore($profile?->id),
             ],
-        ]);
+        ];
 
-        if (!empty($validated['name']) || !empty($validated['email'])) {
+        if ($updatesUserAccount) {
+            $rules['email'] = ['required','email','max:100',"unique:users,email,{$user->id}"];
+            $rules['name'] = ['required','string','min:1','max:50','regex:/^[\p{L}\s]+$/u'];
+        }
+
+        $validated = $request->validate($rules);
+
+        if ($updatesUserAccount) {
             $user->update([
                 'name'  => $validated['name']  ?? $user->name,
                 'email' => $validated['email'] ?? $user->email,
