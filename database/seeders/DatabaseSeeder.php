@@ -64,7 +64,6 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Dummy User3', 'email' => 'example3@example.com', 'role' => 'Unemployed'],
             ['name' => 'Dummy User4', 'email' => 'example4@example.com', 'role' => 'Unemployed'],
             ['name' => 'Dummy User5', 'email' => 'example5@example.com', 'role' => 'Unemployed'],
-            ['name' => 'Dummy User6', 'email' => 'example6@example.com', 'role' => 'Unemployed'],
         ];
 
         foreach ($users as $data) {
@@ -93,6 +92,14 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
+
+        $user6 = User::create([
+            'name' => 'Dummy User6',
+            'email' => 'example6@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $user6->assignRole('Unemployed');
 
     }
 }
