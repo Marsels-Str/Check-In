@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -83,6 +84,23 @@ class User extends Authenticatable implements MustVerifyEmail
     public function timeLogs()
     {
         return $this->hasMany(TimeLog::class);
+    }
+
+    public function checkPermissionTo($permission, $guardName = null): bool
+    {
+        $guards = $guardName ? [$guardName] : ['web', 'business'];
+
+        foreach ($guards as $guard) {
+            try {
+                if ($this->hasPermissionTo($permission, $guard)) {
+                    return true;
+                }
+            } catch (PermissionDoesNotExist) {
+                continue;
+            }
+        }
+
+        return false;
     }
 
     private function activeTimeLog()
