@@ -26,7 +26,7 @@ export default function RolesCreateFields({ permissions, businesses, auth }: Pro
     const { data, setData, post, errors } = useForm<RoleData>({
         name: '',
         permissions: [],
-        business_id: canAccess ? (auth.user.ownedBusiness?.id ?? null) : null,
+        business_id: canAccess ? null : (auth.user.ownedBusiness?.id ?? auth.user.business_id ?? null),
     });
 
     function handleCheckboxChange(permissionName: string, isChecked: boolean) {

@@ -79,13 +79,19 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
+        $user = $request->user();
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:50'],
             'permissions' => 'required|array',
-            'business_id' => 'nullable|exists:businesses,id',
+            'business_id' => $user->hasRole('Owner') ? 'nullable|exists:businesses,id' : 'nullable',
         ]);
 
-        $businessId = $data['business_id'] ?? null;
+        $businessId = $this->resolveBusinessId($user, $data['business_id'] ?? null);
+        if (! $user->hasRole('Owner') && ! $businessId) {
+            return redirect()->route('roles.create')->with('error', t('roles.error.auth'));
+        }
+
         $guardName = $businessId ? 'business' : 'web';
 
         $exists = Role::where('name', $data['name'])
@@ -109,6 +115,15 @@ class RoleController extends Controller
         $role->syncPermissions($permissions);
 
         return redirect()->route('roles.index')->with('success', t('roles.success.create'));
+    }
+
+    private function resolveBusinessId($user, $inputId = null)
+    {
+        return match (true) {
+            $user->hasRole('Owner') => $inputId,
+            $user->hasRole('Business') && $user->ownedBusiness => $user->ownedBusiness->id,
+            default => $user->businesses()->value('businesses.id'),
+        };
     }
 
     public function show(Role $role)

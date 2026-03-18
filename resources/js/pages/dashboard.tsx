@@ -57,7 +57,7 @@ export default function Dashboard(props: DashboardProps) {
                 <Head title={t('dashboard.view.title')} />
                 <meta name="description" content="Diagrams, that lets you overview the whole business in one page" />
 
-                <div className="flex flex-col gap-3 md:gap-4 overflow-x-auto rounded-xl p-2">
+                <div className="flex flex-col gap-3 rounded-xl p-2 md:gap-4">
                     {canAccess && (
                         <BusinessDropdownMenu
                             businesses={props.businesses}
@@ -66,28 +66,26 @@ export default function Dashboard(props: DashboardProps) {
                         />
                     )}
 
-                    <div className="grid gap-2 md:grid-cols-2">
-                        <div className="relative h-[25vh] min-h-[220px] max-h-[340px] overflow-hidden rounded-xl border">
+                    <div className="grid min-h-[calc(100svh-9.5rem)] gap-2 md:grid-cols-2 md:grid-rows-[minmax(16rem,1fr)_minmax(18rem,1fr)_minmax(18rem,1fr)]">
+                        <div className="relative min-h-[16rem] overflow-hidden rounded-xl border md:h-full">
                             <DashboardSlot slot="top-left" moduleId={layout['top-left']} setLayout={setLayout}>
                                 {DashboardRenderModule(layout['top-left'], 'top-left')}
                             </DashboardSlot>
                         </div>
 
-                        <div className="relative h-[25vh] min-h-[220px] max-h-[340px] overflow-hidden rounded-xl border">
+                        <div className="relative min-h-[16rem] overflow-hidden rounded-xl border md:h-full">
                             <DashboardSlot slot="top-right" moduleId={layout['top-right']} setLayout={setLayout}>
                                 {DashboardRenderModule(layout['top-right'], 'top-right')}
                             </DashboardSlot>
                         </div>
-                    </div>
 
-                    <div className="grid gap-2">
-                        <div className="relative h-[28vh] min-h-[260px] max-h-[420px] overflow-hidden rounded-xl border">
+                        <div className="relative min-h-[18rem] overflow-hidden rounded-xl border md:col-span-2 md:h-full">
                             <DashboardSlot slot="bottom-1" moduleId={layout['bottom-1']} setLayout={setLayout}>
                                 {DashboardRenderModule(layout['bottom-1'], 'bottom-1')}
                             </DashboardSlot>
                         </div>
 
-                        <div className="relative h-[29vh] min-h-[260px] max-h-[420px] overflow-hidden rounded-xl border">
+                        <div className="relative min-h-[18rem] overflow-hidden rounded-xl border md:col-span-2 md:h-full">
                             <DashboardSlot slot="bottom-2" moduleId={layout['bottom-2']} setLayout={setLayout}>
                                 {DashboardRenderModule(layout['bottom-2'], 'bottom-2')}
                             </DashboardSlot>
