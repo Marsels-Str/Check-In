@@ -23,6 +23,7 @@ class AutoClockScheduler extends Command
         AutoClockToken::where('expires_at', '<=', now())->delete();
         $settings = AutoClockSetting::with('user')->get();
 
+        // Iet cauri visiem iestatījumiem un pārbauda, vai ir jāveic kāda darbība
         foreach ($settings as $setting) {
             if (!$setting->user || !$setting->work_start || !$setting->work_end) continue;
 
@@ -70,6 +71,7 @@ class AutoClockScheduler extends Command
         $this->info('Auto clock executed at ' . now());
     }
 
+    // Nosūta atgādinājuma e-pastu, ja nav jau nosūtīts derīgs tokens
     private function sendEmail($user, $type)
     {
         $exists = AutoClockToken::where('user_id', $user->id)
@@ -94,6 +96,7 @@ class AutoClockScheduler extends Command
         $this->info("→ {$type} email sent to {$user->email}");
     }
 
+    // Pārbauda, vai lietotājs ir jau "clocked in"
     private function isUserClockedIn($user)
     {
         return $user->timeLogs()->whereNull('clock_out')->exists();

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class DashboardOverviewService
 {
+    // Galvenā metode, kas nosaka, kādus datus atgriezt atkarībā no lietotāja lomas un pieprasījuma
     public static function make(Request $request): array
     {
         $user = $request->user();
@@ -30,6 +31,7 @@ class DashboardOverviewService
         return self::personal($user);
     }
 
+    // Parasts lietotājs
     private static function personal(User $user): array
     {
         $activeLog = TimeLog::where('user_id', $user->id)
@@ -55,6 +57,7 @@ class DashboardOverviewService
         ];
     }
 
+    // Lietotājs ar "Business" lomu
     private static function business(int $businessId): array
     {
         $employees = User::whereHas('businesses', fn ($q) =>

@@ -43,6 +43,7 @@ class TranslateLangFiles extends Command
             return Command::FAILURE;
         }
 
+        // Iet cauri visiem failiem un pārtulko
         foreach (File::allFiles($base) as $file) {
             $this->info("Translating: {$file->getFilename()}");
 
@@ -61,6 +62,7 @@ class TranslateLangFiles extends Command
         return Command::SUCCESS;
     }
 
+    // Iztīra masīvu, atstājot tikai atslēgas un tukšas vērtības
     private function arrayToPhp(array $array, int $indent = 0): string
     {
         $indentStr = str_repeat('    ', $indent);
@@ -85,6 +87,7 @@ class TranslateLangFiles extends Command
         return $php;
     }
 
+    // Iztulkoto tekstus
     private function translateArray(array $array, string $from, string $to, OpenAITranslator $translator): array
     {
         $result = [];

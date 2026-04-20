@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class EmployeeActivityService
 {
+    // Galvenā metode, kas nosaka, kādus datus atgriezt atkarībā no lietotāja lomas un pieprasījuma
     public static function make(Request $request): array
     {
         $user = $request->user();

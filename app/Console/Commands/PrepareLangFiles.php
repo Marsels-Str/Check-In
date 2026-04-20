@@ -44,6 +44,7 @@ class PrepareLangFiles extends Command
 
         $files = File::allFiles($base);
 
+        // Iet cauri visiem failiem un sagatavo tukšas versijas
         foreach ($files as $file) {
             $array = include $file->getPathname();
 
@@ -60,6 +61,7 @@ class PrepareLangFiles extends Command
         return Command::SUCCESS;
     }
 
+    // Pārvērš masīvu PHP sintaksē
     private function arrayToPhp(array $array, int $indent = 0): string
     {
         $indentStr = str_repeat('    ', $indent);
@@ -84,6 +86,7 @@ class PrepareLangFiles extends Command
         return $php;
     }
 
+    // Iztīra masīvu, atstājot tikai atslēgas un tukšas vērtības
     private function emptyLangArray(array $array): array
     {
         $clean = [];
