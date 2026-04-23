@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('time_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('business_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('business_id')->constrained()->onDelete('cascade');
             $table->timestamp('clock_in')->nullable();
             $table->timestamp('clock_out')->nullable();
             $table->timestamps();

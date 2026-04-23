@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\User;
 
-use App\Models\AutoClockSetting;
+use App\Models\AutoClockSettings;
 use App\Models\Business;
 use App\Models\User;
 use Tests\TestCase;
@@ -48,7 +48,7 @@ test('Eksistējošs lietotājs nespēj aizpildīt automātisko e-pastu izsūtī�
 	$user->businesses()->syncWithoutDetaching([$business->id]);
 
 	// Pārliecinās vai viss ir sagatavots
-	AutoClockSetting::where('user_id', $user->id)->delete();
+	AutoClockSettings::where('user_id', $user->id)->delete();
 
 	// Tiek apmeklēta sākumlapa
 	visit('/login')

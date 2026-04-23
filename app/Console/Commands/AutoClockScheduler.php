@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\AutoClockToken;
 use Illuminate\Console\Command;
-use App\Models\AutoClockSetting;
+use App\Models\AutoClockSettings;
 use App\Mail\ClockInReminderMail;
 use App\Mail\ClockOutReminderMail;
 use Illuminate\Support\Facades\Mail;
@@ -21,7 +21,7 @@ class AutoClockScheduler extends Command
         //Kad jāgriež pulkstenis stundu uz priekšu vai atpakaļ, tad izmantot šo ->subHour() vai ->addHour()
         $now = Carbon::now();
         AutoClockToken::where('expires_at', '<=', now())->delete();
-        $settings = AutoClockSetting::with('user')->get();
+        $settings = AutoClockSettings::with('user')->get();
 
         // Iet cauri visiem iestatījumiem un pārbauda, vai ir jāveic kāda darbība
         foreach ($settings as $setting) {

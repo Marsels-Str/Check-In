@@ -9,7 +9,7 @@ use App\Models\TimeLog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AutoClockToken;
-use App\Models\AutoClockSetting;
+use App\Models\AutoClockSettings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -21,7 +21,7 @@ class AutoClockController extends Controller
         $user = $request->user();
 
         //Izveido tukšus laukus tabulā, kad lietotājs apmeklē konkrēto lapu
-        $settings = AutoClockSetting::firstOrCreate(['user_id' => $user->id]);
+        $settings = AutoClockSettings::firstOrCreate(['user_id' => $user->id]);
 
         //Pārbauda vai lietotājs pieder biznesam vai lietotājam pieder bizness
         $hasBusiness = $user->businesses()->exists() || $user->ownedBusiness()->exists();
@@ -51,7 +51,7 @@ class AutoClockController extends Controller
         ]);
 
         //Atjaunina laukus vai izveido tos
-        AutoClockSetting::updateOrCreate(
+        AutoClockSettings::updateOrCreate(
             ['user_id' => $user->id],
             $validated
         );
@@ -71,7 +71,7 @@ class AutoClockController extends Controller
         ]);
 
         //Tiek izveidots lauks, kad pirmo reizi tiek apmeklēta konkrētā lapa
-        AutoClockSetting::firstOrCreate(['user_id' => $user->id])->update($validated);
+        AutoClockSettings::firstOrCreate(['user_id' => $user->id])->update($validated);
 
         //Atrgriežas
         return redirect()->route('auto-clock.update')->with('success', t('settings.clocking.success.extend'));

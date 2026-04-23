@@ -6,11 +6,11 @@ use App\Models\Group;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\AutoClockController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\Groups\GroupController;
